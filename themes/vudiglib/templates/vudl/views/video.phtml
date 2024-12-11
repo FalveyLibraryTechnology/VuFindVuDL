@@ -1,0 +1,43 @@
+<script>
+  var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
+  var videoSupported = document.createElement('video').canPlayType('video/mp4')
+    || document.createElement('video').canPlayType(data['mimetype']);
+  var routeTemplate = '<?=$this->url('files', ['id' => '!!!ID!!!', 'type' => '!!!TYPE!!!']) ?>';
+  updateView = mobile ? false : function(data) {
+    if (videoSupported) {
+      var video = $('video');
+      video.trigger('pause');
+      $('#video-mp4').attr('src', routeTemplate.replace('!!!ID!!!', data['id']).replace('!!!TYPE!!!', 'MP4'));
+      $('#video-master').attr('src', routeTemplate.replace('!!!ID!!!', data['id']).replace('!!!TYPE!!!', 'MASTER'));
+      video[0].load();
+    }
+  };
+  $(document).ready(function() {
+    currentTab = "master-tab";
+    $('#view .nav-tabs li.opener a').addClass('hidden');
+  });
+</script>
+<ul class="nav nav-tabs">
+  <li class="static opener">
+    <a onClick="toggleSideNav()">
+      <i class="fa fa-caret-right"></i>
+      <i class="fa fa-caret-right"></i>
+      <i class="fa fa-caret-right"></i>
+    </a>
+  </li>
+  <li class="active"><a>Player and Downloads</a></li>
+</ul>
+<div class="tab-container text-center tab-content">
+  <video controls preload="auto" onloadeddata="$('.pages .selected.loading').removeClass('loading');" style="max-width: 100%;">
+    <?php if (in_array('MP4', $this->datastreams)): ?>
+      <source id="video-mp4" src="<?=$this->url('files', ['id' => $id, 'type' => 'MP4']) ?>?download=true"/>
+    <?php else: ?>
+      <source id="video-master" src="<?=$this->url('files', ['id' => $id, 'type' => 'MASTER']) ?>?download=true"/>
+    <?php endif; ?>
+    <?php if (in_array('VTT', $this->datastreams)): ?>
+      <track label="Captions" kind="subtitles" srclang="en" src="<?=$this->url('files', ['id' => $id, 'type' => 'VTT']) ?>?download=true"/>
+    <?php endif; ?>
+  </video>
+  <br/><br/>
+  <?=$this->context($this)->renderInContext('vudl/master-tab.phtml', [])?>
+</div>

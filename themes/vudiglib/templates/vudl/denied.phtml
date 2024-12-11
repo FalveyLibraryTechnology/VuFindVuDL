@@ -1,0 +1,27 @@
+<?php
+  $this->headTitle($this->translate($this->title) . ' - ' . $this->translate('vudl_access_denied'));
+  $this->layout()->breadcrumbs = false;
+?>
+
+<style>
+
+  .prose {
+    margin-inline: auto;
+    margin-block: 1rem;
+    font-family: "Gotham", var(--family-sans);
+    text-align: center;
+
+    & a {
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    & h1 {
+      margin-block: 1rem;
+    }
+  }
+</style>
+
+<div class="prose">
+  <h1><?=$this->transEsc('vudl_access_denied')?></h1>
+  <p>The record you are trying to access is protected under an access-restricting <a href="http://digital.library.villanova.edu/copyright.html">Villanova Digital Library Copyright license</a>. Under this license, access is restricted to the Villanova campus. If you are an off-campus Villanova student, staff, or faculty member with login information, please <a href="http://ezproxy.villanova.edu/login?url=<?=$this->escapeHtml($this->serverurl($this->url('vudl-record', ['id' => $this->id]))) ?>">sign in here</a>.</p>
+</div>

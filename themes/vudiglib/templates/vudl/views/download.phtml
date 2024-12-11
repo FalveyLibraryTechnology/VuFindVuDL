@@ -1,0 +1,27 @@
+<ul class="nav nav-tabs">
+  <li class="static opener">
+    <a onClick="toggleSideNav()">
+      <i class="fa fa-caret-right"></i>
+      <i class="fa fa-caret-right"></i>
+      <i class="fa fa-caret-right"></i>
+    </a>
+  </li>
+  <li class="active"><a href="#master" id="master-tab">Downloads</a></li>
+</ul>
+<div class="tab-container text-center tab-content">
+  <?=$this->context($this)->renderInContext('vudl/master-tab.phtml', [])?>
+</div>
+<script>
+  // Mandatory update function
+  updateView = function(data) {
+    setTimeout(function() {
+      $('.pages .selected.loading').removeClass('loading');
+    }, 300);
+  };
+  $(document).ready(function() {
+    var current = <?=json_encode($this->outline['current']) ?>;
+    $('#view .nav-tabs li.opener a').addClass('hidden');
+    $('.pages .selected.loading').removeClass('loading');
+    getTechInfo(current);
+  });
+</script>

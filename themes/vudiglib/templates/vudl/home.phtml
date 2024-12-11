@@ -1,0 +1,458 @@
+<?php
+    // Set page title.
+    $this->headTitle($this->translate($this->translate($this->title)));
+
+    // Set default value if necessary:
+    if (!isset($this->searchClassId)) {
+        $this->searchClassId = 'Solr';
+    }
+
+    // Load search actions and settings (if any):
+    $options = $this->searchOptions($this->searchClassId);
+    $basicSearch = $options->getSearchAction();
+    $advSearch = $options->getAdvancedSearchAction();
+    $this->layout()->selectedTab = 'digital';
+    $this->layout()->showBreadcrumbs = false;
+    $this->layout()->searchbox = false;
+
+    $this->headLink()->appendStylesheet('vudl-home.css');
+
+    $this->headScript()->appendFile('lib/date-gates.js');
+    $this->headScript()->appendFile('lib/random-hero-image.js');
+    $this->headScript()->appendFile('lib/text-typer.js');
+
+    $displayConfig = json_decode(file_get_contents(__DIR__ . '/../../assets/home-config.json'), null, 512, JSON_THROW_ON_ERROR);
+    $digitizedSets = $displayConfig->digitized;
+?>
+
+<div class="hero">
+    <div class="hero__mobile_bg">
+        <img class="hero__mobile_img" src="https://iiif.library.villanova.edu/image/vudl%3A469216/full/1024,/0/default.jpg" />
+    </div>
+    <div class="hero__left">
+        <div class="hero__left__inner">
+            <h1 class="text-left normal-case">
+                <a class="hero__link" href="https://library.villanova.edu/collections/distinctive">Distinctive&nbsp;Collections</a>:<br/>
+                <b>Digital&nbsp;Library</b>
+            </h1>
+
+            <div class="my-8">
+                <?=$this->context($this)->renderInContext('search/searchbox.phtml', ['ignoreHiddenFilterMemory' => true]) ?>
+            </div>
+
+            <h2 class="hero__h2">Browse the Collections</h2>
+
+            <div class="hero__links">
+                <?php foreach ($displayConfig->heroLinks as $link): ?>
+                    <a class="hero__feature-link" href="<?=$link->href ?>">
+                        <svg class="hero-link__icon icon--svg w-6 h-4"><use xlink:href="<?=$this->imageLink('remixicon.symbol.svg') ?>#ri-arrow-right-line"/></svg>
+                        <?=$link->label ?>
+                    </a>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero__right">
+        <svg class="hero__slash" fill="currentColor" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <polygon points="0,0 100,0 0,100"></polygon>
+        </svg>
+
+        <?php $firstImage = $displayConfig->heroImages[0]; ?>
+
+        <img id="hero__image" class="hero__image" src="<?=$firstImage->src ?>"/>
+
+        <a class="hero__citation" href="<?=$firstImage->href ?>"><?=$firstImage->title ?></a>
+    </div>
+</div>
+
+<div class="container lg:flex gap-4">
+    <div class="flex-1">
+        <h2>
+            <a href="https://digital.library.villanova.edu/Collection/vudl:920563">
+                Featured Partnership
+                <span class="sr-only">Bethel AME Church of Ardmore Collection</span>
+            </a>
+        </h2>
+
+        <div class="feature">
+            <span class="hidden feature__header">
+                <a href="https://digital.library.villanova.edu/Collection/vudl:920563">
+                    Weitzman National Museum of American Jewish History
+                </a>
+            </span>
+            <div class="no-flex">
+                <a
+                    href="https://digital.library.villanova.edu/Collection/vudl:920563"
+                    style="flex: 1 1 0%; display: block; max-width: 45ch; margin: auto; padding: 1rem; padding-bottom: 0"
+                >
+                    <img
+                        class="feature__img"
+                        src="<?=$this->imageLink('featured/Weitzman NMAJH Logo - Full Color.png')?>"
+                        alt="Weitzman National Museum of American Jewish History"
+                    >
+                </a>
+                <div
+                    class="feature__text prose"
+                    style="flex: 2 2 0%; margin-top: 0; line-height: 1.5;"
+                >
+                    <p>This collection contains oral history interviews conducted for a temporary exhibition called <i>Living on the Land</i> that was on view at the Museum in 1979. In the late nineteenth century, millions of Jewish refugees fled Russia to find new homes due to rising persecution. Most moved to cities and found work in garment trades, manufacturing, or commerce, but some families became farmers in agricultural communities around the world. The interviews in this collection offer insight into the history and culture of the Jewish farming communities of southern New Jersey through the perspectives of those who lived there, including descendants of the earliest founders of Alliance and other towns. <i>Living on the Land</i> featured excerpts from these interviews in wall text, a slide show, and audio clips.</p>
+                </div>
+            </div>
+        </div>
+
+        <p class="my-4" data-hide-before="2024-09-16">
+            <a class="more-link" href="<?=$this->url('vudl-partners') ?>">
+                <svg class="hero-link__icon icon--svg"><use xlink:href="/themes/vudiglib/images/remixicon.symbol.svg?_=1671554993#ri-arrow-right-line"></use></svg>
+                <span class="underline">More Digital Partnerships</span>
+            </a>
+        </p>
+    </div>
+
+    <div class="flex-1" data-hide-after="2024-09-16">
+        <h2>Featured Exhibit <span class="sr-only">Divine Inspiration</span></h2>
+
+        <div class="feature">
+            <span class="feature__header">
+                <a href="https://exhibits.library.villanova.edu/divineinspiration">
+                    Divine Inspiration: Revealing the Sacred in Biblical Texts and Imagery
+                </a>
+            </span>
+            <div class="flex">
+                <a class="flex-1" href="https://exhibits.library.villanova.edu/divineinspiration">
+                    <img class="feature__img" src="<?=$this->imageLink('featured/divine_inspiration_thumb.jpg')?>" alt="">
+                </a>
+                <div class="flex-2 feature__text prose">
+                    <p>This exhibit features historic bibles and supplemental materials from Special Collections, with an emphasis on textual revolutions and biblical illustration. Curated by Meg Piorko and Mike Sgier, March 27, 2024.</p>
+                </div>
+            </div>
+        </div>
+
+        <p class="my-4">
+            <a class="more-link" href="<?=$this->url('vudl-partners') ?>">
+                <svg class="hero-link__icon icon--svg"><use xlink:href="/themes/vudiglib/images/remixicon.symbol.svg?_=1671554993#ri-arrow-right-line"></use></svg>
+                <span class="underline">More Digital Partnerships</span>
+            </a>
+        </p>
+    </div>
+
+    <div class="flex-1" data-hide-before="2024-09-16">
+        <h2>
+            <a href="https://exhibits.library.villanova.edu/millers-mechanical-shows">
+                Featured Exhibit
+                <span class="sr-only">The Millers Mechanical Shows</span>
+            </a>
+        </h2>
+
+        <div class="hidden-min-lg">
+            <div class="feature">
+                <a class="d-block" href="https://exhibits.library.villanova.edu/millers-mechanical-shows">
+                    <img class="feature__img" src=<?=$this->imageLink('featured/millers-feature-hero.jpg')?>" alt="The Millers Mechanical Shows: American Circuses and Traveling Shows in the Early Twentieth Century">
+                </a>
+                <div class="feature__text prose">
+                    <p>This exhibit showcases photographs and other materials from our Millers Mechanical Shows Papers collection, as well as other materials related to American circuses and traveling shows of the early twentieth century. Digital installation date: September 23, 2024. Curated by Christoforos Sassaris.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="hidden-max-lg">
+            <div class="feature sliding-desc">
+                <img class="sliding-desc__img" src=<?=$this->imageLink('featured/millers-feature-hero.jpg')?>" alt="The Millers Mechanical Shows: American Circuses and Traveling Shows in the Early Twentieth Century">
+                <div class="sliding-description">
+                    <a class="sliding-desc__title" href="https://exhibits.library.villanova.edu/millers-mechanical-shows">The Millers Mechanical Shows: American Circuses and Traveling Shows in the Early Twentieth Century</a>
+                    <div class="sliding-desc__text prose">
+                        <p>This exhibit showcases photographs and other materials from our Millers Mechanical Shows Papers collection, as well as other materials related to American circuses and traveling shows of the early twentieth century. Digital installation date: September 23, 2024. Curated by Christoforos Sassaris.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--
+<div class="container">
+    <div class="md:grid h-auto gap-4 grid-cols-2 auto-cols-min">
+        <div class="feature sliding-desc row-span-2">
+            <img class="sliding-desc__img" src="https://blog.library.villanova.edu/wp-content/uploads/2021/09/385.jpg"/>
+            <div class="feature__label bg-brand-dark">
+                <h3 class="feature__label-title">Big Exhibit or Something</h3>
+                <div class="feature__label-text prose prose-sm">
+                    <p>The acquisition of medieval liturgical chant manuscripts that trace the history of music notation as it evolved over half a millennium, became a major collection priority in the Music Division beginning in...
+                    The acquisition of medieval liturgical chant manuscripts that trace the history of music notation as it evolved over half a millennium, became a major collection priority in the Music Division beginning in...
+                    The acquisition of medieval liturgical chant manuscripts that trace the history of music notation as it evolved over half a millennium, became a major collection priority in the Music Division beginning in...</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="feature">
+            <h3 class="feature__header">Featured Partnership</h3>
+            <div class="feature__text prose">
+                <p>The acquisition of medieval liturgical chant manuscripts that trace the history of music notation as it evolved over half a millennium, became a major collection priority in the Music Division beginning in...</p>
+            </div>
+        </div>
+
+        <div class="feature">
+            <h3 class="feature__header">Partnerships</h3>
+            <div class="feature__text partnerships">
+                <a class="partnerships__item" data-reveal="0" href="#">
+                    <img src="https://blog.library.villanova.edu/wp-content/uploads/2021/06/vudl_650591-300x374.jpg"/>
+                </a>
+                <a class="partnerships__item" data-reveal="1" href="#">
+                    <img src="https://blog.library.villanova.edu/wp-content/uploads/2021/09/cr12-300x467.jpeg"/>
+                </a>
+                <a class="partnerships__item" data-reveal="2" href="#">
+                    <img src="https://blog.library.villanova.edu/wp-content/uploads/2021/09/htm-300x459.jpg"/>
+                </a>
+                <a class="partnerships__item" data-reveal="3" href="#">
+                    <img src="https://blog.library.villanova.edu/wp-content/uploads/2021/09/cr12-300x467.jpeg"/>
+                </a>
+                <a class="partnerships__more" href="#">
+                    <span class="block text-center">
+                        See More<br/>
+                        <svg class="icon--svg"><use xlink:href="<?=$this->imageLink('remixicon.symbol.svg') ?>#ri-arrow-right-line"/></svg>
+                    </span>
+                </a>
+            </div>
+
+            <div class="partnerships__info">
+                <div class="prose prose-sm">
+                    <div class="hover-content" data-content="0">
+                        <p class="lead">A Great Partnership</p>
+                        <p>Information.</p>
+                    </div>
+                    <div class="hover-content" data-content="1">
+                        <p class="lead">An Academic Partnership</p>
+                        <p>More information.</p>
+                    </div>
+                    <div class="hover-content" data-content="2">
+                        <p class="lead">A Beautiful Partnership</p>
+                        <p>Less information, actually.</p>
+                    </div>
+                    <div class="hover-content" data-content="3">
+                        <p class="lead">A Mysterious Partnership</p>
+                        <p>Unsolved mysteries.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+-->
+
+<div class="container">
+    <h2>Explore the Collections</h2>
+
+    <p class="subtitle">A curated slice of the items digitized at Villanova</p>
+
+    <div class="category-grid">
+        <?php foreach ($digitizedSets as $feature): ?>
+            <?php
+                $size = $feature->size ?? 1;
+                $className = "feature row-span-$size col-span-$size"
+            ?>
+            <a class="<?=$className ?>" href="<?=$this->escapeHtmlAttr($feature->href) ?>">
+                <div class="feature__img x-duotone">
+                    <img src="<?=$this->escapeHtmlAttr($feature->image) ?>" loading="lazy" />
+                </div>
+                <span class="feature__label bg-brand-dark"><?=$this->transEsc($feature->label) ?></span>
+            </a>
+        <?php endforeach; ?>
+    </div>
+</div>
+
+<!--
+<div class="container">
+    <h2>Explore</h2>
+
+    <div class="md:grid gap-4 grid-cols-2">
+        <div class="feature row-span-2">
+            <h3 class="feature__header">Highlighted Collection</h3>
+            <div class="feature__text flex gap-4" href="#">
+                <a class="flex-1" href="#">
+                    <img src="https://blog.library.villanova.edu/wp-content/uploads/2021/06/vudl_650591-300x374.jpg" loading="lazy" />
+                </a>
+                <div class="flex-3 prose">
+                    <p>The acquisition of medieval liturgical chant manuscripts that trace the history of music notation as it evolved over half a millennium, became a major collection priority in the Music Division beginning in...</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="feature">
+            <h3 class="feature__header">University Archives</h3>
+            <div class="feature__text prose">
+                <p>The acquisition of medieval liturgical chant manuscripts that trace the history of music notation as it evolved over half a millennium, became a major collection priority in the Music Division beginning in...</p>
+            </div>
+        </div>
+
+        <div class="feature">
+            <h3 class="feature__header">
+                See More
+                <svg class="icon--svg ml-4"><use xlink:href="<?=$this->imageLink('remixicon.symbol.svg') ?>#ri-arrow-right-line"/></svg>
+            </h3>
+        </div>
+    </div>
+</div>
+-->
+
+<div class="rss-feed container">
+    <h2><a href="https://blog.library.villanova.edu/category/blue-electrode/">Distinctive Collections Blog: Blue Electrode</a></h2>
+
+    <ul class="rss-feed__list">
+        <?php foreach($this->rss as $item): ?>
+          <li class="rss-feed__item" style="--image: url('<?=$item['image'] ?>')">
+            <a class="rss-feed__link" href="<?=$item['link'] ?>">
+                <div class="rss-feed__thumb">
+                    <img class="rss-feed__img" src="<?=$item['image'] ?>" />
+                </div>
+                <div class="flex-1">
+                    <span class="rss-feed__title"><?=$item['title'] ?></span>
+                    <span class="rss-feed__date" data-date="<?=$item['date'] ?>"></span>
+                </div>
+            </a>
+          </li>
+        <?php endforeach; ?>
+    </ul>
+    <div class="rss-feed__more">
+        <a class="more-link" href="https://blog.library.villanova.edu/category/blue-electrode/">
+            <svg class="icon--svg w-6 h-4"><use xlink:href="<?=$this->imageLink('remixicon.symbol.svg') ?>#ri-arrow-right-line"/></svg>
+            <span class="underline">Read More</span>
+        </a>
+    </div>
+</div>
+
+<div class="container px-4 md:flex gap-4">
+    <div class="about-text flex-1">
+        <h2>About the Collections</h2>
+        <div class="prose">
+            <p>Villanova University's Digital Library initiative assembles, presents, and preserves digital collections that support the teaching and research of the campus and the global community of scholars drawing materials from Villanova's University Archives, Special Collections, and a host of external Digital Partners. Ranging from digitization of Villanova Dissertations and Theses, to digital preservation of faculty fulltext publications, the Digital Library actively solicits project ideas and materials for digitization from community members; please contact the Digital Library Team with your idea for a new digital project. We work with faculty, staff and regional partners to select and develop resources that enhance access for a wide range of disciplines and audiences.</p>
+            <ul>
+                <li><a href="/VuDL/About">Learn more about the Digital Library</a></li>
+                <li><a href="http://exhibits.library.villanova.edu/">Learn more about Exhibits at Falvey Library</a> <!-- remove once we have a visual feature for this --></li>
+                <li><a href="https://www.zotero.org/groups/villanovadiglib">Citations: Our Resources in Action</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="about-text flex-1">
+        <div class="none lg:block">
+            <h2>Accessibility</h2>
+            <div class="prose">
+                <p>The Digital Library strives to provide access to its collections and resources to the Villanova University community and the global community of scholars, subject to any intellectual property or other restrictions on use. Certain materials, such as historical documents, handwritten materials, and foreign language materials, present unique accessibility challenges and formatting limitations. If you are experiencing difficulties in accessing, viewing, or navigating the Digital Library, please contact us at digitallibrary@villanova.edu or 610.519.5271.</p>
+            </div>
+        </div>
+
+        <h2>Stay Up-to-Date</h2>
+        <div class="prose">
+            <ul>
+                <li><a href="https://digital.library.villanova.edu/Search/NewItem">Browse New Releases</a></li>
+                <li><a href="https://digital.library.villanova.edu/Search/Results?type=AllFields&view=rss">RSS Feed of New Releases</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<ul class="favicons">
+    <li><a href="https://www.facebook.com/pages/Villanova-University-Digital-Library/114144432005449" title="Facebook"><img src="<?=$this->imageLink('32x32/facebook.png') ?>" /></a></li>
+    <li><a href="http://www.flickr.com/photos/vudigitallibrary/" title="Flickr"><img src="<?=$this->imageLink('32x32/flickr.png') ?>" /></a></li>
+    <li><a href="http://twitter.com/VillanovaDigLib" title="Twitter"><img src="<?=$this->imageLink('32x32/twitter.png') ?>" /></a></li>
+    <li><a href="http://blue-electrode.tumblr.com/" title="Tumblr"><img src="<?=$this->imageLink('32x32/tumblr.png') ?>" /></a></li>
+    <li><a href="http://pinterest.com/villanovadiglib" title="Tumblr"><img src="<?=$this->imageLink('32x32/pinterest.png') ?>" /></a></li>
+    <!-- <li><a href="https://www.historypin.org/en/person/91207" title="Historypin"><img src="<?=$this->imageLink('32x32/historypin.png') ?>" /></a></li> -->
+</ul>
+
+<!--
+<div class="p-4 pb-8 pr-0">
+    <h2 class="text-xl mb-4 text-left">About Villanova</h2>
+    <div class="photorow">
+        <div class="photorow__container z-10">
+            <script>
+                for (let i = 0; i < 0; i++) { // disabled
+                    let w = Math.floor(Math.random() * 100) + 100;
+                    let h = Math.floor(Math.random() * 100) + 240;
+                    document.write(`
+                        <a class="photorow__item item-${i}" href="#">
+                            <img class="photorow__img" src="http://www.loremimages.com?size=${w}x${h}" alt=""/>
+                        </a>
+                    `);
+                }
+            </script>
+        </div>
+    </div>
+</div>
+
+<div class="p-4 pb-8 pr-0">
+    <h2 class="text-xl mb-4 text-left">Latest Items</h2>
+    <div class="photorow">
+        <div class="photorow__container z-10">
+            <script>
+                for (let i = 0; i < 0; i++) { // disabled
+                    let w = Math.floor(Math.random() * 100) + 100;
+                    let h = Math.floor(Math.random() * 100) + 240;
+                    document.write(`
+                        <a class="photorow__item item-${i}" href="#">
+                            <img class="photorow__img" src="http://www.loremimages.com?size=${w}x${h}" alt=""/>
+                        </a>
+                    `);
+                }
+            </script>
+        </div>
+    </div>
+</div>
+-->
+
+<script>
+    // Copyright date
+    document.querySelectorAll("[data-date]").forEach((el) => {
+        let date = new Date(el.dataset.date);
+        el.innerHTML = date.toLocaleString(
+            "en-US",
+            { dateStyle: "medium" }
+        );
+    });
+
+    // Hover info
+    const contentEls = document.querySelectorAll(`[data-content]`);
+    document.querySelectorAll("[data-reveal]").forEach((trigger) => {
+        const id = trigger.dataset.reveal;
+        const content = document.querySelector(`[data-content="${id}"]`);
+
+        trigger.addEventListener("mouseover", (e) => {
+            contentEls.forEach((el) => el.classList.remove("is-active"));
+            content.classList.add("is-active");
+        }, false);
+
+        trigger.addEventListener("mouseout", (e) => {
+            setTimeout(() => {
+                content.classList.remove("is-active");
+            }, 100);
+        }, false);
+    });
+
+    /*
+    (function fancyPlaceholder() {
+        let currentPlaceholder = 0;
+        let placeholders = [
+            "Search 1,334,104 scanned pages",
+            "Search 6 barely-used shovels",
+            "Search 42 cursed objects",
+            "Search 138 untranslated manuscripts",
+            "Search 52,411 dime novels",
+            "Search 17 incredible calendars",
+        ];
+
+        const typePlaceholder = createTextAnimator("#searchForm_lookfor", "placeholder");
+
+        function animatePlaceholders() {
+            let text = placeholders[currentPlaceholder];
+            typePlaceholder(text);
+            currentPlaceholder = (currentPlaceholder + 1) % placeholders.length;
+            setTimeout(animatePlaceholders, 8000);
+        }
+
+        // animatePlaceholders();
+    })();
+    //*/
+
+    displayRandomImage(`<?=json_encode($displayConfig->heroImages) ?>`);
+    applyDateGates();
+</script>

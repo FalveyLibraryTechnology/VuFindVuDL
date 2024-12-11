@@ -1,0 +1,644 @@
+<?php
+  // Set page title.
+  $this->headTitle($this->title . ' - ' . $this->itemTitle);
+
+  // Get path to UV (blob to get regardless of versions)
+  $uvbase = $this->url('home') . 'themes/vudiglib/assets/' . basename(current(glob(__DIR__ . '/../../assets/uv-*')));
+
+  // Load UV
+  $this->headScript()->appendFile("$uvbase/umd/UV.js");
+  $this->headLink()->appendStylesheet("$uvbase/uv.css");
+
+  // Customizations
+  $this->headLink()->appendStylesheet('vudl-viewer.css');
+  $this->headLink()->appendStylesheet('uv-custom-v4.css');
+  // $this->headScript()->appendFile("$uvbase/lib/offlinenojquery.js");
+  // $this->headScript()->appendFile("$uvbase/helpers.js");
+
+  // Multiple breadcrumbs
+  $this->layout()->breadcrumbs = $this->render(
+      'breadcrumbs/array.phtml',
+      [
+        'breadcrumbs' => $this->parents,
+        'from' => $this->from,
+        'end' => $this->breadcrumbEnd,
+        'title' => $this->itemTitle,
+      ]
+  );
+
+  $manifest = $this->serverurl($this->url('vudl-record-manifest', compact('id')));
+  $viewerConfig = json_decode(file_get_contents(__DIR__ . '/../../assets/viewer-config.json'));
+?>
+<style>
+
+</style>
+<a id="legacy" href="<?=$this->url('vudl-record', compact('id')) ?>?viewer=legacy" class="pull-right hidden">Switch to old viewer</a>
+
+<?=$this->render('vudl/navigation.phtml'); ?>
+
+<div id="uv" style="width:100%; height:393px; width: 553px background-color: #000;" class="uv pdfjs-<?=$viewerConfig->options->usePdfJs ? 'on' : 'off' ?>">
+  <noscript>
+    <p align="center">Activate Javascript or update your browser for the full Digital Library experience.</p>
+    <?php if(false !== $this->prevId || false !== $this->nextId): ?>
+      <p align="center">
+        <?php if(false !== $this->prevId): ?>
+          <a href="<?=$this->url('vudl-record-viewer', ['id' => $this->prevId]) ?>">Previous Page</a>
+        <?php endif; ?>
+        <?php if(false !== $this->prevId && false !== $this->nextId): ?>
+          &ndash;
+        <?php endif; ?>
+        <?php if(false !== $this->nextId): ?>
+          <a href="<?=$this->url('vudl-record-viewer', ['id' => $this->nextId]) ?>">Next Page</a>
+        <?php endif; ?>
+      </p>
+    <?php endif; ?>
+    <div class="row">
+      <div class="col-sm-3">
+        <?php if ($this->currentId): ?>
+          <a href="<?=$this->url('files', ['id' => $this->currentId, 'type' => 'LARGE']) ?>">
+            <img src="<?=$this->url('files', ['id' => $this->currentId, 'type' => 'MEDIUM']) ?>"/>
+          </a>
+        <?php endif; ?>
+      </div>
+      <div class="col-sm-9">
+        <table class="table table-striped">
+          <?php foreach($this->metadata as $data): ?>
+            <tr>
+              <th><?=$data['label'] ?></th>
+              <td><?=$data['value'] ?></td>
+            </tr>
+          <?php endforeach; ?>
+        </table>
+      </div>
+    </div>
+    <?php if(false !== $this->ocr): ?>
+      <h3>OCR</h3>
+      <div class="ocr">
+        <?=$this->escapeHtml($this->ocr) ?>
+      </div>
+    <?php endif; ?>
+  </noscript>
+</div>
+
+<div id="loading-modal" class="uv-modal hidden">
+  <div class="uv-modal__content">
+    <div class="uv-modal__body">
+      <p>Loading...</p>
+    </div>
+
+    <button id="patience-refresh" class="uv-modal__btn hidden">Refresh</button>
+    <button class="uv-modal__btn modal__close">Close</button>
+  </div>
+</div>
+
+<script>
+  function showLegacyPopover(
+    question = "Having trouble?",
+    recommendation = "Try the old viewer."
+  ) {
+    const $popover = $(`
+      <div class="popover bottom">
+        <div class="popover-content">
+          ${question} ${recommendation}
+        </div>
+      </div>
+    `);
+
+    const legacyLink = document.getElementById("legacy");
+    const box = legacyLink.getBoundingClientRect();
+
+    $popover.css({
+      "display": "block",
+      "left": "auto",
+      "top": window.scrollY + box.bottom,
+      "right": window.innerWidth - box.right,
+    });
+
+    $popover
+      .off("click")
+      .on("click", function (e) {
+        $popover.hide();
+        e.preventDefault();
+        return false;
+      });
+
+    $(legacyLink).after($popover);
+  }
+  $("#legacy")
+    .off("show.bs.popover")
+    .on("show.bs.popover", function bounce(e) {
+      let $link = $(this);
+      let el;
+      let y = 32;
+      let dy = 0;
+      let frames = 60;
+      function bounceFrame() {
+        if (!el) {
+          el = $link.find(".popover");
+        }
+        if (el) {
+          el.css("transform", "translateY(" + y + "px)");
+          dy -= 0.5; // gravity
+          dy *= .95;  // friction
+          y += dy;
+          if (y < 0) {
+            dy = -dy; // bounce
+            y = 0;
+          } else {
+          }
+        }
+        if (frames--) {
+          requestAnimationFrame(bounceFrame);
+        } else {
+          el.css("transform", "translateY(0)");
+        }
+      }
+      requestAnimationFrame(bounceFrame);
+    });
+
+  $('#legacy').appendTo('.breadcrumb').removeClass('hidden');
+  $('.breadcrumb').addClass('clearfix');
+  if (
+    (navigator.platform.indexOf("iPad") != -1)      // Detect iPad
+    || (navigator.platform.indexOf("iPhone") != -1) // Detect iPhone
+    || (navigator.platform.indexOf("iPod") != -1)   // Detect iPhone
+    || (navigator.platform.toLowerCase().indexOf("android") != -1) // Detect Android
+    || (navigator.platform.toLowerCase().indexOf("mobile") != -1)  // Detect other mobile
+  ) {
+    showLegacyPopover();
+  }
+
+  // UV v4
+
+  const run = (fn) => fn();
+  const disabled = (fn) => null;
+  const pause = (ms = 1000) => new Promise((done) => setTimeout(done, ms));
+
+  let uv = null;
+  let uvIsLoaded = false;
+  const uvEl = document.getElementById("uv");
+
+  function waitFor(selector, container = uvEl) {
+    return new Promise(async (resolve) => {
+      // Use a MutationObserver to check if the element has been added
+      const waitForCallback = (mutationsList, observer) => {
+        for (const mutation of mutationsList) {
+          for (const added of mutation.addedNodes) {
+            if (added instanceof Element) {
+              if (added.matches(selector)) {
+                observer.disconnect();
+                resolve(added);
+              }
+
+              const el = added.querySelector(selector);
+              if (el) {
+                observer.disconnect();
+                resolve(el);
+              }
+            }
+          }
+        }
+      };
+      // Bind observer
+      const observer = new MutationObserver(waitForCallback);
+      observer.observe(container, { childList: true, subtree: true });
+    });
+  }
+
+  // Event controls
+
+  const RADIO = run(() => {
+    let listeners = {};
+    let flags = {};
+
+    function unlisten(event, fn) {
+      if (typeof listeners[event] === "undefined") {
+        return;
+      }
+
+      listeners[event] = listeners[event].filter((listener) => listener !== fn);
+    }
+
+    function listen(event, fn, { once = false } = {}) {
+      if (typeof listeners[event] === "undefined") {
+        listeners[event] = [];
+      }
+
+      listeners[event].push(fn);
+
+      if (event in flags) {
+        fn(...flags[event]);
+      }
+
+      return () => unlisten(event, fn);
+    }
+
+    function emit(event, ...args) {
+      if (typeof listeners[event] === "undefined") {
+        return;
+      }
+
+      for (const fn of Array.from(listeners[event])) {
+        fn(...args);
+      }
+    }
+
+    function flag(event, ...args) {
+      flags[event] = args;
+      emit(event, ...args);
+    }
+
+    return { listen, emit, flag };
+  });
+
+  /** @DEBUG * /
+  RADIO.listen("re-render", (addedNodes) => console.log("re-render", addedNodes));
+  //*/
+
+  // Sidebar re-render event
+  waitFor(".rightPanel").then((sidebar) => {
+    const observer = new MutationObserver((mutationList, observer) => {
+      let addedNodes = new Set();
+      for (const mutation of mutationList) {
+        for (const node of mutation.addedNodes) {
+          addedNodes.add(node);
+        }
+      }
+      if (addedNodes) {
+        RADIO.flag("re-render", addedNodes);
+      }
+    });
+
+    observer.observe(sidebar, { childList: true, subtree: true });
+  });
+
+  run(function setupUV4() {
+    const uvUrlAdapter = new UV.IIIFURLAdapter();
+    // console.log("v4: <?=$uvbase ?>");
+
+    const configUri = "<?=$this->url('home')?>themes/vudiglib/assets/viewer-config.json?_=<?=filemtime(__DIR__ . '/../../assets/viewer-config.json')?>";
+    const uvData = {
+      root: "../..<?=$uvbase?>",
+      // configUri: configUri,
+      manifest: "<?=$manifest?>",
+      collectionIndex: Number(uvUrlAdapter.get("c", 0)),
+      manifestIndex: Number(uvUrlAdapter.get("m", 0)),
+      sequenceIndex: Number(uvUrlAdapter.get("s", 0)),
+      canvasIndex: Number(uvUrlAdapter.get("cv", <?=$this->currentIndex ?>)),
+      embedded: false,
+      rotation: Number(uvUrlAdapter.get("r", 0)),
+      xywh: uvUrlAdapter.get("xywh", "")
+    };
+
+    uv = UV.init("uv", uvData);
+    uvUrlAdapter.bindTo(uv);
+
+    uv.on(UV.Events.CREATED, function uvCreatedEvent() {
+      // Loading popups
+
+      uvIsLoaded = true;
+      loadingModal.close();
+
+      // Resizing
+
+      resizeUV(window.innerWidth, window.innerHeight);
+      window.addEventListener("resize", function() {
+        resizeUV(window.innerWidth, window.innerHeight);
+      }, { passive: true });
+
+      // Firefox audio bug
+
+      const host = document.querySelector("#uv .uv-iiif-extension-host");
+      if (host.classList.contains("uv-mediaelement-extension")) {
+        if (host.classList.contains("browser-Firefox")) {
+          showLegacyPopover(
+            "Having trouble playing media in Firefox?",
+            "Try using the Download button below, or switch to the old viewer."
+          );
+        }
+      }
+    });
+
+    uv.on(UV.Events.LOAD, async function uvLoadEvent(e) {
+      const helper = uv._assignedContentHandler.extension.helper;
+
+      // Fix paged layout
+      if (helper.manifest.getViewingHint() === "paged") {
+        document.querySelector("#uv .leftPanel .thumbs")
+          .classList.add("paged");
+      }
+
+      // Theater Mode for videos
+      const format = helper.getCanvasByIndex(0).getFormat();
+      if (format && format.includes("video")) {
+        document.querySelector(".fullScreen.btn .sr-only").innerText = "Theater Mode";
+      }
+
+      // Transcriptions
+      const transcriptTypes ={
+        "application/pdf": "pdf",
+        "application/msword": "doc",
+        "text/plain": "txt",
+      };
+      function getRenderings(json) {
+        if (json && typeof json === "object") {
+          // Fix for multi-pdf
+          if (json["@type"] === "foaf:Document") {
+            return [];
+          }
+          // Match?
+          let found = [];
+          if (
+            "format" in json && "label" in json &&
+            json.format in transcriptTypes
+          ) {
+            found.push(json);
+          }
+          // Children
+          for (const [key, value] of Object.entries(json)) {
+            if (key === "canvases") {
+              continue;
+            }
+            found = found.concat(getRenderings(value));
+          }
+          return found;
+        } else if (Array.isArray(json)) {
+          return getRenderings(json);
+        }
+        return [];
+      }
+
+      let transcripts = [];
+      const renderings = getRenderings(helper.manifest.__jsonld);
+      // console.log("manifest", helper.manifest.__jsonld);
+      for (const render of renderings) {
+        transcripts.push({
+          label: render.label,
+          href: render["@id"],
+          hint: transcriptTypes[render.format],
+        });
+      }
+
+      const TRANSCRIPT_LIMIT = 5;
+      if (transcripts.length > 0) {
+        const item = document.createElement("div");
+        item.classList.add("item", "_transcripts");
+
+        const label = document.createElement("div");
+        label.classList.add("label");
+        label.innerHTML = "Featured Downloads";
+
+        const values = document.createElement("div");
+        values.classList.add("values");
+
+        let transcriptCount = 0;
+        for (const { label, href, hint } of transcripts) {
+          values.innerHTML += `<div class="value"><a href="${href}">${label} (${hint})</a></div>`;
+          transcriptCount += 1;
+
+          if (
+            transcriptCount >= TRANSCRIPT_LIMIT &&
+            transcripts.length >= TRANSCRIPT_LIMIT
+          ) {
+            values.innerHTML += `<div class="value"><a id="featured__more-downloads" href="javascript:;"><em>More Downloads Available</em></a></div>`;
+            break;
+          }
+        }
+
+        item.append(label);
+        item.append(values);
+
+        // Function to add the list to the sidebar
+        addTranscriptsToRightPanel = () => {
+          // console.log("addTranscriptsToRightPanel");
+          const formatItem = document.querySelector(".item._format, .item._language");
+          if (formatItem) {
+            formatItem.parentNode.insertBefore(item, formatItem);
+          } else {
+            console.error("No format -- cannot insert transcripts.");
+          }
+
+          // Add trigger when we have too many transcripts
+          const moreDownloads = document.getElementById("featured__more-downloads");
+          if (moreDownloads) {
+            moreDownloads.addEventListener("click", (event) => {
+              event.preventDefault();
+              document.querySelector(".footerPanel #download-btn").click();
+              return false;
+            });
+          }
+        };
+
+        RADIO.listen("re-render", (addedNodes) => {
+          // Prevent double adding
+          if (document.querySelector(".item._transcripts")) {
+            return;
+          }
+          addTranscriptsToRightPanel();
+        });
+      }
+    });
+
+    let addTranscriptsToRightPanel = () => {};
+    uv.on(UV.Events.CONFIGURE, async function uvConfigEvent({ cb }) {
+      cb(
+        new Promise(async function (resolve) {
+          const res = await fetch(configUri);
+          const config = await res.json();
+          resolve(config);
+        })
+      );
+    });
+
+    // Better Download text
+    waitFor("#download-btn").then(function waitForDownloadBtn() {
+      document.querySelector("#download-btn .sr-only").innerText = "Downloads";
+    });
+
+    // License prettification
+    run(function prettifyLicenseLink() {
+      const licenseText = {
+        "http://creativecommons.org/licenses/by-nc-nd/1.0/": "Creative Commons BY-NC-ND 1.0 Generic",
+        "http://creativecommons.org/licenses/by-nc-nd/2.0/": "Creative Commons BY-NC-ND 2.0 Generic",
+        "http://creativecommons.org/licenses/by-nc-nd/3.0/": "Creative Commons BY-NC-ND 3.0 Unported",
+        "http://creativecommons.org/licenses/by-nc-nd/4.0/": "Creative Commons BY-NC-ND 4.0 International",
+        "http://creativecommons.org/licenses/by-nc-sa/1.0/": "Creative Commons BY-NC-SA 1.0 Generic",
+        "http://creativecommons.org/licenses/by-nc-sa/2.0/": "Creative Commons BY-NC-SA 2.0 Generic",
+        "http://creativecommons.org/licenses/by-nc-sa/3.0/": "Creative Commons BY-NC-SA 3.0 Unported",
+        "http://creativecommons.org/licenses/by-nc-sa/4.0/": "Creative Commons BY-NC-SA 4.0 International",
+        "http://creativecommons.org/licenses/by-nc/1.0/": "Creative Commons BY-NC 1.0 Generic",
+        "http://creativecommons.org/licenses/by-nc/2.0/": "Creative Commons BY-NC 2.0 Generic",
+        "http://creativecommons.org/licenses/by-nc/3.0/": "Creative Commons BY-NC 3.0 Unported",
+        "http://creativecommons.org/licenses/by-nc/4.0/": "Creative Commons BY-NC 4.0 International",
+        "http://creativecommons.org/licenses/by-nd/1.0/": "Creative Commons BY-ND 1.0 Generic",
+        "http://creativecommons.org/licenses/by-nd/2.0/": "Creative Commons BY-ND 2.0 Generic",
+        "http://creativecommons.org/licenses/by-nd/3.0/": "Creative Commons BY-ND 3.0 Unported",
+        "http://creativecommons.org/licenses/by-nd/4.0/": "Creative Commons BY-ND 4.0 International",
+        "http://creativecommons.org/licenses/by-sa/1.0/": "Creative Commons BY-SA 1.0 Generic",
+        "http://creativecommons.org/licenses/by-sa/2.0/": "Creative Commons BY-SA 2.0 Generic",
+        "http://creativecommons.org/licenses/by-sa/3.0/": "Creative Commons BY-SA 3.0 Unported",
+        "http://creativecommons.org/licenses/by-sa/4.0/": "Creative Commons BY-SA 4.0 International",
+        "http://creativecommons.org/licenses/by/1.0/": "Creative Commons Attribution 1.0 Generic",
+        "http://creativecommons.org/licenses/by/2.0/": "Creative Commons Attribution 2.0 Generic",
+        "http://creativecommons.org/licenses/by/3.0/": "Creative Commons Attribution 3.0 Unported",
+        "http://creativecommons.org/licenses/by/4.0/": "Creative Commons Attribution 4.0 International",
+        "http://digital.library.villanova.edu/copyright.html": "Villanova University Copyright",
+        "https://creativecommons.org/publicdomain/zero/1.0/": "CC0 1.0 Universal",
+        "https://creativecommons.org/publicdomain/mark/1.0/": "Public Domain Mark",
+      };
+
+      RADIO.listen("re-render", (addedNodes) => {
+        for (const node of addedNodes) {
+          if (
+            node instanceof HTMLAnchorElement &&
+            node.closest("._license") // is child of .item._license
+          ) {
+            node.innerHTML = licenseText[node.getAttribute("href")] ?? "Rights Information";
+          }
+        }
+      });
+    });
+
+    /** @DEBUG * /
+    Object.keys(UV.Events).forEach((type) => {
+      if (type === "RESIZE") return;
+      uv.on(UV.Events[type], (...args) => console.log(type, args));
+    });
+    //*/
+  });
+
+  //
+
+  function onAdded(selector, callback, container = document) {
+    // Use a MutationObserver to check if the element has been added
+    const waitForCallback = (mutationsList, observer) => {
+      for (const mutation of mutationsList) {
+        for (const added of mutation.addedNodes) {
+          if (added instanceof Element && added.matches(selector)) {
+            callback(added);
+          }
+        }
+      }
+    };
+    // Bind observer
+    const observer = new MutationObserver(waitForCallback);
+    observer.observe(container, { childList: true, subtree: true });
+  }
+
+  // Copy usage rights to download menu
+
+  onAdded(".overlay.download", function customizeDownloadMenufunction(overlay) {
+    if (overlay.querySelector(".attribution-text") === null) {
+      overlay.querySelector(".footer").append(
+        document.querySelector(".attribution-text").cloneNode(true)
+      );
+    }
+  });
+
+  // Add download event for Matomo
+
+  function piwikReport(category, action, name) {
+    // console.log("trackEvent", category, action, name);
+    if (_paq) {
+      _paq.push(["trackEvent", category, action, name]);
+    } else {
+      console.error("Matomo not active");
+    }
+  }
+
+  document.addEventListener("click", (event) => {
+    if (event.target.matches(".download .content button")) {
+      const urlParts = window.location.pathname.split("/");
+      const recordID = urlParts[urlParts.length - 1];
+      piwikReport("UV Download", event.target.innerText, recordID);
+    }
+  });
+
+  // Resize functions
+
+  const $UV = $('#uv');
+  // #todo
+  // : without container, UV resizes on the next resize event
+  // : is this a bug
+  const $container = $('#uv > div');
+  function setUVWidth(innerWidth) {
+    const padding = 0;
+
+    $UV.width(innerWidth - padding);
+    $container.width(innerWidth - padding);
+    uv.resize();
+  }
+  function resizeUV(innerWidth, innerHeight) {
+    let height = innerHeight - $UV.offset().top;
+
+    // Adjust for custom padding
+    if (
+      $UV[0].className.indexOf("pdfjs-off") > -1 &&
+      $UV.find(".uv-pdf-extension").length > 0
+    ) {
+      height -= 32;
+    }
+    if (height < 300) {
+      height = innerHeight - 50;
+    }
+
+    $UV.height(height);
+    $container.height(height);
+    setUVWidth(innerWidth);
+  }
+
+  // Loading Modal
+
+  const loadingModal = run(function bindLoadingModal() {
+    const el = document.getElementById("loading-modal");
+    const body = el.querySelector(".uv-modal__body");
+    const refreshBtn = el.querySelector("#patience-refresh");
+
+    refreshBtn.addEventListener("click", () => {
+      window.location.reload();
+    }, false);
+
+    function open(content = null) {
+      if (content !== null) {
+        body.innerHTML = content;
+      }
+
+      el.classList.remove("hidden");
+    }
+
+    function close() {
+      el.classList.add("hidden");
+      refreshBtn.classList.add("hidden");
+    }
+
+    document.querySelectorAll(".modal__close").forEach((el) => {
+      el.addEventListener("click", () => close(), false);
+    });
+
+    return { el, body, open, close };
+  });
+
+  let secondsUntilLoading = 2;
+  let secondsUntilMessage = 6;
+  setTimeout(function showLoadingMessage() {
+    if (!uvIsLoaded) {
+      loadingModal.open();
+
+      console.error(`UV not loaded after ${secondsUntilLoading} seconds.`);
+    } else {
+      loadingModal.close();
+    }
+  }, secondsUntilLoading * 1000);
+
+  setTimeout(function showRefreshMessage() {
+    if (!uvIsLoaded) {
+      window.dispatchEvent(new CustomEvent('uvLoaded', {}));
+      loadingModal.open(`<p>Sorry this took so long! We're investigating the cause of the problem.</p><p>If the item hasn't loaded, please refresh your browser.</p><p>If the problem persists, clearing your cache should help.</p>`);
+      loadingModal.el.querySelector("#patience-refresh").classList.remove("hidden");
+
+      console.error(`UV not loaded after ${secondsUntilMessage} seconds.`);
+    } else {
+      loadingModal.close();
+    }
+  }, secondsUntilMessage * 1000);
+</script>

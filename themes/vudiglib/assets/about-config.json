@@ -1,0 +1,149 @@
+{
+  "partners": [
+    {
+      "title": "American Catholic Historical Society",
+      "collection": "https://digital.library.villanova.edu/Item/vudl:208284",
+      "thumbnail": "https://digital.library.villanova.edu/files/vudl:208284/THUMBNAIL"
+    },
+    {
+      "title": "Assoc. of Catholic Colleges and Universities",
+      "collection": "https://digital.library.villanova.edu/Item/vudl:203495",
+      "thumbnail": "https://digital.library.villanova.edu/files/vudl:203495/THUMBNAIL"
+    },
+    {
+      "title": "Berkshire Athenaeum (Pittsfield's Public Library)",
+      "link": "http://www.pittsfieldlibrary.org",
+      "collection": "https://digital.library.villanova.edu/Item/vudl:15361",
+      "thumbnail": "https://digital.library.villanova.edu/files/vudl:15361/THUMBNAIL"
+    },
+    {
+      "title": "Bethel AME Church of Ardmore",
+      "collection": "https://digital.library.villanova.edu/Item/vudl:876316",
+      "thumbnail": "https://digital.library.villanova.edu/files/vudl:876316/THUMBNAIL"
+    },
+    {
+      "title": "Catholic Historical Research Center of the Archdiocese of Philadelphia",
+      "link": "http://www.chrc-phila.org",
+      "collection": "https://digital.library.villanova.edu/Item/vudl:200221",
+      "thumbnail": "https://digital.library.villanova.edu/files/vudl:200221/THUMBNAIL"
+    },
+    {
+      "title": "Catholic Library Association",
+      "link": "https://cathla.org",
+      "collection": "https://digital.library.villanova.edu/Item/vudl:203545",
+      "thumbnail": "/themes/vudiglib/images/featured/cla-logo.png"
+    },
+    {
+      "title": "Chester County Choral Society",
+      "link": "https://www.chescochoral.org",
+      "collection": "https://digital.library.villanova.edu/Item/vudl:940488",
+      "thumbnail": "/themes/vudiglib/images/cccs_logo.jpg"
+    },
+    {
+      "title": "German Society of Pennsylvania",
+      "link": "http://www.germansociety.org",
+      "collection": "https://digital.library.villanova.edu/Item/vudl:428064",
+      "thumbnail": "https://digital.library.villanova.edu/files/vudl:428064/THUMBNAIL"
+    },
+    {
+      "title": "Historical Society of Montgomery County",
+      "link": "http://www.hsmcpa.org",
+      "collection": "https://digital.library.villanova.edu/Item/vudl:267121",
+      "thumbnail": "https://digital.library.villanova.edu/files/vudl:267121/THUMBNAIL"
+    },
+    {
+      "title": "Independence Seaport Museum",
+      "link": "http://www.phillyseaport.org",
+      "collection": "https://digital.library.villanova.edu/Item/vudl:154318",
+      "thumbnail": "https://digital.library.villanova.edu/files/vudl:154318/THUMBNAIL"
+    },
+    {
+      "title": "La Salle University",
+      "link": "http://library.lasalle.edu/special-collections",
+      "collection": "https://digital.library.villanova.edu/Item/vudl:54667",
+      "thumbnail": "https://digital.library.villanova.edu/files/vudl:54667/THUMBNAIL"
+    },
+    {
+      "title": "MacSwiney Club",
+      "link": "http://www.macswineyclub.com",
+      "collection": "https://digital.library.villanova.edu/Item/vudl:566504",
+      "thumbnail": "https://digital.library.villanova.edu/files/vudl:566504/THUMBNAIL"
+    },
+    {
+      "title": "Malvern Retreat House (Men at Malvern)",
+      "link": "http://www.malvernretreat.com",
+      "collection": "https://digital.library.villanova.edu/Item/vudl:203749",
+      "thumbnail": "https://digital.library.villanova.edu/files/vudl:203749/THUMBNAIL"
+    },
+    {
+      "title": "Museum of Nursing History",
+      "link": "https://nursinghistory.org",
+      "collection": "https://digital.library.villanova.edu/Item/vudl:604193",
+      "thumbnail": "https://digital.library.villanova.edu/files/vudl:604193/THUMBNAIL"
+    },
+    {
+      "title": "Perkasie Historical Society",
+      "collection": "https://digital.library.villanova.edu/Item/vudl:345338",
+      "thumbnail": "https://digital.library.villanova.edu/files/vudl:345338/THUMBNAIL"
+    },
+    {
+      "title": "Philadelphia Ceili Group",
+      "link": "http://www.philadelphiaceiligroup.org",
+      "collection": "https://digital.library.villanova.edu/Item/vudl:99258",
+      "thumbnail": "https://digital.library.villanova.edu/files/vudl:99258/THUMBNAIL"
+    },
+    {
+      "title": "Radnor Historical Society",
+      "link": "http://radnorhistory.org",
+      "collection": "https://digital.library.villanova.edu/Item/vudl:566670",
+      "thumbnail": "https://digital.library.villanova.edu/files/vudl:566670/THUMBNAIL"
+    },
+    {
+      "title": "Roman Catholic High School Alumni Assoc.",
+      "collection": "https://digital.library.villanova.edu/Item/vudl:206082",
+      "thumbnail": "https://digital.library.villanova.edu/files/vudl:206082/THUMBNAIL"
+    },
+    {
+      "title": "The Sisters of the Order of Saint Basil the Great",
+      "link": "http://www.sistersofstbasil.org",
+      "collection": "https://digital.library.villanova.edu/Item/vudl:205534",
+      "thumbnail": "https://digital.library.villanova.edu/files/vudl:205534/THUMBNAIL"
+    },
+    {
+      "title": "Society of the Holy Child Jesus",
+      "collection": "https://digital.library.villanova.edu/Item/vudl:236481",
+      "thumbnail": "https://digital.library.villanova.edu/files/vudl:236481/THUMBNAIL"
+    },
+    {
+      "title": "The Society of The Friendly Sons of Saint Patrick",
+      "link": "http://www.friendlysons.com",
+      "collection": "https://digital.library.villanova.edu/Item/vudl:483977",
+      "thumbnail": "https://digital.library.villanova.edu/files/vudl:483977/THUMBNAIL"
+    },
+    {
+      "title": "St. Agnes Parish",
+      "collection": "https://digital.library.villanova.edu/Item/vudl:196864",
+      "thumbnail": "https://digital.library.villanova.edu/files/vudl:196864/THUMBNAIL"
+    },
+    {
+      "title": "St. Anne Parish",
+      "collection": "https://digital.library.villanova.edu/Item/vudl:199204",
+      "thumbnail": "https://digital.library.villanova.edu/files/vudl:199204/THUMBNAIL"
+    },
+    {
+      "title": "St. Augustine Church Archdiocese of Philadelphia, PA",
+      "collection": "https://digital.library.villanova.edu/Item/vudl:275027",
+      "thumbnail": "https://digital.library.villanova.edu/files/vudl:275027/THUMBNAIL"
+    },
+    {
+      "title": "St. Mary’s Episcopal Church, Wayne",
+      "collection": "https://digital.library.villanova.edu/Item/vudl:751061",
+      "thumbnail": "https://digital.library.villanova.edu/files/vudl:751061/THUMBNAIL"
+    },
+    {
+      "title": "Weitzman National Museum of American Jewish History ",
+      "collection": "https://digital.library.villanova.edu/Item/vudl:920563",
+      "thumbnail": "https://digital.library.villanova.edu/files/vudl:920563/THUMBNAIL"
+    }
+  ]
+}

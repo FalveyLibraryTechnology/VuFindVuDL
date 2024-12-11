@@ -1,0 +1,162 @@
+<?php
+  $this->headTitle($this->translate($this->title) . ' - ' . $this->details['title']['value']);
+
+  // Multiple breadcrumbs
+  $this->layout()->breadcrumbs = $this->render(
+      'breadcrumbs/array.phtml',
+      [
+        'breadcrumbs' => $this->parents,
+        'from' => $this->from,
+        'end' => $this->breadcrumbEnd,
+        'title' => $this->details['title']['value'],
+      ]
+  );
+
+  // Get first list name
+  foreach($this->outline as $list => $v) {
+    if($list == 'counts') {
+      continue;
+    }
+    $listName = $list;
+    break;
+  }
+
+  // HEADER FILES
+  $this->headLink()->appendStylesheet('vudl.css');
+  $this->headScript()->appendFile('vudl/canvas-zoomy.js');
+  $this->headScript()->appendFile('vudl/config.js');
+  $this->headScript()->appendFile('vudl/record.js');
+
+  // Compact header
+  $this->layout()->headerType = 'record';
+  $this->layout()->vudlID = $this->id;
+  $this->layout()->hierarchyID = $this->hierarchyID;
+  $this->layout()->parents = $this->parents;
+  $this->layout()->siblings = $this->siblings;
+
+  function json_php_encode($op, $quotes = false)
+  {
+    if($quotes) {
+      return str_replace('"', "'", str_replace("'", "\\'", str_replace('\/', '/', json_encode($op))));
+    } else {
+      return str_replace('\/', '/', json_encode($op));
+    }
+  }
+
+  $recordRouteTemplate = $this->url('vudl-record', ['id' => '!!!ID!!!']);
+  $cachedRecordRoute = function ($id) use ($recordRouteTemplate) {
+    return str_replace('!!!ID!!!', $id, $recordRouteTemplate);
+  };
+
+  $imgRouteTemplate = $this->url('files', ['id' => '!!!ID!!!', 'type' => '!!!TYPE!!!']);
+  $cachedImageRoute = function ($id, $type) use ($imgRouteTemplate) {
+    return str_replace(['!!!ID!!!', '!!!TYPE!!!'], [$id, $type], $imgRouteTemplate);
+  };
+?>
+<script>
+  var documentID = '<?=$this->id ?>';
+  var initPage = $.parseJSON('<?=str_replace('\"', "\'", json_encode($this->outline['lists'][$this->initList][$this->initPage], JSON_HEX_APOS | JSON_HEX_AMP)) ?>');
+  var currentList = <?=$this->initList ?>;
+  counts = $.parseJSON('<?=json_encode($this->outline['counts'], JSON_HEX_APOS | JSON_HEX_AMP) ?>');
+  <?php if(count($this->outline['lists'][$this->initList]) >= $this->outline['counts'][$this->initList]): ?>
+    loading_pages = false;
+  <?php endif; ?>
+</script>
+<?php if ($this->beta_ready !== false): ?>
+  <div class="beta-banner">You are viewing our old interface! <a href="<?=$this->url('vudl-record-viewer', ['id' => $this->beta_ready]); ?>">Click here</a> to try out the new version!</div>
+<?php endif; ?>
+<div class="vudl row">
+  <?=$this->context($this)->renderInContext('vudl/navigation.phtml', []); ?>
+  <div id="side-nav" class="panel-group col-sm-3">
+    <?php foreach($this->outline['lists'] as $key => $list): ?>
+      <div class="panel">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <button
+              class="panel-toggle"
+              data-toggle="collapse"
+              data-target="#collapse<?=$key ?>"
+              data-parent="#side-nav"
+            >
+              <?=$this->outline['names'][$key] ?>
+            </button>
+          </h4>
+        </div>
+        <div id="collapse<?=$key ?>" class="panel-collapse collapse<?php if($key == $this->initList): ?> in<?php endif; ?>">
+          <div class="panel-body item-list pages" id="list<?=$key ?>" list-index="<?=$key ?>">
+            <?php foreach($list as $i => $item): ?>
+              <a href="<?=$cachedRecordRoute($item['id']) ?>" title="<?=$item['id'] ?>" class="item <?=$key == $this->initList && $i == $this->initPage ? ' selected' : ''?>" id="item<?=$i ?>">
+                <div class="thumb">
+                  <?php if('page' == $item['filetype']): ?>
+                    <img src="<?=$cachedImageRoute($item['id'], 'THUMBNAIL') ?>" alt="<?=$item['label'] ?? '' ?>"/>
+                  <?php else: ?>
+                    <i class="fa fa-file file-<?=str_replace('.', '_', $item['fulltype']) ?>"></i>
+                  <?php endif; ?>
+                </div>
+                <span class="label"><?=$this->escapeHtml($item['label'] ?? '') ?></span>
+              </a>
+            <?php endforeach; ?>
+          </div>
+        </div>
+      </div>
+    <?php endforeach; ?>
+  </div>
+  <div id="view" class="col-sm-9">
+    <?php
+      // Fail over to default "download" functionality if an unknown format is encountered.
+      try {
+        echo $this->context($this)->renderInContext('vudl/views/' . $this->outline['current']['filetype'], $this->outline['current']);
+      } catch (\Exception $e) {
+        echo $this->context($this)->renderInContext('vudl/views/download', $this->outline['current']);
+      }
+    ?>
+
+    <div id="summary-rights">
+      <h2>Summary &amp; Rights</h2>
+
+      <?=$this->context($this)->renderInContext('vudl/details.phtml', [])?>
+    </div>
+  </div>
+</div>
+
+<script>
+  // AJAX CALL THEN LINK TO SWITCH
+  var currentView = '<?=$this->outline['current']['filetype'] ?>';
+  function getTechInfo(object) {
+    $('#download-button').attr('href', VuFind.path+'/files/'+object.id+'/MASTER?download=true');
+    $.ajax({dataType:'json',
+      type:'post',
+      url:VuFind.path+'/VuDL/ajax?method=getTechInfo',
+      data:object,
+      success: function (d) {
+        $('#techinfo').html(d.data.div);
+        if(typeof d.data.type !== "undefined") {
+          $('#download-button .details').html(d.data.type+' ~ '+d.data.size);
+        }
+        if($('#view .nav-tabs li.active a').data('target') === '#master') {
+          $('.pages .loading').removeClass('loading');
+        }
+      },
+      error: function (d,e) {
+        try {
+          const json = JSON.parse(d.responseText);
+          console.log(json.errors[0].message);
+        } catch (e) {
+          console.log(d.responseText);
+          console.log(e);
+        }
+      }
+    });
+  }
+  $.ajax({
+    url:VuFind.path+'/VuDL/ajax?method=getOutline&root=<?=$this->id ?>&id=<?=$this->outline['current']['id'] ?>&full=true',
+    dataType: "json",
+    success: function (data) {
+      setupOutline(data.data);
+    },
+    error: function(xhr, textStatus, errorThrown) {
+      setupOutline(JSON.parse(xhr.responseText).data);
+      console.log('ready');
+    }
+  });
+</script>

@@ -1,0 +1,116 @@
+{
+  "heroLinks": [
+    {
+      "label": "All Digital Collections",
+      "href": "/Collection/"
+    },
+    {
+      "label": "Villanova University Archives",
+      "href": "/Collection/vudl:171664"
+    },
+    {
+      "label": "Faculty Publications",
+      "href": "/Item/vudl:641262"
+    },
+    {
+      "label": "Student Publications",
+      "href": "/Item/vudl:641263"
+    }
+  ],
+  "heroImages": [
+    {
+      "title": "Photograph, Nursing Students, 1958",
+      "src": "https://iiif.library.villanova.edu/image/vudl%3A702193/full/1000,/0/default.jpg",
+      "href": "/Item/vudl:702191"
+    },
+    {
+      "title": "Americae nova tabula / Auct. Guiljelmo Blaeuw",
+      "src": "https://iiif.library.villanova.edu/image/vudl%3A579436/full/1000,/0/default.jpg",
+      "href": "/Item/vudl:579434"
+    },
+    {
+      "title": "Fighting with Washington; or, The boy regiment of the Revolution",
+      "src": "https://iiif.library.villanova.edu/image/vudl%3A738456/full/1000,/0/default.jpg",
+      "href": "/Item/vudl:738454"
+    },
+    {
+      "title": "Missale Romanum : Ex Decreto Sacrosancti Concilii Tridentini Restitutum",
+      "src": "https://iiif.library.villanova.edu/image/vudl%3A229465/full/1000,/0/default.jpg",
+      "href": "/Item/vudl:229392#cv=71"
+    },
+    {
+      "title": "How to solve conundrums",
+      "src": "https://iiif.library.villanova.edu/image/vudl%3A269218/full/1000,/0/default.jpg",
+      "href": "/Item/vudl:269216"
+    }
+  ],
+  "digitized": [
+    {
+      "label": "University Photographs",
+      "href": "/Collection/vudl:189101",
+      "image": "https://iiif.library.villanova.edu/image/vudl%3A546862/full/320,/0/default.jpg"
+    },
+    {
+      "label": "Villanovan",
+      "href": "/Collection/vudl:183783",
+      "image": "https://digital.library.villanova.edu/files/vudl:183783/THUMBNAIL"
+    },
+    {
+      "label": "Villanova Athletics",
+      "href": "/Collection/vudl:172512",
+      "image": "https://iiif.library.villanova.edu/image/vudl%3A616877/full/320,/0/default.jpg"
+    },
+    {
+      "label": "Yearbooks",
+      "href": "/Item/vudl:505255",
+      "image": "https://iiif.library.villanova.edu/image/vudl%3A553635/full/320,/0/default.jpg"
+    },
+    {
+      "label": "Commencement",
+      "href": "/Collection/vudl:523674",
+      "image": "https://iiif.library.villanova.edu/image/vudl%3A533935/full/320,/0/default.jpg"
+    },
+    {
+      "label": "Cabrini University Legacy Collection",
+      "href": "/Collection/vudl:1020237",
+      "image": "/themes/vudiglib/images/featured/cabrini-logo-white.min.svg"
+    },
+    {
+      "label": "Transcribed Material",
+      "href": "/Search/Results?type=AllFields&filter%5B%5D=format%3A%22Transcribed%22",
+      "image": "https://iiif.library.villanova.edu/image/vudl%3A28906/full/320,/0/default.jpg"
+    },
+    {
+      "label": "Dime Novels and Popular Literature",
+      "href": "/Collection/vudl:24093",
+      "image": "https://digital.library.villanova.edu/files/vudl:24093/THUMBNAIL"
+    },
+    {
+      "label": "Maps",
+      "href": "/Search/Results?type=AllFields&filter%5B%5D=format%3A%22Map%22",
+      "image": "https://iiif.library.villanova.edu/image/vudl%3A565164/full/320,/0/default.jpg?t=1671206203379"
+    },
+    {
+      "label": "Newspapers",
+      "href": "/Item/vudl:571213",
+      "image": "https://iiif.library.villanova.edu/image/vudl%3A583748/full/320,/0/default.jpg"
+    },
+    {
+      "label": "Early Printed Books",
+      "href": "/Search/Results?type=AllFields&sort=normalized_sort_date+asc&filter%5B%5D=%7Eformat%3A%22Book%22&daterange[]=publishDate&publishDateto=1800&publishDatefrom=1359",
+      "image": "https://iiif.library.villanova.edu/image/vudl%3A731216/full/320,/0/default.jpg"
+    },
+    {
+      "label": "Pre-Modern Manuscripts",
+      "href": "/Search/Results?type=AllFields&sort=normalized_sort_date+asc&filter%5B%5D=hierarchy_top_title%3A%22Manuscript+Collection%22&daterange[]=publishDate&publishDateto=1699&publishDatefrom=1394",
+      "image": "https://iiif.library.villanova.edu/image/vudl%3A64178/full/320,/0/default.jpg"
+    }
+  ],
+  "digitizedDisabled": [
+    {
+      "label": "Rare Books",
+      "href": "/Search/Results?type=AllFields&filter%5B%5D=format%3A%22Book%22",
+      "image": "https://iiif.library.villanova.edu/image/vudl%3A570984/full/320,/0/default.jpg"
+    }
+  ]
+}

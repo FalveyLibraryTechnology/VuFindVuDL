@@ -1,0 +1,94 @@
+<?php
+  $this->headTitle('VU Digital Library - About');
+  $this->layout()->breadcrumbs = false;
+
+  $aboutConfig = json_decode(file_get_contents(__DIR__ . '/../../assets/about-config.json'), null, 512, JSON_THROW_ON_ERROR);
+?>
+<div class="row">
+  <div class="about_container <?=$this->layoutClass('mainbody')?> prose">
+    <h2>Villanova University Digital Library</h2>
+
+    <p>
+      Villanova University's Digital Library initiative assembles, presents,
+      and preserves digital collections that support the teaching and research of
+      the campus and the global community of scholars. We work with faculty, staff
+      and regional partners to select and develop resources that enhance access
+      for a wide range of disciplines and audiences.
+    </p>
+
+    <hr>
+
+    <h2>Partnerships</h2>
+
+    <p>Digital Library projects that seem impossible to contemplate alone can often be accomplished with the help of a partner. At Villanova,  we work to establish and utilize best practices for digitization and resource description, and actively work with individual and institutional partners to digitize cultural heritage materials using these best practices. If you would like to partner with our enterprise in digitizing and providing access to content please <a href="mailto:digitallibrary@villanova.edu">contact us</a>.</p>
+
+    <p>
+      <a class="icon-link" href="<?=$this->url('vudl-partners') ?>">
+        <svg class="icon-link__icon icon--svg"><use xlink:href="/themes/vudiglib/images/remixicon.symbol.svg?_=1671554993#ri-arrow-right-line"></use></svg>
+        <span class="icon-link__label">See Our Partners</span>
+      </a>
+    </p>
+
+    <hr>
+
+    <h2 id="projects">Current &amp; Future Digital Library Projects</h2>
+
+    <p class="text-center balance"><i>If you have a project idea, please <a href="mail:digitallibrary@villanova.edu" title="digitallibrary@villanova.edu">email the Digital Library Team</a>. Online exhibits using digitized materials are at <a href="http://exhibits.library.villanova.edu/">Online Library Exhibits</a>.</i></p>
+
+    <p><strong>Catholica Portal Project</strong>: The project plans to make available digital content of Catholic materials including books, journals, papers, and manuscripts dealing with the Roman Catholic church in general, and in particular works created or published in the Americas. Much of the digitalized content will come from physical works made available from our Digital Partners. This project is active. View our initial efforts in building the <a href="http://digital.library.villanova.edu/Catholica%20Collection/" title="Digital Catholica Collection">Digital Catholica Collection</a>.</p>
+
+    <p><strong>Digital Humanities</strong>: The <a href="http://aurelius.library.villanova.edu">Aurelius Digital Humanities</a> Initiative is a project of Falvey Library to support digital humanities (DH) projects and promote a DH community at Villanova University.</p>
+
+    <p><strong>Digital Library Software Project</strong>: This project will provide the Heritage Community with affordable, efficient and open source tools to manage, organize and provide access to digital content. This project is active, and the software is offered to the community at <a href="https://github.com/FalveyLibraryTechnology/VuDLPrep" title="VuDL Prep">https://github.com/FalveyLibraryTechnology/VuDLPrep</a>.</p>
+
+    <p><strong>Digital Photo Project</strong>: This project will make available photographs dealing with Villanova University from library and archival sources in a cental repository and described in a consistent format. This project is in the development stage.</p>
+
+    <p><strong>Dime Novel Bibliography</strong>: The Dime Novel Bibliography project aims to create a comprehensive online database of dime novels, story papers, reprint libraries, popular literature and related materials, to include international content especially from the United Kingdom and the Continent. This is currently a <a href="http://dimenovels.org/">work in progress</a>.</p>
+
+    <p><a href="http://wwionline.org/"><strong>Home Before The Leaves Fall</strong></a>: This project will result in the creation and support of a multi-institutional online web site that includes curated subject pages on various topics related to the war and highlighting the materials available for research in the Delaware Valley on the war. In conjunction with the exhibit which will span the years of the Centennial Anniversary of the conflict (2014-2018), materials on the war will be digitized and made available on contributor repositories. The project will also have a strong social media presence with Facebook, Twitter, and a dedicated blog with solicited contributions from interested experts and curators. Digital Humanities projects related to the conflict will be supported. The exhibit can be found at <a href="http://wwionline.org/">http://wwionline.org/</a></p>
+
+    <p><strong>Special Collection Digitization Project</strong>: This active project involves digitization of Villanova Special Collection heritage materials to both provide greater access and to preserve the original item.</p>
+
+    <p><strong>Villanova Digital Project</strong>: This active project involves capturing, storing, indexing, preserving, and distributing digital content produced by members of the Villanova Community, this includes faculty fulltext publications, working papers, campus publications.
+    </p>
+
+    <hr>
+
+    <h2 id="count">Current Item Count</h2>
+
+    <ul>
+  <?php if (empty($this->totals['resources'])): ?>
+      <li><strong>Total Collections</strong>: 528</li>
+      <li><strong>Total Resources</strong>: 17672</li>
+  <?php else: ?>
+      <li><strong>Total Collections</strong>: <?=$this->totals['folders'] ?></li>
+      <li><strong>Total Resources</strong>: <?=$this->totals['resources'] ?></li>
+      <li><strong>Total Images</strong>: <?=$this->totals['images'] ?? 0 ?></li>
+      <li><strong>Total PDFs</strong>: <?=$this->totals['pdfs'] ?? 0 ?></li>
+  <?php endif; ?>
+    </ul>
+
+    <hr>
+
+    <h2 id="contact">Contact</h2>
+
+    <p>Digital Library<br>
+    800 Lancaster Ave.<br>
+    Falvey Library<br>
+    Villanova University<br>
+    Villanova, PA 19085<br>
+    digitallibrary@villanova.edu<br>
+    610.519.5271</p>
+  </div>
+
+  <div class="links_container <?=$this->layoutClass('sidebar')?>">
+    <ul class="list-group">
+      <li class="list-group-item"><strong>Jump to</strong></li>
+      <a class="list-group-item" href="<?=$this->url('vudl-about') ?>#top">Introduction</a>
+      <a class="list-group-item" href="<?=$this->url('vudl-partners') ?>">Partnerships</a>
+      <a class="list-group-item" href="<?=$this->url('vudl-about') ?>#projects">Current &amp; Future Projects</a>
+      <a class="list-group-item" href="<?=$this->url('vudl-about') ?>#count">Current Item Count</a>
+      <a class="list-group-item" href="<?=$this->url('vudl-about') ?>#contact">Contact Us</a>
+    </ul>
+  </div>
+</div>

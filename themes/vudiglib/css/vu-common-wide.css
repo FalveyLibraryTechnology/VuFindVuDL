@@ -1,0 +1,294 @@
+/* 4. Layout ===================================================================== */
+
+.column-side {
+    flex: 0 1 25%;
+}
+.column-main {
+    flex: 0 1 75%;
+}
+.column-main .column-side {
+    flex: 0 1 33%;
+}
+.column-main .column-main {
+    flex: 0 1 67%;
+}
+.column-full {
+    flex: 0 1 100%;
+}
+
+/* 5. Header ===================================================================== */
+
+.vu-right {
+    font-size: 0.8rem;
+}
+/* tooltip */
+.vu-right::before,
+.vu-right::after {
+    bottom: 0.25rem;
+    z-index: 20;
+}
+[role="tooltip"]::before {
+    color:  #ffee7f;
+}
+[role="tooltip"]::after {
+    padding: 0.5rem 1rem 0.4rem;
+    font-size: 12px;
+    color:  rgba(0, 0, 0, 0.8);
+    background-color:  #ffee7f;
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.3);
+    text-transform: uppercase;
+}
+
+.nav-links {
+    display: flex;
+}
+.nav-col {
+    display: flex;
+    flex: 1;
+}
+.nav-link {
+    flex: 1;
+}
+.nav-link-anchor {
+    height: 3.5rem;
+    padding: 0 1rem;
+    font-size: 14px;
+    line-height: 3.5rem;
+}
+.nav-link:hover .nav-link-anchor {
+    color:  #222;
+    background-color: #fff;
+}
+
+.nav-submenu {
+    position: absolute;
+    top: 3.5rem;
+    left: auto;
+    right: 0;
+    width: 100%;
+    padding-top: 0.5rem;
+}
+
+.nav-link.is-open .nav-submenu {
+    display: flex;
+}
+
+.nav-mobile-close-btn {
+    display: none;
+}
+
+.subnav-section {
+    margin: 0;
+    padding: 0.5rem 1rem;
+}
+
+.header-live-chat {
+    flex: .5;
+}
+.flex-break {
+    display: none;
+}
+@media (min-width: 1130px) {
+    .falvey-header {
+        display: flex;
+    }
+    .falvey-header header {
+        flex: 1;
+        display: block;
+        padding-left: 1.25rem;
+        white-space: nowrap;
+    }
+    .vu-falvey-logo {
+        display: none;
+    }
+    .vu-middle-links {
+        display: inline;
+    }
+
+    .nav-links {
+        flex: none;
+        display: table;
+        width: auto;
+        margin-right: 1rem;
+    }
+    .nav-col {
+        display: inline;
+    }
+    .nav-link {
+        float: left;
+        display: block;
+        height: 3.5rem;
+        line-height: 3.5rem;
+        text-align: left;
+    }
+}
+
+/* 6. Footer ===================================================================== */
+
+footer .container {
+    max-width: 900px;
+}
+.library-links-footer {
+    padding-top: 2rem;
+}
+.library-links-footer .support {
+    white-space: nowrap;
+}
+.library-links-footer .support .support-btn {
+    margin-top: 0.5rem auto;
+}
+
+/*
+#footer-links {
+    column-count: 4;
+}
+@media (max-width: 992px) {
+    #footer-links {
+        column-count: 3;
+    }
+}
+*/
+#footer-links {
+    display: flex;
+}
+.footer-section {
+    flex: 0 1 100%;
+}
+.vu-contact-footer {
+    line-height: 2rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+.vu-contact-footer .logo {
+    margin: 0;
+}
+.vu-contact-footer .info {
+    display: inline-block;
+    padding: 0 1rem;
+}
+.vu-contact-footer .fa,
+.vu-contact-footer svg {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+.vu-links-footer {
+    font-size: 10px;
+}
+.vu-links-footer .center {
+    display: table;
+    margin: auto;
+}
+.vu-links-footer a {
+    display: inline-block;
+    padding: 1rem;
+    text-align: center;
+    color:  #4a4a4a;
+}
+.vu-links-footer a:hover {
+    color:  #418fde;
+}
+
+/* 7. Searchbox ================================================================== */
+
+.searchbox-wrapper {
+    padding-top: 1rem;
+}
+.searchbox {
+    padding-left: 1rem;
+    box-shadow: none;
+}
+.search-tabs a {
+    display: inline-block;
+    margin-top: 0;
+    padding: 0.4rem 1rem 0.5rem;
+    border-left: 0;
+    border-bottom: 4px solid transparent;
+    background-color: transparent;
+    box-shadow: none;
+}
+.search-tabs a.active {
+    border-color:  #b5bd00;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.search-type-label {
+    display: block;
+    position: relative;
+    flex: none;
+    padding: 0.25rem;
+    line-height: 2rem;
+    color:  rgba(0, 0, 0, 0.8);
+}
+#searchForm_type {
+    display: inline;
+}
+
+.advanced-link {
+    vertical-align: top;
+    display: inline-block;
+    padding: 1rem;
+    font-size: small;
+    color:  #595959;
+}
+
+/* 8. Main Content / Typography ================================================== */
+
+.main-content {
+    padding-left: 0.5rem;
+    padding-right: 1rem;
+}
+.page-header {
+    min-height: 3rem;
+    margin-top: 0;
+    margin-left: -1rem;
+    margin-bottom: 0;
+    padding-left: 1.5rem;
+    padding-bottom: 0;
+}
+.vubreadcrumb {
+    display: block;
+    margin-bottom: 2rem;
+}
+.form-group {
+    margin-top: 8px;
+}
+
+/* 9. Grid  ================================================== */
+
+.main-content-container {
+    display: -ms-grid;
+    display: grid;
+    grid-template-areas: 'left right';
+    -ms-grid-columns: 1fr 3fr;
+//    -ms-grid-rows: 2fr;
+    grid-template-columns: 1fr 3fr;
+}
+
+.column-sidebar {
+    -ms-grid-row: 1;
+    -ms-grid-column: 1;
+    grid-area: left;
+    -ms-grid-column: 1;
+    -ms-grid-column-span: 1;
+    grid-column: 1 / 2; grid-row: 1;
+}
+
+.column-optional {
+    -ms-grid-row: 2;
+    -ms-grid-column: 1;
+    grid-area: left;
+    -ms-grid-row-span: 3;
+    grid-row: 2 / 5;
+}
+
+.column-main {
+    -ms-grid-row: 1;
+    -ms-grid-column: 2;
+    grid-area: right;
+    -ms-grid-column: 2;
+    -ms-grid-column-span: 2;
+    grid-column: 2 / 4;
+    -ms-grid-row: 1;
+    -ms-grid-row-span: 2;
+    grid-row: 1 / 3;
+}

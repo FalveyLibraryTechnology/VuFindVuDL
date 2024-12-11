@@ -1,0 +1,89 @@
+<?php $account = $this->auth()->getManager(); ?>
+<?php if (false): // No need for banner at this time ?>
+    <div class="top-message">Put message on top of every page.</div>
+<?php endif; ?>
+<?php /*
+<div class="top-message hidden">
+    We've just upgraded our systems; if you run into any trouble, please let us know at <a href="mailto:digitallibrary@villanova.edu">digitallibrary@villanova.edu</a>.
+    <button id="hide-top-message">&times;</button>
+</div>
+ */ ?>
+<?php
+  $headerScript = <<<JS
+        if (document.querySelector(".top-message")) {
+            const hideHeader = Boolean(sessionStorage.getItem("hide-upgrade-header")) && true;
+
+            if (!hideHeader) {
+                document.querySelector(".top-message").classList.remove("hidden");
+            }
+
+            document.getElementById("hide-top-message").addEventListener("click", () => {
+                document.querySelector(".top-message").classList.add("hidden");
+                sessionStorage.setItem("hide-upgrade-header", 1);
+            }, false);
+        }
+      JS;
+  echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $headerScript, 'SET');
+?>
+
+<nav class="villanova-header">
+    <a href="http://www.villanova.edu" class="vu-logo">
+        <img class="hidden-xs" src="<?=$this->imageLink('VU05WHITE_32h.png')?>" alt="Villanova University"/>
+        <img class="visible-xs" src="<?=$this->imageLink('VU23WHITE_64h.png')?>" alt="Villanova University logo"/>
+    </a>
+    <div class="vu-middle">
+        <a href="https://library.villanova.edu" class="vu-falvey-logo">Falvey Library</a>
+        <span class="vu-middle-links">
+            <a href="https://www1.villanova.edu/university/visit.html">VISIT</a> /
+            <a href="https://www1.villanova.edu/university/apply.html">APPLY</a> /
+            <a href="https://www1.villanova.edu/university/give.html">GIVE</a>
+        </span>
+    </div>
+    <?php $cart = $this->cart(); ?>
+    <?php if ($cart->isActive()): ?>
+      <li id="cartSummary">
+        <a id="cartItems" class="icon-link" data-lightbox title="<?=$this->transEscAttr('View Book Bag')?>" href="<?=$this->url('cart-home')?>">
+          <?=$this->icon('cart', 'icon-link__icon') ?>
+          <span class="icon-link__label">
+            <span class="sr-only"><?=$this->transEsc('Book Bag')?>:</span>
+            <span role="status"><strong><?=count($cart->getItems())?></strong> <?=$this->transEsc('items')?></span>
+            <span class="full<?=!$cart->isFull() ? ' hidden' : '' ?>">(<?=$this->transEsc('bookbag_full') ?>)</span>
+          </span>
+        </a>
+      </li>
+    <?php endif; ?>
+    <a href="/" class="vu-right">Digital Library Home</a>
+</nav>
+
+<div class="falvey-header">
+    <header>
+        <a href="https://library.villanova.edu">Falvey Library</a><!--:
+        <a href="/">Distinctive Collections</a>-->
+    </header>
+    <nav id="falvey-nav" class="nav-links">
+        <ul class="nav-col"><!--
+         --><li class="nav-link">
+                <a href="https://library.villanova.edu/collections" class="nav-link-anchor">Collections</a>
+            </li><!--
+         --><li class="nav-link">
+                <a href="https://library.villanova.edu/research" class="nav-link-anchor">Research Services</a>
+            </li><!--
+     --></ul><!--
+     --><ul class="nav-col"><!--
+         --><li class="nav-link">
+                <a href="https://library.villanova.edu/using-the-library" class="nav-link-anchor">Using the Library</a>
+            </li><!--
+         --><li class="nav-link">
+                <a href="https://library.villanova.edu/about-falvey" class="nav-link-anchor">About</a>
+            </li><!--
+     --></ul>
+    </nav>
+</div>
+
+<?php if ($this->layout()->searchbox !== false): ?>
+    <div class="search container navbar">
+        <div class="nav searchbox hidden-print" role="search">
+            <?=$this->layout()->searchbox ?>
+        </div>
+    </div>
+<?php endif; ?>

@@ -1,0 +1,42 @@
+<script>
+  var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
+  var audioSupported = document.createElement('audio').canPlayType('audio/mpeg')
+    || document.createElement('audio').canPlayType('audio/ogg')
+    || document.createElement('audio').canPlayType(data['mimetype']);
+  var routeTemplate = '<?=$this->url('files', ['id' => '!!!ID!!!', 'type' => '!!!TYPE!!!']) ?>';
+  updateView = mobile ? false : function(data) {
+    if (audioSupported) {
+      var audio = $('audio');
+      audio.trigger('pause');
+      $('#audio-ogg').attr('src', routeTemplate.replace('!!!ID!!!', data['id']).replace('!!!TYPE!!!', 'OGG'));
+      $('#audio-mp3').attr('src', routeTemplate.replace('!!!ID!!!', data['id']).replace('!!!TYPE!!!', 'MP3'));
+      $('#audio-master').attr('src', routeTemplate.replace('!!!ID!!!', data['id']).replace('!!!TYPE!!!', 'MASTER'));
+      audio[0].load();
+    }
+  };
+  $(document).ready(function() {
+    currentTab = "master-tab";
+    $('#view .nav-tabs li.opener a').addClass('hidden');
+  });
+</script>
+<ul class="nav nav-tabs">
+  <li class="static opener">
+    <a onClick="toggleSideNav()">
+      <i class="fa fa-caret-right"></i>
+      <i class="fa fa-caret-right"></i>
+      <i class="fa fa-caret-right"></i>
+    </a>
+  </li>
+  <li class="active"><a>Player and Downloads</a></li>
+</ul>
+<div class="tab-container text-center tab-content">
+  <audio controls preload="auto" onloadeddata="$('.pages .selected.loading').removeClass('loading');">
+    <?php if(in_array('OGG', $this->datastreams)): ?><source id="audio-ogg" src="<?=$this->url('files', ['id' => $id, 'type' => 'OGG']) ?>?download=true"/><?php endif?>
+    <?php if(in_array('MP3', $this->datastreams)): ?><source id="audio-mp3" src="<?=$this->url('files', ['id' => $id, 'type' => 'MP3']) ?>?download=true"/><?php endif?>
+    <?php if(!in_array('OGG', $this->datastreams) && !in_array('MP3', $this->datastreams)): ?>
+      <source id="audio-master" src="<?=$this->url('files', ['id' => $id, 'type' => 'MASTER']) ?>?download=true"/>
+    <?php endif?>
+  </audio>
+  <br/><br/>
+  <?=$this->context($this)->renderInContext('vudl/master-tab.phtml', [])?>
+</div>

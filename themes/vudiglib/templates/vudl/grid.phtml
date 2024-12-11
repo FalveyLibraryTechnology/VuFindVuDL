@@ -1,0 +1,89 @@
+<?php
+  $this->headTitle($this->translate($this->title) . ' - ' . $this->details['title']['value']);
+
+  // Multiple breadcrumbs
+  $this->layout()->breadcrumbs = $this->parents;
+  $this->layout()->title = $this->details['title']['value'];
+  $this->layout()->breadcrumbEnd = $this->breadcrumbEnd;
+  $this->layout()->from = $this->from;
+
+  // Get first list name
+  foreach($this->outline as $list => $v) {
+    if($list == 'counts') {
+      continue;
+    }
+    $listName = $list;
+    break;
+  }
+
+  // HEADER FILES
+  $this->headLink()->appendStylesheet('vudl.css');
+  $this->headScript()->appendFile('vudl/canvas-zoomy.js');
+  $this->headScript()->appendFile('vudl/config.js');
+  $this->headScript()->appendFile('vudl/record.js');
+
+  // Compact header
+  $this->layout()->headerType = 'record';
+  $this->layout()->vudlID = $this->id;
+  $this->layout()->hierarchyID = $this->hierarchyID;
+  $this->layout()->parents = $this->parents;
+  $this->layout()->siblings = $this->siblings;
+
+  function json_php_encode($op, $quotes = false)
+  {
+    if($quotes) {
+      return str_replace('"', "'", str_replace("'", "\\'", str_replace('\/', '/', json_encode($op))));
+    } else {
+      return str_replace('\/', '/', json_encode($op));
+    }
+  }
+
+  $recordRouteTemplate = $this->url('vudl-record', ['id' => '!!!ID!!!']);
+  $cachedRecordRoute = function ($id) use ($recordRouteTemplate) {
+    return str_replace('!!!ID!!!', $id, $recordRouteTemplate);
+  };
+
+  $imgRouteTemplate = $this->url('files', ['id' => '!!!ID!!!', 'type' => '!!!TYPE!!!']);
+  $cachedImageRoute = function ($id, $type) use ($imgRouteTemplate) {
+    return str_replace(['!!!ID!!!', '!!!TYPE!!!'], [$id, $type], $imgRouteTemplate);
+  };
+?>
+<script>
+  var documentID = '<?=$this->id ?>';
+  var initPage = <?=$this->initPage ?? 0 ?>;
+</script>
+<div class="vudl row grid">
+  <div class="col-sm-3 panel-group" id="side-nav">
+    <?=$this->context($this)->renderInContext('vudl/details.phtml', [])?>
+  </div>
+  <div class="col-sm-9">
+    <div class="row">
+      <?php foreach($this->outline['lists'] as $key => $list): ?>
+        <?php foreach($list as $i => $item): ?>
+          <a href="<?=$cachedRecordRoute($item['id']) ?>" title="<?=$item['id'] ?>" class="item col-xs-4 col-sm-3 col-md-2">
+            <div class="thumb">
+              <?php if('page' == $item['filetype']): ?>
+                <img src="<?=$cachedImageRoute($item['id'], 'THUMBNAIL') ?>" alt="<?=$item['label'] ?>"/>
+              <?php else: ?>
+                <img class="<?=$item['fulltype'] ?>" src="<?=$this->imageLink('vudl/' . $item['fulltype'] . '.png') ?>"/>
+              <?php endif; ?>
+            </div>
+            <label><?=$item['label'] ?></label>
+          </a>
+        <?php endforeach; ?>
+      <?php endforeach; ?>
+    </div>
+  </div>
+</div>
+<script>
+  $.ajax({dataType:'json',
+    url:VuFind.path+'/VuDL/ajax?method=pageAjax&record=<?=$this->id ?>&start=0&end=16',
+    success:ajaxLoadPages,
+    error:function(d,e){
+      console.log(d);console.log(e)
+    }
+  });
+  counts = $.parseJSON('<?=json_encode($this->outline['counts'], JSON_HEX_APOS | JSON_HEX_AMP) ?>');
+  $('.accordion').removeClass('hidden');
+  $('#collapse_details').addClass('in');
+</script>

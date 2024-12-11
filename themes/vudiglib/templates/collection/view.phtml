@@ -1,0 +1,11 @@
+<?php
+  include $this->parentTemplate('collection/view.phtml');
+  // Add VuDL home and parent list to breadcrumb trail
+  $this->layout()->breadcrumbs = $this->render(
+      'breadcrumbs/array.phtml',
+      [
+        'breadcrumbs' => $this->parents,
+        'from' => $this->driver->getUniqueId(),
+        'title' => $this->driver->getShortTitle(),
+      ]
+  );

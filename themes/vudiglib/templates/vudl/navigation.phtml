@@ -1,0 +1,76 @@
+<?php
+  // Parent collections for Prev/Next Item
+  $parents = $parentKeys = $uniqueParents = [];
+  foreach($this->parents as $trail) {
+    if(is_array($trail)) {
+      end($trail);
+    }
+    if(!in_array(key($trail), $parentKeys)) {
+      $uniqueParents[] = [
+        'id' => key($trail),
+        'title' => current($trail),
+      ];
+      $parentKeys[] = key($trail);
+    }
+  }
+  if(count($uniqueParents) == 0) {
+    return;
+  }
+  $siblingHref = $this->url('vudl-sibling') . '?id=' . $this->id;
+  if(count($uniqueParents) == 1 && isset($uniqueParents[0]['id'])) {
+    $siblingHref .= '&trail=' . $uniqueParents[0]['id'];
+  }
+?>
+<nav class="sibling-form navbar" role="navigation">
+  <ul class="nav navbar-nav">
+    <?php if(count($uniqueParents) > 1): ?>
+      <li class="dropdown">
+        <a id="sibling-prev" class="btn btn-default" data-toggle="dropdown" title="<?=$this->transEsc('Prev Item in Collection')?>">
+          <?=$this->transEsc('Prev Item')?> <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="sibling-prev">
+          <li role="presentation" class="dropdown-header"><?=$this->transEsc('Choose a collection') ?></li>
+          <?php foreach($uniqueParents as $trail): ?>
+            <li role="presentation">
+              <a role="menuitem" tabindex="-1" href="<?=$siblingHref ?>&trail=<?=$trail['id'] ?>&prev=1">
+                <?=$trail['title'] ?>
+              </a>
+            </li>
+          <?php endforeach; ?>
+        </ul>
+      </li>
+    <?php else: ?>
+      <li>
+        <a href="<?=$siblingHref ?>&prev=1" class="btn btn-default" title="<?=$this->transEsc('Prev Item in Collection')?>">
+          <i class="fa fa-angle-left"></i>
+          <?=$this->transEsc('Prev Item')?>
+        </a>
+      </li>
+    <?php endif; ?>
+
+    <?php if(count($uniqueParents) > 1): ?>
+      <li class="dropdown">
+        <a id="sibling-next" class="btn btn-default" data-toggle="dropdown" title="<?=$this->transEsc('Next Item in Collection')?>">
+          <?=$this->transEsc('Next Item')?> <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="sibling-next">
+          <li role="presentation" class="dropdown-header"><?=$this->transEsc('Choose a collection') ?></li>
+          <?php foreach($uniqueParents as $trail): ?>
+            <li role="presentation">
+              <a role="menuitem" tabindex="-1" href="<?=$siblingHref ?>&trail=<?=$trail['id'] ?>&next=1">
+                <?=$trail['title'] ?>
+              </a>
+            </li>
+          <?php endforeach; ?>
+        </ul>
+      </li>
+    <?php else: ?>
+      <li>
+        <a href="<?=$siblingHref ?>&next=1" class="btn btn-default" title="<?=$this->transEsc('Next Item in Collection')?>">
+          <?=$this->transEsc('Next Item')?>
+          <i class="fa fa-angle-right"></i>
+        </a>
+      </li>
+    <?php endif; ?>
+  </ul>
+</nav>

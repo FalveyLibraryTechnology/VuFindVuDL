@@ -1,0 +1,12 @@
+<li><a href="<?=$this->url('home')?>"><?=$this->transEsc('Home')?></a></li>
+<li><a href="<?=$this->url('vudl-default-collection')?>"><?=$this->transEsc('Collections') ?></a></li>
+<?php $current = current($breadcrumbs) ?: []; ?>
+<?php foreach($current as $id => $parent): ?>
+  <li><a href="<?=$this->escapeHtmlAttr($this->url('collection', compact('id'))) ?>"><?=$this->escapeHtml($parent) ?></a></li>
+<?php endforeach; ?>
+<?php if (isset($end)): ?>
+  <li title="<?=$this->escapeHtmlAttr($title) ?>"><?=$this->escapeHtml($this->truncate($title, 100)) ?></li>
+  <li class="active"><?=$this->escapeHtml($end) ?></li>
+<?php else: ?>
+  <li class="active" title="<?=$this->escapeHtmlAttr($title) ?>"><?=$this->escapeHtml($this->truncate($title, 100)) ?></li>
+<?php endif; ?>

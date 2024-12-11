@@ -1,0 +1,80 @@
+<?php
+  $skip = [
+    'license', 'special_license', 'description', 'title',
+  ];
+  $no_link = ['title', 'description'];
+?>
+<?php if (isset($this->details['description'])): ?>
+  <p class="description"><?=html_entity_decode($this->details['description']['value'], 2 /*ENT_COMPAT|ENT_HTML401*/, 'UTF-8') ?></p>
+<?php endif ?>
+
+<a href="<?=$this->url('record', ['id' => $this->id])?>"><i class="fa fa-list"></i> <?=$this->transEsc('More Details') ?></a><br/>
+<a href="<?=$this->url('vudl-record', ['id' => $this->id])?>"><i class="fa fa-book"></i> <?=$this->transEsc('Permanent Link') ?></a><br/><br/>
+
+<table class="table text-left">
+  <tr><td><?=$this->transEsc('Full Title') ?></td><td><?=$this->details['title']['value'] ?></td></tr>
+  <?php foreach ($this->details as $attr => $val): ?>
+    <?php
+      // Skip items not placed in this table
+      if (in_array($attr, $skip)) {
+        continue;
+      }
+    ?>
+    <tr><td><?=$this->transEsc($val['title']) ?></td><td>
+      <?php // Special format for first_indexed ?>
+      <?php if ($attr == 'first_indexed'): ?>
+        <?=date_create($val['value'])->format('j F Y') ?>
+
+      <?php // If we need exploding and backlinking ?>
+      <?php elseif ($attr == 'topic' || $attr == 'series'): ?>
+        <?php
+          if (!is_array($val['value'])) {
+            $val['value'] = [$val['value']];
+          }
+        ?>
+        <?php if (count($val['value']) > 1): ?><ul class="list-unstyled"><?php endif ?>
+        <?php foreach ($val['value'] as $v): ?>
+          <?php if (count($val['value']) > 1): ?><li><?php endif ?>
+         <?php $parts = explode(' -- ', $v);
+            $filter = '';
+            foreach ($parts as $i => $p):
+              $filter .= ' ' . $p; ?>
+              <?=$i > 0 ? ' &gt; ' : '' ?><a class="backlink" href="<?=$this->url('search-results') ?>?filter[]=<?=$attr ?>:<?=urlencode(trim($filter)) ?>"><?=$p ?></a>
+         <?php endforeach; ?>
+          <?php if (count($val['value']) > 1): ?></li><?php endif ?>
+        <?php endforeach; ?>
+        <?php if (count($val['value']) > 1): ?></ul><?php endif ?>
+
+      <?php // Items not useful to link ?>
+      <?php elseif (in_array($attr, $no_link)): ?>
+        <?=is_array($val['value']) ? implode('<br/>', $val['value']) : $val['value'] ?>
+
+      <?php // Array handling ?>
+      <?php elseif (is_array($val['value'])): ?>
+        <?php if (count($val['value']) == 1): ?>
+          <a href="<?=$this->url('search-results') ?>?filter[]=<?=$attr ?>:<?=urlencode($val['value'][0]) ?>"><?=$val['value'][0] ?></a>
+        <?php else: ?>
+          <ul class="list-unstyled">
+          <?php foreach ($val['value'] as $v): ?>
+             <li><a href="<?=$this->url('search-results') ?>?filter[]=<?=$attr ?>:<?=urlencode($v) ?>"><?=$v ?></a></li>
+          <?php endforeach; ?>
+          </ul>
+        <?php endif; ?>
+
+      <?php // The rest are linked ?>
+      <?php else: ?>
+        <a href="<?=$this->url('search-results') ?>?filter[]=<?=$attr ?>:<?=urlencode($val['value']) ?>"><?=$val['value'] ?></a>
+      <?php endif; ?>
+    </td></tr>
+  <?php endforeach; ?>
+  <?php if (isset($this->details['license'])): ?>
+    <?php if (!$this->details['special_license']): ?>
+      <tr><td>License</td><td><a href="<?=$this->details['license'] ?>"><?=$this->details['license'] ?></a></td></tr>
+    <?php endif; ?>
+  <?php endif; ?>
+</table>
+<?php if (isset($this->details['license']) && !empty($this->details['special_license'])): ?>
+  <div class="copyright">
+    <?=$this->render('/vudl/licenses/' . $this->details['special_license'], ['details' => $this->details]); ?>
+  </div>
+<?php endif; ?>

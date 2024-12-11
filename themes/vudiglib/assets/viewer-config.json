@@ -1,0 +1,58 @@
+{
+    "options": {
+        "downloadPagingNoteEnabled": true,
+        "pagingEnabled": false,
+        "termsOfUseEnabled": false,
+        "usePdfJs": false,
+        "websiteLinkEnabled": false
+    },
+    "modules": {
+        "centerPanel": {
+            "options": {
+                "mostSpecificRequiredStatement": false
+            }
+        },
+        "downloadDialogue": {
+            "options": {
+                "downloadPagingNoteEnabled": true,
+                "downloadCurrentViewEnabled": false
+            }
+        },
+        "leftPanel": {
+            "options": {
+                "panelOpen": true
+            }
+        },
+        "moreInfoRightPanel": {
+            "options": {
+                "panelOpen": true
+            }
+        },
+        "pagingHeaderPanel": {
+            "options": {
+                "pageModeEnabled": false
+            }
+        },
+        "searchFooterPanel": {
+            "options": {
+                "pageModeEnabled": false
+            }
+        },
+        "settingsDialogue": {
+            "content": {
+                "website": ""
+            }
+        },
+        "shareDialogue": {
+            "options": {
+                "embedEnabled": true
+            }
+        },
+        "treeViewLeftPanel": {
+            "options": {
+                "panelOpen": true,
+                "pageModeEnabled": true
+            }
+        }
+    }
+}

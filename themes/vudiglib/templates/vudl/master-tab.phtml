@@ -1,0 +1,45 @@
+<?php if (in_array('MASTER', $this->datastreams)): ?>
+  <form method="get" id="file-download" action="<?=$this->url('files', ['id' => $id, 'type' => 'MASTER']) ?>?download=true">
+    <a
+      id="download-button"
+      class="btn btn-primary btn-lg"
+      href="<?=$this->url('files', ['id' => $id, 'type' => 'MASTER']) ?>"
+    >
+      <i class="fa fa-download"></i> <?=$this->transEsc('Download File') ?>
+      <?php if ($this->techinfo): ?>
+        <br>
+        <span class="details"><?=$this->techinfo['type'] ?? ''?><?php if(isset($this->techinfo['size'])):?> ~ <?=$this->techinfo['size'] ?><?php endif ?></span>
+      <?php endif; ?>
+    </a>
+  </form>
+  <button id="direct-link">
+    <i class="fa fa-file-text-o"></i>
+    <span id="direct-link__text">Copy Permanent Link to This Page</span>
+  </button>
+<?php else: ?>
+  <br/><br/>
+  <p>Original Image File Not Available.</p>
+  <p>See below for all available downloads.</p>
+<?php endif; ?>
+
+<?php if ($this->techinfo): ?>
+  <div class="accordion" id="techinfo"><?=$this->techinfo['div'] ?? ''?></div>
+<?php else: ?>
+  <!-- padding -->&nbsp;<!-- placeholder -->
+<?php endif; ?>
+
+<script>
+  async function copyPermanentLink() {
+    const btnText = document.getElementById("direct-link__text");
+
+    await navigator.clipboard.writeText(
+      `${window.location.origin}<?=$this->url('vudl-record', ['id' => $id]) ?>`
+    );
+
+    const oldText = btnText.innerText;
+    btnText.innerText = "Copied!";
+    setTimeout(() => btnText.innerText = oldText, 2000);
+  }
+
+  document.getElementById("direct-link").addEventListener("click", (e) => copyPermanentLink());
+</script>

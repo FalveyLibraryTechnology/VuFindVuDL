@@ -1,0 +1,5 @@
+<?php if (str_contains($this->details['license'], 'rights')): ?>
+  <a target="_blank" href="<?=$this->details['license'] ?>">Rights information.</a>
+<?php else: ?>
+  This work is under <a target="_blank" href="<?=$this->details['license'] ?>">Villanova University Copyright License</a> of the original publisher.
+<?php endif; ?>

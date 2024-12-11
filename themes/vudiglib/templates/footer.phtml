@@ -1,0 +1,138 @@
+<details class="faq hidden-print" group="faq">
+  <summary>
+    <h2>Rights Information</h2>
+  </summary>
+
+  <div class="details__content prose">
+    <p>
+      The use of this material may be subject to the copyright law of the United States
+      (Title 17, United States Code) or other third party terms and conditions. The
+      person using the material is responsible for any use or infringement of third party
+      rights.
+    </p>
+
+    <?php include(__DIR__ . '/vudl/disclaimers.phtml'); ?>
+  </div>
+</details>
+
+<details id="accessibility-statement" class="faq hidden-print" group="faq">
+  <summary>
+    <h2>Accessibility Statement</h2>
+  </summary>
+  <div class="details__content prose">
+    <p>The Digital Library strives to provide access to its collections and resources to the Villanova University community and the global community of scholars, subject to any intellectual property or other restrictions on use. Certain materials, such as historical documents, handwritten materials, and foreign language materials, present unique accessibility challenges and formatting limitations. If you are experiencing difficulties in accessing, viewing, or navigating the Digital Library, please contact us at <a href="mailto:digitallibrary@villanova.edu">digitallibrary@villanova.edu</a> or 610.519.5271.</p>
+  </div>
+</details>
+
+<footer class="library-links-footer hidden-print">
+    <div id="footer-links" class="container">
+    </div>
+</footer>
+
+<footer class="vu-contact-footer hidden-print">
+    <img src="<?=$this->imageLink('VU05WHITE_32h.png')?>" class="logo" alt="Villanova University">
+    <span class="info">
+        <i class="fa fa-map-marker-alt"></i> 800 Lancaster Ave., Villanova, PA 19085
+    </span>
+    <span class="info">
+        <i class="fa fa-phone"></i> 610.519.4500
+    </span>
+    <a href="https://www1.villanova.edu/university/contact-us.html" class="info"><i class="fa fa-envelope"></i> Contact</a>
+</footer>
+
+<footer class="vu-links-footer hidden-print">
+    <div class="center">
+        <a href="https://www1.villanova.edu/university/undergraduate-admission/visit/maps-and-directions.html">Directions</a>
+        <a href="/using-the-library/access/privacy-policy">Privacy &amp; Security</a>
+        <a href="https://www1.villanova.edu/university/diversity-inclusion.html">Diversity</a>
+        <a href="https://www1.villanova.edu/university/higher-education-act.html">Higher Education Act</a>
+        <a href="https://mynova.villanova.edu/?_ga=2.201794257.1546026447.1520372575-621872210.1516720014">MY NOVA</a>
+        <a href="http://directory.villanova.edu">Directory</a>
+        <a href="http://jobs.villanova.edu/?_ga=2.230984671.1546026447.1520372575-621872210.1516720014">Work at Villanova</a>
+        <a href="https://www1.villanova.edu/university/accessibility.html">Accessibility</a>
+    </div>
+</footer>
+
+<!--Library H3lp -->
+<div class="libraryh3lp libraryh3lp-tab hidden-print" jid="villref@chat.libraryh3lp.com" style="display:none">
+    <a href="#" onclick="window.open('https://libraryh3lp.com/chat/villref@chat.libraryh3lp.com?skin=7498&amp;theme=dcraven&amp;title=Ask%20a%20Librarian&amp;identity=Villanova', 'chat', 'resizable=1,width=300,height=400'); return false;">
+        <i class="fa fa-circle"></i> Ask Us: Live Chat
+    </a>
+</div>
+
+<?=$this->inlineScript(\Laminas\View\Helper\HeadScript::FILE, 'https://libraryh3lp.com/js/libraryh3lp.js?multi,poll,popup', 'SET')?>
+
+<?=$this->inlineScript(\Laminas\View\Helper\HeadScript::FILE, 'https://library.villanova.edu/application/themes/falvey_2018/js/shared-nav.js', 'SET')?>
+
+<!-- Scroll to Top -->
+<a class="to-top-btn" href="#">
+  <i class="fa fa-chevron-up"></i> Back to Top
+</a>
+
+<script>
+    (function() {
+        // Window too small
+        if (window.innerHeight * 2 > document.documentElement.scrollHeight) {
+            return;
+        }
+
+        const toTopBtn = document.querySelector(".to-top-btn");
+
+        function toggleButton(entries) {
+            const searchbar = entries[0];
+            if (!searchbar.isIntersecting) { // searchbox not visible
+                toTopBtn.classList.add("is-active");
+            } else {
+                toTopBtn.classList.remove("is-active");
+            }
+        };
+
+        const headerObserver = new IntersectionObserver(toggleButton, {
+            root: null, // Declaring null uses the entire viewport.
+            threshold: 0, //  The percentage of the header to come into view.
+        });
+
+        headerObserver.observe(document.getElementById("searchForm_lookfor"));
+    })();
+</script>
+<!-- End Scroll to Top -->
+
+<script>
+    // Callback function to execute when mutations are observed
+    function addLinkRoots(mutationList, observer) {
+        const subLinks = document.querySelectorAll(".nav-link-anchor,.subnav-link,.subnav-header,.footer-section a");
+
+        if (subLinks.length === 0) {
+            return;
+        }
+
+        subLinks.forEach((link) => {
+            const href = link.getAttribute("href");
+
+            if (href.startsWith("/")) {
+                link.setAttribute("href", "https://library.villanova.edu" + href);
+            }
+        });
+
+        // Later, you can stop observing
+        observer.disconnect();
+    };
+    // Create an observer instance linked to the callback function
+    const observer = new MutationObserver(addLinkRoots);
+
+    // Select the node that will be observed for mutations
+    const targetNode = document.getElementById('falvey-nav');
+    // Options for the observer (which mutations to observe)
+    const config = { childList: true };
+    // Start observing the target node for configured mutations
+    observer.observe(targetNode, config);
+</script>
+
+<!-- User testing -->
+<!-- DISABLED
+
+<?php
+	// $this->headLink()->appendStylesheet('sitetesting/sitetesting.css');
+	// echo $this->inlineScript(\Laminas\View\Helper\HeadScript::FILE, '/application/themes/falvey_2018/js/sitetesting/mus.js', 'SET');
+	// echo $this->inlineScript(\Laminas\View\Helper\HeadScript::FILE, '/application/themes/falvey_2018/js/sitetesting/sitetesting.js', 'SET');
+?>

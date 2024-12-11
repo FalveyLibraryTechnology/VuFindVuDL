@@ -1,0 +1,37 @@
+<?php
+  $this->headTitle('VU Digital Library - About');
+  $this->layout()->breadcrumbs = false;
+
+  $aboutConfig = json_decode(file_get_contents(__DIR__ . '/../../assets/about-config.json'), null, 512, JSON_THROW_ON_ERROR);
+?>
+<div class="row">
+  <div class="about_container <?=$this->layoutClass('mainbody')?>">
+    <h2>Digital Partner Collections</h2>
+
+    <p>Digital Library projects that seem impossible to contemplate alone can often be accomplished with the help of a partner. At Villanova,  we work to establish and utilize best practices for digitization and resource description, and actively work with individual and institutional partners to digitize cultural heritage materials using these best practices. If you would like to partner with our enterprise in digitizing and providing access to content please <a href="mailto:digitallibrary@villanova.edu">contact us</a>.</p>
+
+    <p>Current partnerships include:</p>
+
+    <ul class="partner-list">
+      <?php foreach ($aboutConfig->partners as $partner): ?>
+        <li>
+          <a class="partner" href="<?=$partner->collection ?>">
+            <img class="partner__img" src="<?=$partner->thumbnail ?>">
+            <span class="partner__label"><?=$partner->title ?></span>
+          </a>
+        </li>
+      <?php endforeach; ?>
+    </ul>
+  </div>
+
+  <div class="links_container <?=$this->layoutClass('sidebar')?>">
+    <ul class="list-group">
+      <li class="list-group-item"><strong>Jump to</strong></li>
+      <a class="list-group-item" href="<?=$this->url('vudl-about') ?>#top">Introduction</a>
+      <a class="list-group-item" href="<?=$this->url('vudl-partners') ?>">Partnerships</a>
+      <a class="list-group-item" href="<?=$this->url('vudl-about') ?>#projects">Current &amp; Future Projects</a>
+      <a class="list-group-item" href="<?=$this->url('vudl-about') ?>#count">Current Item Count</a>
+      <a class="list-group-item" href="<?=$this->url('vudl-about') ?>#contact">Contact Us</a>
+    </ul>
+  </div>
+</div>

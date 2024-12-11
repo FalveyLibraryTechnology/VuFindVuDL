@@ -1,0 +1,6 @@
+<?php if (count($breadcrumbs) > 1): ?>
+    <?php $end = $this->layout()->breadcrumbEnd; ?>
+    <?=$this->render('breadcrumbs/multi.phtml', compact('breadcrumbs', 'title', 'from', 'end')) ?>
+<?php else: ?>
+    <?=$this->render('breadcrumbs/default.phtml', compact('breadcrumbs', 'title')) ?>
+<?php endif; ?>

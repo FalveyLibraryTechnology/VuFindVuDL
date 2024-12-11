@@ -1,0 +1,20 @@
+* {
+  background-color: #FFF !important;
+  color: #000 !important;
+}
+a[href]:after{ content: ''; } /* hide following urls */
+.container { margin:0; } /* print margins */
+/* print utilities */
+.hidden-print,
+.hidden-print * { display:none !important; }
+
+.bulkActionButtons,
+.action-toolbar { display: none !important; }
+
+/* Villanova Customizations */
+
+.libraryh3lp-tab,
+a.to-top-btn,
+footer {
+	display: none !important;
+}

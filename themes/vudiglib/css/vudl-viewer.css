@@ -1,0 +1,154 @@
+html > body .container {
+  max-width: none;
+  width: 100%;
+/*  overflow-x: hidden;*/
+}
+
+.to-top-btn {
+  display: none;
+}
+.libraryh3lp-tab a {
+  right: 9rem;
+  padding-inline: 0.75rem;
+  box-shadow: none;
+  animation: none;
+}
+
+.main {
+  padding: 0;
+}
+.main .container {
+  max-width: none;
+  margin: 0;
+}
+header .container.navbar {
+  max-width: none;
+}
+@media (min-width: 640px) {
+  header .searchbox {
+    margin-block: 0;
+  }
+}
+
+.nav-submenu {
+  z-index: 100;
+}
+
+.breadcrumbs {
+  display: block;
+  margin: 0;
+  border: 0;
+  background-color: #404040;
+/*  text-shadow: 0 1px 0 #000;*/
+}
+.breadcrumb,
+.breadcrumbs .container {
+  border: 0;
+  background-color: transparent;
+}
+.breadcrumb {
+  margin: 0.5rem 0;
+  padding: 0.25rem;
+  font-weight: 500;
+}
+.breadcrumb a {
+  color: #eee;
+}
+.breadcrumb a:hover {
+  color: #fff;
+}
+.breadcrumb li {
+  color: #ddd !important;
+}
+.breadcrumb .dropdown-menu a {
+  color: #000;
+  text-shadow: none;
+}
+.breadcrumb>li+li:before {
+  color: #aaa;
+}
+
+.sibling-form,
+.sibling-form .navbar-nav,
+.sibling-form .navbar-nav li {
+  float: none;
+  margin: 0;
+  padding: 0;
+}
+.sibling-form .btn {
+  display: block;
+  margin: 1px;
+  padding: 0.75rem;
+  border: 0;
+  color: #fff;
+  background: #565656;
+  border-radius: 0;
+  box-shadow: none;
+  text-shadow: none;
+  vertical-align: middle;;
+}
+.sibling-form .btn:hover,
+.sibling-form .btn:focus,
+.sibling-form .btn:active {
+  border: 0;
+  color: #fff;
+  background: #343434;
+}
+.sibling-form .navbar-nav {
+  margin: 0;
+}
+@media (min-width: 800px) {
+  .sibling-form {
+    position: absolute;
+    margin: 0;
+    margin-top: 5px;
+    margin-left: 5px;
+    z-index: 1;
+  }
+  .sibling-form .navbar-nav,
+  .sibling-form .navbar-nav li {
+    float: left;
+  }
+  .sibling-form .btn {
+    height: 30px;
+    padding-block: 0.375rem;
+    margin-left: 6px;
+    margin-right: 0;
+  }
+}
+
+#legacy {
+  position: relative;
+  padding-left: 1rem;
+}
+.popover {
+  width: fit-content;
+  max-width: none;
+  margin-top: 1rem;
+  background-color: #fed141;
+  box-shadow:
+    0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+.popover::after {
+  content: " ";
+  position: absolute;
+  top: -5px;
+  right: 3.5rem;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid #fed141;
+}
+.popover-content {
+  padding: 0.375rem 1rem;
+  color: #000;
+  background-color: #fed141;
+  text-shadow: none;
+  cursor: default;
+}
+.popover.bottom > .arrow::after {
+  top: 2px;
+  border-bottom-color: #fed141;
+}

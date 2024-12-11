@@ -1,0 +1,191 @@
+.uv .container {
+  padding: 0;
+  background-color: inherit;
+}
+.uv .autocompleteText {
+  color: #000;
+}
+
+.uv noscript {
+  display: block;
+  height: 100%;
+  color: #fff;
+  padding: 1em;
+  overflow-y: auto;
+}
+.uv noscript a {
+  color: #89f;
+}
+.uv noscript table tr td,
+.uv noscript table tr th {
+  border: none;
+}
+.uv noscript table tr:nth-of-type(odd) {
+  background: #222;
+}
+.uv noscript .ocr {
+  white-space: pre;
+}
+
+.uv .label {
+  line-height: inherit;
+}
+#uv .thumb.oneCol .label {
+  width: auto;
+  white-space: initial;
+}
+
+#uv {
+  background-color: #000;
+}
+#uv a {
+  color: #abd331;
+}
+#uv .btn-primary,
+#uv .overlay .close {
+  color: #000;
+  background-color: #abd331;
+  border-color: #abd331;
+}
+#uv .searchText {
+  color: #000;
+}
+#uv .group {
+  margin: initial;
+  padding: initial;
+  border: 0;
+  background-color: transparent;
+  border-radius: 0;
+}
+#uv .rightPanel .main .groups {
+  padding: 10px 10px 20px 10px;
+}
+#uv a.download {
+  display: table;
+  padding-left: 35px;
+  font: 14px/20px Arial;
+  font-weight: bold;
+}
+#uv .main {
+  min-height: auto;
+}
+#uv {
+  margin: 0;
+}
+#uv .toggle {
+  display: unset;
+}
+#uv .mobileFooterPanel {
+  left: 15px;
+}
+#uv .mobileFooterPanel .options .moreInfo,
+#uv .footerPanel .options .moreInfo {
+  display: none !important; /* sorry */
+}
+#uv .footerPanel .options .download,
+#uv .footerPanel .options .fullScreen,
+#uv .footerPanel .options .share {
+  font-family: sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 2;
+  color: #abd331;
+}
+#uv .footerPanel .options .download .uv-icon {
+  margin-right: 0.5rem;
+}
+#uv .footerPanel .options .fullScreen .uv-icon {
+  float: right;
+  margin-left: 0.5rem;
+}
+#uv .overlay {
+  background-color: transparent;
+}
+#uv .overlay.download,
+#uv .overlay.share {
+  top: auto !important;
+  bottom: 0 !important;
+  padding-left: 4px;
+  padding-bottom: 45px;
+}
+#uv .overlay.download a,
+#uv .overlay.share a {
+  color: #5f7a0a;
+  text-decoration: underline;
+}
+#uv .overlay.download label {
+  font-weight: 500;
+}
+#uv .overlay.download .btn {
+  height: 30px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  line-height: 1.6;
+}
+#uv .overlay.download .btn-primary {
+  font-weight: bold;
+  color: #000;
+  background-color: #abd331;
+  border-color: #abd331;
+  text-decoration: none;
+}
+#uv .overlay .btn.close {
+  color: #555;
+  background-color: #fff;
+  border-color: #777;
+  opacity: 1;
+}
+#uv .overlay .tab {
+  margin: 0;
+  border-bottom: 2px solid transparent;
+  font-weight: bold;
+  color: #777;
+}
+#uv .overlay .tab.on {
+  color: #000;
+  border-color: #abd331;
+}
+#uv.pdfjs-off .uv-pdf-extension {
+  padding-top: 32px;
+  background-color: #212121;
+}
+.pdfjs-off .uv .centerPanel .content .pdfContainer {
+  overflow-y: hidden;
+}
+
+.uv-modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.uv-modal.hidden {
+  display: none;
+}
+.uv-modal__content {
+  position: relative;
+  z-index: 40;
+  width: max-content;
+  padding: 1rem;
+  color: white;
+  border: 1px solid white;
+  border-radius: 0.25rem;
+  background-color: black;
+  box-shadow: 0px 25px 58px 0px #0004, 0px 5px 14px 0px #0003;
+}
+.uv-modal__btn {
+  appearance: none;
+  display: inline-block;
+  padding-inline: 0.5rem;
+  padding-block: 0.125rem;
+  font-size: 13px;
+  color: #000;
+  border: 0;
+  border-radius: 0;
+  background-color: #abd331;
+}

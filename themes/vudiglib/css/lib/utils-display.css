@@ -1,0 +1,111 @@
+.inline {
+    display: inline;
+}
+.inline-block {
+    display: inline-block;
+}
+.block {
+    display: block;
+}
+.flex {
+    display: flex;
+}
+.grid {
+    display: grid;
+}
+.none,
+.hidden {
+    display: none;
+}
+
+/* Wider than mobile portait */
+@media (min-width: 544px) {
+    .sm\:inline {
+        display: inline;
+    }
+    .sm\:inline-block {
+        display: inline-block;
+    }
+    .sm\:block {
+        display: block;
+    }
+    .sm\:flex {
+        display: flex;
+    }
+    .sm\:grid {
+        display: grid;
+    }
+    .sm\:none,
+    .sm\:hidden {
+        display: none;
+    }
+}
+
+/* Wider than mobile */
+@media (min-width: 768px) {
+    .md\:inline {
+        display: inline;
+    }
+    .md\:inline-block {
+        display: inline-block;
+    }
+    .md\:block {
+        display: block;
+    }
+    .md\:flex {
+        display: flex;
+    }
+    .md\:grid {
+        display: grid;
+    }
+    .md\:none,
+    .md\:hidden {
+        display: none;
+    }
+}
+
+/* Wider than small desktop */
+@media (min-width: 1024px) {
+    .lg\:inline {
+        display: inline;
+    }
+    .lg\:inline-block {
+        display: inline-block;
+    }
+    .lg\:block {
+        display: block;
+    }
+    .lg\:flex {
+        display: flex;
+    }
+    .lg\:grid {
+        display: grid;
+    }
+    .lg\:none,
+    .lg\:hidden {
+        display: none;
+    }
+}
+
+/* Wide desktop, wider than containment */
+@media (min-width: 1280px) {
+    .xl\:inline {
+        display: inline;
+    }
+    .xl\:inline-block {
+        display: inline-block;
+    }
+    .xl\:block {
+        display: block;
+    }
+    .xl\:flex {
+        display: flex;
+    }
+    .xl\:grid {
+        display: grid;
+    }
+    .xl\:none,
+    .xl\:hidden {
+        display: none;
+    }
+}

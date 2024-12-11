@@ -1,0 +1,32 @@
+.photorow {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 160px;
+  overflow: hidden;
+}
+.photorow__container {
+  position: relative;
+  display: block;
+  width: 30000px;
+  height: 100%;
+  margin-left: -4px;
+}
+
+.photorow__item {
+  position: absolute;
+  top: 0;
+
+  display: none;
+  height: 100%;
+
+  will-change: left;
+}
+.js-photorow__loaded {
+  display: block;
+  left: 10000px;
+}
+
+.photorow__img {
+  height: 100%;
+}

@@ -1,0 +1,6 @@
+<?php
+  include $this->parentTemplate('author/results.phtml');
+  // Add VuDL home to breadcrumb trail
+  $this->layout()->breadcrumbs
+    = '<li><a href="' . $this->escapeHtmlAttr($this->url('vudl-home')) . '">Home</a></li>'
+    . $this->layout()->breadcrumbs;
