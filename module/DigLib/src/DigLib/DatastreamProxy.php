@@ -82,7 +82,7 @@ class DatastreamProxy
     /**
      * Get the content type from an array of HTTP response headers.
      *
-     * @param string[] $headers
+     * @param string[] $headers HTTP response headers
      *
      * @return string
      */

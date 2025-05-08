@@ -12,7 +12,7 @@
 <a href="<?=$this->url('vudl-record', ['id' => $this->id])?>"><i class="fa fa-book"></i> <?=$this->transEsc('Permanent Link') ?></a><br/><br/>
 
 <table class="table text-left">
-  <tr><td><?=$this->transEsc('Full Title') ?></td><td><?=$this->details['title']['value'] ?></td></tr>
+  <tr><td><?=$this->transEsc('Full Title') ?></td><td><?=$this->details['title']['value'] ?? '' ?></td></tr>
   <?php foreach ($this->details as $attr => $val): ?>
     <?php
       // Skip items not placed in this table

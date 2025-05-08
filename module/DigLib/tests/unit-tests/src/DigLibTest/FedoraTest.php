@@ -42,6 +42,11 @@ use function get_class;
  */
 class FedoraTest extends \PHPUnit\Framework\TestCase
 {
+    /**
+     * Test all methods using a mock object.
+     *
+     * @return void
+     */
     public function testAllWithMock()
     {
         $subject = $this->getMockBuilder(\DigLib\Connection\Fedora::class)

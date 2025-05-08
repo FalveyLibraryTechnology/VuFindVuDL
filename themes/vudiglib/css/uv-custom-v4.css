@@ -1,10 +1,30 @@
+body {
+	scrollbar-gutter: stable both-edges;
+}
+
+/* Hide chat tab (2025-04-08) */
+.libraryh3lp-tab {
+  display: none !important;
+}
+
 #uv {
   --green-bg: #767c00; /* darken for contrast */
   --green-text: var(--vu-green);
+
+  /**
+   * improve size of initial thumbnail
+   * overwritten by JS later
+   **/
+  height: 100vh;
 }
 
 #uv *:focus {
   box-shadow: none;
+}
+
+#uv .paging .uv-icon-prev,
+#uv .paging .uv-icon-next {
+  background-image: none;
 }
 
 /*#uv br:first-child, (was messing with disclaimer popup) */
@@ -18,6 +38,12 @@
 }
 
 /* overlays */
+
+.uv .centerPanel .content .attribution {
+  z-index: 10;
+  backdrop-filter: blur(2px);
+}
+
 #uv .overlay.download,
 #uv .overlay.share {
   top: auto !important;
@@ -84,30 +110,61 @@
 }
 
 /* UV customizations */
-#uv .footerPanel .options .btn .sr-only {
-  /* not-sr-only */
-  position: static;
-  display: inline-block;
-  width: auto;
-  height: auto;
-  padding: 0;
-  margin: 0;
-  font-size: 14px;
-  font-family: Gotham, sans-serif;
-  font-weight: 500;
-  white-space: normal;
-  vertical-align: inherit;
-  color: var(--green-text);
-  background-color: transparent;
-  overflow: visible;
-  clip: auto;
+#uv .footerPanel .options {
+  padding-inline: 0.75rem;
+
+  .download.btn,
+  .share.btn,
+  .fullScreen.btn {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .btn {
+    font-size: 14px;
+    font-family: Gotham, sans-serif;
+    font-weight: 500;
+    white-space: normal;
+    vertical-align: inherit;
+    color: var(--green-text);
+  }
+
+  /* show button labels */
+  .btn:not(.fullScreen,.exitFullscreen) .sr-only {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    white-space: normal;
+    font: inherit;
+    color: inherit;
+    background-color: initial;
+    overflow: visible;
+    clip: auto;
+  }
 }
-#uv .footerPanel .options .fullScreen.btn .sr-only {
-  float: left;
-  margin-top: 5px;
+
+#uv [href*="download-btn"]:focus-visible {
+  position: absolute;
+  z-index: 999;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0.5rem;
+  padding: 1rem;
+  font-size: 1rem;
+  color: LinkText;
+  text-decoration: underline;
+  text-wrap: balance;
+  border: 2px solid;
 }
+
+#uv .mainPanel {
+  padding-top: 0;
+}
+
 #uv .uv-pdf-extension{
-  padding-top: 2.25rem;
+  /* padding-top: 2.25rem; */
   background-color: #212121;
 }
 #uv .toggle {
@@ -130,9 +187,6 @@
       display: none;
     }
   }
-}
-#uv .overlay .middle .content {
-  padding-bottom: 0;
 }
 #uv .overlay .middle .content a {
   color: #10819A;
@@ -191,11 +245,15 @@
 #uv .btn {
   opacity: 1;
 }
-#uv .btn-default {
+#uv .btn-default:not(.paging) {
   color: #fff;
   background: #565656;
   border-color: #565656;
   text-shadow: none;
+
+  &:hover {
+    background-color: var(--green-text);
+  }
 }
 #uv .btn-primary {
   color: #fff;
@@ -205,6 +263,11 @@
 
 #uv .overlay {
   background-color: transparent;
+}
+#uv .overlay.adjustImage {
+  width: fit-content;
+  height: fit-content;
+  padding: 0;
 }
 
 /* Loading modals */
@@ -252,7 +315,7 @@
   box-shadow: 0 0 0 1px rgb(255 255 255 / 0.3);
 }
 
-/* Zoom Controls */
+/* Zoom Controls always shown (disabled)
 #uv .uv-iiif-extension-host.uv-openseadragon-extension .centerPanel .content .viewer {
   & .zoomIn {
     display: inline-block !important;
@@ -302,3 +365,4 @@
     outline-offset: -2px;
   }
 }
+*/

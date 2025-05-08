@@ -1,23 +1,27 @@
-<script>
-  var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
-  var videoSupported = document.createElement('video').canPlayType('video/mp4')
-    || document.createElement('video').canPlayType(data['mimetype']);
-  var routeTemplate = '<?=$this->url('files', ['id' => '!!!ID!!!', 'type' => '!!!TYPE!!!']) ?>';
-  updateView = mobile ? false : function(data) {
-    if (videoSupported) {
-      var video = $('video');
-      video.trigger('pause');
-      $('#video-mp4').attr('src', routeTemplate.replace('!!!ID!!!', data['id']).replace('!!!TYPE!!!', 'MP4'));
-      $('#video-master').attr('src', routeTemplate.replace('!!!ID!!!', data['id']).replace('!!!TYPE!!!', 'MASTER'));
-      video[0].load();
-    }
-  };
-  $(document).ready(function() {
-    currentTab = "master-tab";
-    $('#view .nav-tabs li.opener a').addClass('hidden');
-  });
-</script>
-<ul class="nav nav-tabs">
+<?php
+  $routeTemplate = $this->url('files', ['id' => '!!!ID!!!', 'type' => '!!!TYPE!!!']);
+  $js = <<<JS
+      var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
+      var videoSupported = document.createElement('video').canPlayType('video/mp4')
+        || document.createElement('video').canPlayType(data['mimetype']);
+      var routeTemplate = '{$routeTemplate}';
+      updateView = mobile ? false : function(data) {
+        if (videoSupported) {
+          var video = \$('video');
+          video.trigger('pause');
+          \$('#video-mp4').attr('src', routeTemplate.replace('!!!ID!!!', data['id']).replace('!!!TYPE!!!', 'MP4'));
+          \$('#video-master').attr('src', routeTemplate.replace('!!!ID!!!', data['id']).replace('!!!TYPE!!!', 'MASTER'));
+          video[0].load();
+        }
+      };
+      \$(document).ready(function() {
+        currentTab = "master-tab";
+        \$('#view .nav-tabs li.opener a').addClass('hidden');
+      });
+      JS;
+  echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $js, 'SET');
+  ?>
+  <ul class="nav nav-tabs">
   <li class="static opener">
     <a onClick="toggleSideNav()">
       <i class="fa fa-caret-right"></i>

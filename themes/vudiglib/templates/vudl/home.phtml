@@ -360,99 +360,38 @@
     <!-- <li><a href="https://www.historypin.org/en/person/91207" title="Historypin"><img src="<?=$this->imageLink('32x32/historypin.png') ?>" /></a></li> -->
 </ul>
 
-<!--
-<div class="p-4 pb-8 pr-0">
-    <h2 class="text-xl mb-4 text-left">About Villanova</h2>
-    <div class="photorow">
-        <div class="photorow__container z-10">
-            <script>
-                for (let i = 0; i < 0; i++) { // disabled
-                    let w = Math.floor(Math.random() * 100) + 100;
-                    let h = Math.floor(Math.random() * 100) + 240;
-                    document.write(`
-                        <a class="photorow__item item-${i}" href="#">
-                            <img class="photorow__img" src="http://www.loremimages.com?size=${w}x${h}" alt=""/>
-                        </a>
-                    `);
-                }
-            </script>
-        </div>
-    </div>
-</div>
+<?php
+  $randomImage = json_encode($displayConfig->heroImages);
+  $js = <<<JS
+      // Copyright date
+      document.querySelectorAll("[data-date]").forEach((el) => {
+          let date = new Date(el.dataset.date);
+          el.innerHTML = date.toLocaleString(
+              "en-US",
+              { dateStyle: "medium" }
+          );
+      });
 
-<div class="p-4 pb-8 pr-0">
-    <h2 class="text-xl mb-4 text-left">Latest Items</h2>
-    <div class="photorow">
-        <div class="photorow__container z-10">
-            <script>
-                for (let i = 0; i < 0; i++) { // disabled
-                    let w = Math.floor(Math.random() * 100) + 100;
-                    let h = Math.floor(Math.random() * 100) + 240;
-                    document.write(`
-                        <a class="photorow__item item-${i}" href="#">
-                            <img class="photorow__img" src="http://www.loremimages.com?size=${w}x${h}" alt=""/>
-                        </a>
-                    `);
-                }
-            </script>
-        </div>
-    </div>
-</div>
--->
+      // Hover info
+      const contentEls = document.querySelectorAll(`[data-content]`);
+      document.querySelectorAll("[data-reveal]").forEach((trigger) => {
+          const id = trigger.dataset.reveal;
+          const content = document.querySelector(`[data-content="\${id}"]`);
 
-<script>
-    // Copyright date
-    document.querySelectorAll("[data-date]").forEach((el) => {
-        let date = new Date(el.dataset.date);
-        el.innerHTML = date.toLocaleString(
-            "en-US",
-            { dateStyle: "medium" }
-        );
-    });
+          trigger.addEventListener("mouseover", (e) => {
+              contentEls.forEach((el) => el.classList.remove("is-active"));
+              content.classList.add("is-active");
+          }, false);
 
-    // Hover info
-    const contentEls = document.querySelectorAll(`[data-content]`);
-    document.querySelectorAll("[data-reveal]").forEach((trigger) => {
-        const id = trigger.dataset.reveal;
-        const content = document.querySelector(`[data-content="${id}"]`);
+          trigger.addEventListener("mouseout", (e) => {
+              setTimeout(() => {
+                  content.classList.remove("is-active");
+              }, 100);
+          }, false);
+      });
 
-        trigger.addEventListener("mouseover", (e) => {
-            contentEls.forEach((el) => el.classList.remove("is-active"));
-            content.classList.add("is-active");
-        }, false);
-
-        trigger.addEventListener("mouseout", (e) => {
-            setTimeout(() => {
-                content.classList.remove("is-active");
-            }, 100);
-        }, false);
-    });
-
-    /*
-    (function fancyPlaceholder() {
-        let currentPlaceholder = 0;
-        let placeholders = [
-            "Search 1,334,104 scanned pages",
-            "Search 6 barely-used shovels",
-            "Search 42 cursed objects",
-            "Search 138 untranslated manuscripts",
-            "Search 52,411 dime novels",
-            "Search 17 incredible calendars",
-        ];
-
-        const typePlaceholder = createTextAnimator("#searchForm_lookfor", "placeholder");
-
-        function animatePlaceholders() {
-            let text = placeholders[currentPlaceholder];
-            typePlaceholder(text);
-            currentPlaceholder = (currentPlaceholder + 1) % placeholders.length;
-            setTimeout(animatePlaceholders, 8000);
-        }
-
-        // animatePlaceholders();
-    })();
-    //*/
-
-    displayRandomImage(`<?=json_encode($displayConfig->heroImages) ?>`);
-    applyDateGates();
-</script>
+      displayRandomImage(`{$randomImage}`);
+      applyDateGates();
+      JS;
+  echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $js, 'SET');
+?>

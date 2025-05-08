@@ -450,36 +450,14 @@ class VuDLController extends \VuFind\Controller\AbstractBase
     }
 
     /**
-     * Display record in VuDL from Fedora as a grid
+     * Display record in VuDL from Fedora as a grid (removed -- redirect to standard viewer)
      *
      * @return View Object
      */
     public function gridAction()
     {
-        $view = $this->createViewModel();
-        // Target id
         $id = $this->params()->fromRoute('id');
-
-        // Check if we're a ResourceObject || find parent
-        $root = $this->getRoot($id);
-        $view->page = $root == $id ? 0 : $this->getPage($root, $id);
-        $view->id = $root;
-
-        // File information / description
-        $fileDetails = $this->getConnector()->getDetails($root, true);
-        $view->details = $fileDetails;
-
-        // Get ids for all files
-        $outline = $this->getOutline($root);
-
-        // Send the data for the first pages
-        // (Original, Large, Medium, Thumbnail srcs) and THE DOCUMENTS
-        $view->outline = $outline;
-        $parents = $this->getConnector()->getParentList($root);
-        //$keys = array_keys($parents);
-        //$view->hierarchyID = end($keys);
-        $view->parents = $parents;
-        return $view;
+        return $this->redirect()->toRoute('vudl-record-viewer', compact('id'));
     }
 
     /**

@@ -228,11 +228,6 @@ class ManifestGenerator
                 . '">Permanent Link</a>'
                 . '</span>',
         ];
-        // Add disclaimer links to all manifests:
-        $sortedRetVal[] = [
-            'label' => 'Disclaimers',
-            'value' => '<span>' . $this->getDisclaimers() . '</span>',
-        ];
 
         return $sortedRetVal;
     }
@@ -1125,9 +1120,7 @@ class ManifestGenerator
                     $details['description']['value']
                 ) . '</p>'
                 : '',
-            'license' => $license,
             'requiredStatement' => $this->getRequiredStatement($license),
-            'attribution' => 'Digital Library@Villanova University',
             'related' => $this->getRelated($id),
             'within' => $this->getParentData($parents),
         ] + $this->getSequenceData($id, $outline);

@@ -82,6 +82,11 @@
       "thumbnail": "https://digital.library.villanova.edu/files/vudl:604193/THUMBNAIL"
     },
     {
+      "title": "Newtown Square Fire Company",
+      "collection": "https://digital.library.villanova.edu/Collection/vudl:1151820",
+      "thumbnail": "https://digital.library.villanova.edu/files/vudl:1151820/THUMBNAIL"
+    },
+    {
       "title": "Perkasie Historical Society",
       "collection": "https://digital.library.villanova.edu/Item/vudl:345338",
       "thumbnail": "https://digital.library.villanova.edu/files/vudl:345338/THUMBNAIL"
@@ -136,7 +141,12 @@
       "thumbnail": "https://digital.library.villanova.edu/files/vudl:275027/THUMBNAIL"
     },
     {
-      "title": "St. Mary’s Episcopal Church, Wayne",
+      "title": "St. David's Episcopal Church",
+      "collection": "https://digital.library.villanova.edu/Item/vudl:1084528",
+      "thumbnail": "https://digital.library.villanova.edu/files/vudl:1084528/THUMBNAIL"
+    },
+    {
+      "title": "St. Mary's Episcopal Church, Wayne",
       "collection": "https://digital.library.villanova.edu/Item/vudl:751061",
       "thumbnail": "https://digital.library.villanova.edu/files/vudl:751061/THUMBNAIL"
     },

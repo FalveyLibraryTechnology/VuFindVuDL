@@ -1,24 +1,28 @@
-<script>
-  var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
-  var audioSupported = document.createElement('audio').canPlayType('audio/mpeg')
-    || document.createElement('audio').canPlayType('audio/ogg')
-    || document.createElement('audio').canPlayType(data['mimetype']);
-  var routeTemplate = '<?=$this->url('files', ['id' => '!!!ID!!!', 'type' => '!!!TYPE!!!']) ?>';
-  updateView = mobile ? false : function(data) {
-    if (audioSupported) {
-      var audio = $('audio');
-      audio.trigger('pause');
-      $('#audio-ogg').attr('src', routeTemplate.replace('!!!ID!!!', data['id']).replace('!!!TYPE!!!', 'OGG'));
-      $('#audio-mp3').attr('src', routeTemplate.replace('!!!ID!!!', data['id']).replace('!!!TYPE!!!', 'MP3'));
-      $('#audio-master').attr('src', routeTemplate.replace('!!!ID!!!', data['id']).replace('!!!TYPE!!!', 'MASTER'));
-      audio[0].load();
-    }
-  };
-  $(document).ready(function() {
-    currentTab = "master-tab";
-    $('#view .nav-tabs li.opener a').addClass('hidden');
-  });
-</script>
+<?php
+  $routeTemplate = $this->url('files', ['id' => '!!!ID!!!', 'type' => '!!!TYPE!!!']);
+  $js = <<<JS
+      var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
+      var audioSupported = document.createElement('audio').canPlayType('audio/mpeg')
+        || document.createElement('audio').canPlayType('audio/ogg')
+        || document.createElement('audio').canPlayType(data['mimetype']);
+      var routeTemplate = '{$routeTemplate}';
+      updateView = mobile ? false : function(data) {
+        if (audioSupported) {
+          var audio = \$('audio');
+          audio.trigger('pause');
+          \$('#audio-ogg').attr('src', routeTemplate.replace('!!!ID!!!', data['id']).replace('!!!TYPE!!!', 'OGG'));
+          \$('#audio-mp3').attr('src', routeTemplate.replace('!!!ID!!!', data['id']).replace('!!!TYPE!!!', 'MP3'));
+          \$('#audio-master').attr('src', routeTemplate.replace('!!!ID!!!', data['id']).replace('!!!TYPE!!!', 'MASTER'));
+          audio[0].load();
+        }
+      };
+      \$(document).ready(function() {
+        currentTab = "master-tab";
+        \$('#view .nav-tabs li.opener a').addClass('hidden');
+      });
+      JS;
+  echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $js, 'SET');
+?>
 <ul class="nav nav-tabs">
   <li class="static opener">
     <a onClick="toggleSideNav()">

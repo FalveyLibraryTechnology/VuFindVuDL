@@ -31,9 +31,15 @@
   <?php endif; ?>
   <?php if(in_array('LARGE', $this->datastreams)): ?>
     <div class="tab-pane" id="large" aria-hidden="true" tabindex="0">
-      <script type="text/template" class="template">
-        <img src="<?=$this->url('files', ['id' => $id, 'type' => 'LARGE']) ?>" onLoad="$('.pages .selected.loading').removeClass('loading');"/>
-      </script>
+      <?php
+        $template = '<img src="'
+          . $this->url('files', ['id' => $id, 'type' => 'LARGE'])
+          . '" onLoad="$(\'.pages .selected.loading\').removeClass(\'loading\');"/>';
+        $this->inlineScript()->setAllowArbitraryAttributes(true);
+        // We need to use inlineScript to add a nonce to our template, but it includes comments that
+        // mess things up, so we have to use str_replace to eliminate them.
+        echo str_replace(['//<!--', '//-->'], '', $this->inlineScript()->setScript($template, 'text/template', ['class' => 'template']));
+      ?>
     </div>
     <div class="tab-pane" id="zoom">
       <a class="btn btn-default" onClick="Zoomy.turnLeft()"><i class="fa fa-rotate-left"></i></a>
@@ -66,52 +72,57 @@
     <div class="accordion" id="techinfo"><?=$this->techinfo['div'] ?? '' ?></div>
   </div>
 </div>
-<script>
-  var routeTemplate = '<?=$this->url('files', ['id' => '!!!ID!!!', 'type' => '!!!TYPE!!!']) ?>';
-  function updateView(data) {
-    $('.pages .selected.loading').addClass('loading');
-    $('.loading-bar').removeClass('hidden');
-    var idRoute = routeTemplate.replace('!!!ID!!!', data['id']);
-    $('#id-route').attr('src', idRoute);
-    $('#medium img').attr('src', idRoute.replace('!!!TYPE!!!', 'MEDIUM'));
-    var largeFile = idRoute.replace('!!!TYPE!!!', 'LARGE');
-    $('#large img').attr('src', largeFile);
-    //Zoomy.load(largeFile);
-    current = data;
-    if($('#view .nav-tabs li.active a').data('target') === '#zoom') {
-      Zoomy.load(largeFile, function(){
-        $('.pages .selected.loading').removeClass('loading');
-        $('.loading-bar').addClass('hidden');
-      });
-    } else {
-        $('.loading-bar').addClass('hidden');
-    }
-  }
-  $(document).ready(function() {
-    var current = <?=json_encode($this->outline['current']) ?>;
-    getTechInfo(current);
-    $('#view .nav.nav-tabs a').click(function (e) {
-      e.preventDefault();
-      $(this).tab('show');
-      var $tab = $($(this).attr('data-target'));
-      var template = $tab.find('.template');
-      if(template.length > 0) {
-        $tab.prepend(template.html());
-        template.remove();
+<?php
+  $routeTemplate = $this->url('files', ['id' => '!!!ID!!!', 'type' => '!!!TYPE!!!']);
+  $current = json_encode($this->outline['current']);
+  $js = <<<JS
+      var routeTemplate = '{$routeTemplate}';
+      function updateView(data) {
+        \$('.pages .selected.loading').addClass('loading');
+        \$('.loading-bar').removeClass('hidden');
+        var idRoute = routeTemplate.replace('!!!ID!!!', data['id']);
+        \$('#id-route').attr('src', idRoute);
+        \$('#medium img').attr('src', idRoute.replace('!!!TYPE!!!', 'MEDIUM'));
+        var largeFile = idRoute.replace('!!!TYPE!!!', 'LARGE');
+        \$('#large img').attr('src', largeFile);
+        //Zoomy.load(largeFile);
+        current = data;
+        if(\$('#view .nav-tabs li.active a').data('target') === '#zoom') {
+          Zoomy.load(largeFile, function(){
+            \$('.pages .selected.loading').removeClass('loading');
+            \$('.loading-bar').addClass('hidden');
+          });
+        } else {
+            \$('.loading-bar').addClass('hidden');
+        }
       }
-    });
-    $('#view [data-target="#zoom"]').click(function (e) {
-      $('.pages .selected').addClass('loading');
-      $('.loading-bar').removeClass('hidden');
-      if(!Zoomy.initialized) Zoomy.init(document.getElementById('zoomy'));
-      Zoomy.load($('#id-route').attr('src').replace('!!!TYPE!!!', 'LARGE'), function(){
-        $('.pages .selected.loading').removeClass('loading');
-        $('.loading-bar').addClass('hidden');
+      \$(document).ready(function() {
+        var current = {$current};
+        getTechInfo(current);
+        \$('#view .nav.nav-tabs a').click(function (e) {
+          e.preventDefault();
+          \$(this).tab('show');
+          var \$tab = \$(\$(this).attr('data-target'));
+          var template = \$tab.find('.template');
+          if(template.length > 0) {
+            \$tab.prepend(template.html());
+            template.remove();
+          }
+        });
+        \$('#view [data-target="#zoom"]').click(function (e) {
+          \$('.pages .selected').addClass('loading');
+          \$('.loading-bar').removeClass('hidden');
+          if(!Zoomy.initialized) Zoomy.init(document.getElementById('zoomy'));
+          Zoomy.load(\$('#id-route').attr('src').replace('!!!TYPE!!!', 'LARGE'), function(){
+            \$('.pages .selected.loading').removeClass('loading');
+            \$('.loading-bar').addClass('hidden');
+          });
+        });
+        if(['#large', '#zoom', '#master'].indexOf(window.location.hash) > -1) {
+          \$('#view [data-target="'+window.location.hash+'"]').click();
+          \$(document).scrollTop(0);
+        }
       });
-    });
-    if(['#large', '#zoom', '#master'].indexOf(window.location.hash) > -1) {
-      $('#view [data-target="'+window.location.hash+'"]').click();
-      $(document).scrollTop(0);
-    }
-  });
-</script>
+      JS;
+  echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $js, 'SET');
+?>

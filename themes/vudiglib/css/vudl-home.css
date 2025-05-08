@@ -135,9 +135,13 @@ h3 a {
     background-color: transparent;
   }
 
+  .villanova-header,
   .falvey-header {
     position: relative;
     z-index: 20;
+  }
+
+  .falvey-header {
     margin-bottom: -56px;
     background-color: rgba(0, 31, 91, 0.7);
   }
@@ -179,6 +183,22 @@ h3 a {
   --bg-opacity: 0.9;
 
   padding-inline: 1rem;
+}
+
+/* -- Search -- */
+@media (min-width: 1024px) and (max-width: 1280px) {
+  .searchForm-inputs {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    row-gap: 0;
+
+    .searchForm-query {
+      grid-column: 1 / -1;
+    }
+    .searchForm_lookfor {
+      max-width: none;
+    }
+  }
 }
 
 #searchForm.searchForm {
@@ -352,10 +372,6 @@ h3 a {
 .favicons li a {
   display: inline-block;
   padding: 0.5rem;
-}
-
-.vu-links-footer {
-  margin-bottom: 0;
 }
 
 .icon--svg {

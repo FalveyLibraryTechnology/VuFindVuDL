@@ -1,0 +1,231 @@
+{
+    "Collections": {
+        "root": "/collections",
+        "sections": {
+            "Tools": {
+                "root": "/collections/tools",
+                "header": {
+                    "Search Everything": "/Find",
+                    "Journal and Article Finder": "/collections/tools/journals",
+                    "Databases A-Z": "/collections/tools/databases",
+                    "Browse Alphabetically by Heading": "/Find/Alphabrowse",
+                    "Interactive Stacks Map": "/collections/tools/interactive-map",
+                    "Course Reserves Search": "/Find/Search/Reserves"
+                }
+            },
+            "Collection Development": {
+                "root": "/collections/development",
+                "header": {
+                    "Suggest a Purchase": "/about-falvey/contact-us/tsorder",
+                    "Give to the Library": "/collections/development/give",
+                    "Collection Development Statements": "/collections/development/collection-development-statements"
+                }
+            },
+            "Distinctive Collections": {
+                "root": "/collections/distinctive",
+                "header": {
+                    "Special Collections": "/collections/distinctive/specialcollections",
+                    "Digital Library": "https://digital.library.villanova.edu",
+                    "Online Library Exhibits": "https://exhibits.library.villanova.edu/",
+                    "University Archives": "/collections/distinctive/archives"
+                }
+            },
+            "Highlighted Collections": {
+                "root": "/collections/highlighted-collections",
+                "header": {
+                    "Cabrini University Legacy Collection": "/cabrini",
+                    "DEI Award Recognized Books": "/collections/highlighted-collections/dei-award-recognized-books",
+                    "Faculty Recognition Collection": "/about-falvey/library-initiatives/faculty-recognition-collection",
+                    "Popular Reading": "/collections/highlighted-collections/popular-reading"
+                }
+            }
+        }
+    },
+    "Research Services": {
+        "root": "/research",
+        "sections": {
+            "Ask a Librarian": {
+                "root": "/research/consult-expert",
+                "header": {
+                    "Find your Subject Librarian": "/research/consult-expert/find-specialist",
+                    "Schedule a Research Consultation": "/research/consult-expert/resappt",
+                    "Ask Us": "/about-falvey/contact-us/askform"
+                }
+            },
+            "Guides and Tools": {
+                "root": "/research/self-help",
+                "header": {
+                    "Subject Guides": "/research/subject-guides/",
+                    "Course Guides": "/research/course-guides/",
+                    "How-to Guides": "/research/self-help/general-tutorials",
+                    "Citation Resources": "/research/subject-guides/citing-your-sources"
+                }
+            },
+            "Teaching and Learning": {
+                "root": "/research/teaching-and-learning",
+                "header": {
+                    "Library Workshops and Presentations": "/research/teaching-and-learning/demand-training",
+                    "Instruction and Information Literacy": "/research/teaching-and-learning/informationliteracyprogram",
+                    "Academic Integrity": "/research/subject-guides/academicintegrity",
+                    "Open Educational Resources": "/research/teaching-and-learning/open-educational-resources-oer"
+                }
+            },
+            "Digital Research and Publishing Support": {
+                "root": "/research/digital-research-and-publishing-support",
+                "header": {
+                    "Digital Scholarship": "/digital-scholarship",
+                    "Data Resources": "/research/data-services",
+                    "Publishing, Copyright, and Sharing Your Work": "/research/digital-research-and-publishing-support/publishing-copyright-and-sharing-your-work"
+                }
+            }
+        }
+    },
+    "Using the Library": {
+        "root": "/using-the-library",
+        "sections": {
+            "Access": {
+                "root": "/using-the-library/access",
+                "header": {
+                    "Hours": "/using-the-library/access/LibraryHours",
+                    "Pick Up & Go": "/using-the-library/pick-up-and-go",
+                    "Courtesy Membership": "/using-the-library/access/courtesy-memberships",
+                    "Off-Campus Access": "/using-the-library/access/offcampusaccess",
+                    "Accessibility": "/using-the-library/access/accessibility",
+                    "Library Policies": "/using-the-library/access/library-policies"
+                }
+            },
+            "Spaces": {
+                "root": "/using-the-library/spaces",
+                "header": {
+                    "24/7 Study Space": "/using-the-library/spaces/24hourstudylounge",
+                    "Griffin Room": "/research/teaching-and-learning/informationliteracyprogram/griffinaccess",
+                    "Holy Grounds Cafe": "https://www1.villanova.edu/university/dining/where-to-eat/falvey-library.html",
+                    "Digital Scholarship Lab": "/digital-scholarship/lab",
+                    "Group Study Rooms": "/using-the-library/spaces/groupstudyrooms",
+                    "Idea Lab": "https://www1.villanova.edu/content/university/institutes-centers/innovation-entrepreneurship/idea-lab.html",
+                    "Immersive Studies CAVE": "https://www1.villanova.edu/villanova/artsci/ceet/cave.html",
+                    "Building Map": "/collections/tools/interactive-map",
+                    "Request an Event Venue": "/events/submit-event"
+                }
+            },
+            "Technology": {
+                "root": "/using-the-library/technology",
+                "header": {
+                    "Hardware and Software": "/using-the-library/technology/hardware-and-software",
+                    "Microform Access and Equipment": "/using-the-library/borrow-and-request/finding-and-using-microforms-falvey-library",
+                    "Printing and Scanning": "/using-the-library/technology/printing-scanning-copying",
+                    "Tech Zone": "https://villanova.teamdynamix.com/TDClient/2759/UNIT/Requests/ServiceDet?ID=54645",
+                    "Wireless Network": "https://villanova.teamdynamix.com/TDClient/2759/UNIT/Requests/ServiceCatalog?CategoryID=18259"
+                }
+            },
+            "Borrow and Request": {
+                "root": "/using-the-library/borrow-and-request",
+                "header": {
+                    "Borrow from Falvey Library": "/using-the-library/borrow-and-request/borrowing-policies",
+                    "Borrow from Other Libraries (Interlibrary Loan)": "/using-the-library/illservices",
+                    "Course Reserves": "/using-the-library/borrow-and-request/coursereserves",
+                    "Equipment Loans": "/using-the-library/borrow-and-request/device-loans",
+                    "Extension of Library Privileges": "/using-the-library/borrow-and-request/extendprivilege",
+                    "Special Borrowing Arrangements": "/using-the-library/borrow-and-request/special-borrowing-arrangements",
+                    "Collections Outside of Falvey Library": "/using-the-library/borrow-and-request/collections-outside-falvey-library"
+                }
+            },
+            "Learning Commons": {
+                "root": "/using-the-library/learning-commons",
+                "header": {
+                    "Center for Access, Success and Achievement (CASA)": "https://www1.villanova.edu/villanova/provost/casa.html",
+                    "Center for Speaking and Presentation and Learners' Studio": "https://www1.villanova.edu/villanova/provost/tutoringservices.html",
+                    "Learning Support Services": "https://www1.villanova.edu/villanova/provost/learningsupport.html",
+                    "The Math Center": "https://www1.villanova.edu/university/academic-enterprise/student-support/math-center.html",
+                    "Research Services": "/research",
+                    "Writing Center": "http://www1.villanova.edu/villanova/provost/writingcenter.html"
+                }
+            },
+            "Services For...": {
+                "root": "/using-the-library/services",
+                "header": {
+                    "Undergraduate Students": "/using-the-library/services/services-undergraduate-students",
+                    "Graduate Students": "/research/subject-guides/graduate-student-services",
+                    "Faculty": "/research/subject-guides/faculty-services",
+                    "Distance Learning Students": "/about/services/distancelearning",
+                    "Alumni and Guests": "/using-the-library/services/services-alumni-guests"
+                }
+            }
+        }
+    },
+    "About": {
+        "root": "/about-falvey",
+        "sections": {
+            "Overview": {
+                "root": "/about-falvey/overview",
+                "header": {
+                    "Mission and Values": "/about-falvey/overview#mission",
+                    "Memberships and Consortia": "/about-falvey/overview#memberships",
+                    "Strategic Plan": "/about-falvey/overview#strategic-plan"
+                }
+            },
+            "Library Organization": {
+                "root": "/about-falvey/library-organization",
+                "header": {
+                    "Falvey Departments": "/about-falvey/library-organization/falvey-departments",
+                    "Falvey Committees": "/about-falvey/library-committees",
+                    "Staff Directory": "/about-falvey/contact-us/staff"
+                }
+            },
+            "Events": {
+                "root": "/about-falvey/events",
+                "header": {
+                    "Upcoming Events": "/events",
+                    "General Event Information": "/about-falvey/events/general",
+                    "Request an Event Venue": "/about-falvey/events/submit-event",
+                    "Venue Options": "/about-falvey/events/event-venues"
+                }
+            },
+            "Visit": {
+                "root": "https://www1.villanova.edu/content/university/undergraduate-admission/visit.html",
+                "header": {
+                    "Location and Campus Maps": "https://www1.villanova.edu/university/undergraduate-admission/visit/maps-and-directions.html",
+                    "Hours": "/using-the-library/access/LibraryHours",
+                    "Accessibility": "/using-the-library/access/accessibility"
+                }
+            },
+            "Contact Us": {
+                "root": "/about-falvey/contact-us",
+                "header": {
+                    "Submit a Question": "/about-falvey/contact-us/askform",
+                    "Provide Feedback": "/about-falvey/contact-us/sugform",
+                    "Suggest a Purchase": "/about-falvey/contact-us/tsorder"
+                }
+            },
+            "News": {
+                "root": "https://blog.library.villanova.edu/news",
+                "header": {
+                    "Frequently Asked Questions": "/about-falvey/faq",
+					"Textbook Access Program: Student's Decision": "/research/guides-tools/howto-guides/textbook-access-program-students-decision"
+                }
+            },
+            "Library Initiatives": {
+                "root": "/about-falvey/library-initiatives",
+                "header": {
+                    "Diversity, Equity, and Inclusion": "/about-falvey/library-committees/diversity-equity-and-inclusion-committee",
+                    "Documenting COVID-19 Project": "/about-falvey/library-initiatives/covid-19-project",
+                    "E-Book Matching": "/about-falvey/library-initiatives/e-book-matching",
+                    "Faculty Recognition Collection": "/about-falvey/library-initiatives/faculty-recognition-collection",
+                    "Falvey Library at Vic Maggitti Hall": "https://www1.villanova.edu/university/strategic-plan/vic-maggitti-hall.html",
+                    "Falvey Scholars": "/about-falvey/library-initiatives/falveyscholars",
+                    "Journals Hosted by Falvey Library": "/about-falvey/library-initiatives/journals-at-villanova-university",
+                    "Scholarship Open Access Reserve (SOAR) Fund": "/about-falvey/library-initiatives/open",
+                    "Voices of Villanova's Veterans": "https://veteransvoices.library.villanova.edu",
+                    "VuFind®": "https://vufind.org"
+                }
+            },
+            "Give to the Library": {
+                "root": "/collections/development/give"
+            },
+            "Jobs @ Falvey": {
+                "root": "/jobs",
+                "header": {}
+            }
+        }
+    }
+}

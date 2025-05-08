@@ -1,5 +1,6 @@
 <?php
-  $this->headTitle($this->translate($this->title) . ' - ' . $this->details['title']['value']);
+  $titleDetails = $this->details['title']['value'] ?? '';
+  $this->headTitle($this->translate($this->title) . ' - ' . $titleDetails);
 
   // Multiple breadcrumbs
   $this->layout()->breadcrumbs = $this->render(
@@ -8,7 +9,7 @@
         'breadcrumbs' => $this->parents,
         'from' => $this->from,
         'end' => $this->breadcrumbEnd,
-        'title' => $this->details['title']['value'],
+        'title' => $titleDetails,
       ]
   );
 
@@ -52,16 +53,20 @@
   $cachedImageRoute = function ($id, $type) use ($imgRouteTemplate) {
     return str_replace(['!!!ID!!!', '!!!TYPE!!!'], [$id, $type], $imgRouteTemplate);
   };
+
+  $outlineJson = str_replace('\"', "\'", json_encode($this->outline['lists'][$this->initList][$this->initPage], JSON_HEX_APOS | JSON_HEX_AMP));
+  $countsJson = json_encode($this->outline['counts'], JSON_HEX_APOS | JSON_HEX_AMP);
+  $setupJs = <<<JS
+      var documentID = '{$this->id}';
+      var initPage = \$.parseJSON('$outlineJson');
+      var currentList = {$this->initList};
+      counts = \$.parseJSON('$countsJson');
+      JS;
+  if (count($this->outline['lists'][$this->initList]) >= $this->outline['counts'][$this->initList]) {
+    $setupJs .= 'loading_pages = false;';
+  }
+  echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $setupJs, 'SET');
 ?>
-<script>
-  var documentID = '<?=$this->id ?>';
-  var initPage = $.parseJSON('<?=str_replace('\"', "\'", json_encode($this->outline['lists'][$this->initList][$this->initPage], JSON_HEX_APOS | JSON_HEX_AMP)) ?>');
-  var currentList = <?=$this->initList ?>;
-  counts = $.parseJSON('<?=json_encode($this->outline['counts'], JSON_HEX_APOS | JSON_HEX_AMP) ?>');
-  <?php if(count($this->outline['lists'][$this->initList]) >= $this->outline['counts'][$this->initList]): ?>
-    loading_pages = false;
-  <?php endif; ?>
-</script>
 <?php if ($this->beta_ready !== false): ?>
   <div class="beta-banner">You are viewing our old interface! <a href="<?=$this->url('vudl-record-viewer', ['id' => $this->beta_ready]); ?>">Click here</a> to try out the new version!</div>
 <?php endif; ?>
@@ -119,44 +124,47 @@
   </div>
 </div>
 
-<script>
-  // AJAX CALL THEN LINK TO SWITCH
-  var currentView = '<?=$this->outline['current']['filetype'] ?>';
-  function getTechInfo(object) {
-    $('#download-button').attr('href', VuFind.path+'/files/'+object.id+'/MASTER?download=true');
-    $.ajax({dataType:'json',
-      type:'post',
-      url:VuFind.path+'/VuDL/ajax?method=getTechInfo',
-      data:object,
-      success: function (d) {
-        $('#techinfo').html(d.data.div);
-        if(typeof d.data.type !== "undefined") {
-          $('#download-button .details').html(d.data.type+' ~ '+d.data.size);
-        }
-        if($('#view .nav-tabs li.active a').data('target') === '#master') {
-          $('.pages .loading').removeClass('loading');
-        }
-      },
-      error: function (d,e) {
-        try {
-          const json = JSON.parse(d.responseText);
-          console.log(json.errors[0].message);
-        } catch (e) {
-          console.log(d.responseText);
-          console.log(e);
-        }
+<?php
+  $ajaxJs = <<<JS
+      // AJAX CALL THEN LINK TO SWITCH
+      var currentView = '{$this->outline['current']['filetype']}';
+      function getTechInfo(object) {
+        \$('#download-button').attr('href', VuFind.path+'/files/'+object.id+'/MASTER?download=true');
+        \$.ajax({dataType:'json',
+          type:'post',
+          url:VuFind.path+'/VuDL/ajax?method=getTechInfo',
+          data:object,
+          success: function (d) {
+            \$('#techinfo').html(d.data.div);
+            if(typeof d.data.type !== "undefined") {
+              \$('#download-button .details').html(d.data.type+' ~ '+d.data.size);
+            }
+            if(\$('#view .nav-tabs li.active a').data('target') === '#master') {
+              \$('.pages .loading').removeClass('loading');
+            }
+          },
+          error: function (d,e) {
+            try {
+              const json = JSON.parse(d.responseText);
+              console.log(json.errors[0].message);
+            } catch (e) {
+              console.log(d.responseText);
+              console.log(e);
+            }
+          }
+        });
       }
-    });
-  }
-  $.ajax({
-    url:VuFind.path+'/VuDL/ajax?method=getOutline&root=<?=$this->id ?>&id=<?=$this->outline['current']['id'] ?>&full=true',
-    dataType: "json",
-    success: function (data) {
-      setupOutline(data.data);
-    },
-    error: function(xhr, textStatus, errorThrown) {
-      setupOutline(JSON.parse(xhr.responseText).data);
-      console.log('ready');
-    }
-  });
-</script>
+      \$.ajax({
+        url:VuFind.path+'/VuDL/ajax?method=getOutline&root={$this->id}&id={$this->outline['current']['id']}&full=true',
+        dataType: "json",
+        success: function (data) {
+          setupOutline(data.data);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+          setupOutline(JSON.parse(xhr.responseText).data);
+          console.log('ready');
+        }
+      });
+      JS;
+  echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $ajaxJs, 'SET');
+?>

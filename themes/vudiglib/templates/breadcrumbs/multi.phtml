@@ -18,5 +18,3 @@
 <?php else: ?>
   <li class="active" title="<?=$this->escapeHtmlAttr($title) ?>"><?=$this->escapeHtml($this->truncate($title, 100)) ?></li>
 <?php endif; ?>
-<?php $dropdownToggle = '$(\'.dropdown-toggle\').dropdown()'; ?>
-<?=$this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $dropdownToggle, 'SET'); ?>

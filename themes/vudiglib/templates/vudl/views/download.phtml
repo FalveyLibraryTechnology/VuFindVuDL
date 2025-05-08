@@ -11,17 +11,20 @@
 <div class="tab-container text-center tab-content">
   <?=$this->context($this)->renderInContext('vudl/master-tab.phtml', [])?>
 </div>
-<script>
-  // Mandatory update function
-  updateView = function(data) {
-    setTimeout(function() {
-      $('.pages .selected.loading').removeClass('loading');
-    }, 300);
-  };
-  $(document).ready(function() {
-    var current = <?=json_encode($this->outline['current']) ?>;
-    $('#view .nav-tabs li.opener a').addClass('hidden');
-    $('.pages .selected.loading').removeClass('loading');
-    getTechInfo(current);
-  });
-</script>
+<?php
+  $current = json_encode($this->outline['current']);
+  $js = <<<JS
+      updateView = function(data) {
+        setTimeout(function() {
+          \$('.pages .selected.loading').removeClass('loading');
+        }, 300);
+      };
+      $(document).ready(function() {
+        var current = {$current};
+        \$('#view .nav-tabs li.opener a').addClass('hidden');
+        \$('.pages .selected.loading').removeClass('loading');
+        getTechInfo(current);
+      });
+      JS;
+  echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $js, 'SET');
+?>
