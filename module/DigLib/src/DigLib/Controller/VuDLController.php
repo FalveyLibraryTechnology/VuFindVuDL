@@ -1,7 +1,6 @@
 <?php
 
 /**
-***MOD
  * VuDLController Module Controller
  *
  * PHP Version 7
@@ -844,40 +843,19 @@ class VuDLController extends \VuFind\Controller\AbstractBase
      *
      * @return array
      */
-    // protected function getIdsFromManifest($data)
-    // {
-    //     $ids = [];
-    //     if (isset($data['sequences'][0]['canvases'])) {
-    //         foreach ($data['sequences'][0]['canvases'] as $canvas) {
-    //             preg_match(
-    //                 '/vudl:[0-9]+/',
-    //                 $canvas['rendering'][0]['@id'] ?? '',
-    //                 $matches
-    //             );
-    //             if (isset($matches[0])) {
-    //                 $ids[] = $matches[0];
-    //             }
-    //         }
-    //     }
-    //     return $ids;
-    // }
-
     protected function getIdsFromManifest($data)
     {
         $ids = [];
-		
-        if (isset($data['items'][0]['rendering'])) {
-            
-            foreach ($data['items'] as $canvas) {
-                preg_match(
-                    '/vudl:[0-9]+/',
-                    $canvas['rendering'][0]['id'] ?? '',
-                    $matches
-                );
-                
-                if (isset($matches[0])) {
-                    $ids[] = $matches[0];
-                }
+
+        foreach ($data['items'] as $canvas) {
+            preg_match(
+                '/vudl:[0-9]+/',
+                $canvas['rendering'][0]['id'] ?? '',
+                $matches
+            );
+
+            if (isset($matches[0])) {
+                $ids[] = $matches[0];
             }
         }
         return $ids;

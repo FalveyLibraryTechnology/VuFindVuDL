@@ -168,8 +168,6 @@ function setupUV4(configUri, phpData, uvOptions) {
 				const formatItem = document.querySelector(
 					".item._format, .item._language",
 				);
-				//console.log(document);
-				//console.log(formatItem);
 				if (formatItem) {
 					formatItem.parentNode.insertBefore(item, formatItem);
 				} else {

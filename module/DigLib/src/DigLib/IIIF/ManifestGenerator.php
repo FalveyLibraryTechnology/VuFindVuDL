@@ -1,7 +1,6 @@
 <?php
 
 /**
- *** Mod
  * IIIF manifest generator
  *
  * PHP Version 7
@@ -203,8 +202,8 @@ class ManifestGenerator
             if (!in_array($key, $skip)) {
                 $value = (array)$current['value'];
                 $retVal[$key] = [
-                    'label' => ['en' =>[$current['title']]],
-                    'value' => ['en' =>[$this->formatManifestMetadataValues($key, $value)]],
+                    'label' => ['en' => [$current['title']]],
+                    'value' => ['en' => [$this->formatManifestMetadataValues($key, $value)]],
                 ];
             }
         }
@@ -221,8 +220,8 @@ class ManifestGenerator
         $recordUrl = $this->getUri('record', ['id' => $id]);
         $persistUrl = $this->getUri('vudl-record', ['id' => $id]);
         $sortedRetVal[] = [
-            'label' => ['en' =>['About']],
-            'value' => ['en' =>['<span>'
+            'label' => ['en' => ['About']],
+            'value' => ['en' => ['<span>'
                 . '<a href="' . htmlspecialchars($recordUrl)
                 . '">More Details</a><br />'
                 . '<a href="' . htmlspecialchars($persistUrl)
@@ -301,11 +300,12 @@ class ManifestGenerator
     /**
      * Build JSON data for a single canvas.
      *
-     * @param string $id   Record ID
-     * @param int    $i    Position of canvas in overall array (used for canvas
-     * ID generation)
-     * @param array  $raw  Raw data to format into canvas
-     * @param string $type Type of list ('image' or 'audio')
+     * @param string $id      Record ID
+     * @param int    $i       Position of canvas in overall array (used for canvas
+     *                        ID generation)
+     * @param array  $raw     Raw data to format into canvas
+     * @param string $type    Type of list ('image' or 'audio')
+     * @param array  $list    List to check
      * @param array  $outline Outline data
      *
      * @return array
@@ -341,14 +341,14 @@ class ManifestGenerator
                 'height' => $height,
                 'width' => $width,
                 'items' => [[
-                    
+
                         'id' => $this->getUri('record', ['id' => $id]),
                         'type' => 'AnnotationPage',
                         'items' => [[
                             'id' => $imageUrl,
                             'type' => 'Annotation',
                             'motivation' => 'painting',
-                            'body' =>[
+                            'body' => [
                                 'id' => $imageServerBase . urlencode($raw['id']),
                                 'type' => 'Image',
                                 'format' => $mimeType,
@@ -361,11 +361,12 @@ class ManifestGenerator
                             'height' => $height,
                             'width' => $width,
                             'target' => $canvasUrl,
-                        ]
-                    ],
-                ] ,
-            ],
-        ];
+                            'thumbnail' => $this->getThumbnail($raw, $type),
+                        ],
+                        ],
+                ],
+                ],
+            ];
         } else {
             // Format as a generic download:
             $url = $this->getUri(
@@ -391,10 +392,11 @@ class ManifestGenerator
                                     'id' => $url,
                                     'type' => $preferredType,
                                     'format' => $preferredRendering ?? '',
-                                    'label' => ['en' =>[$raw['label']]],
+                                    'label' => ['en' => [$raw['label']]],
                                     'description' => $description,
                                 ],
                                 'target' => $canvasUrl,
+                                'thumbnail' => $this->getThumbnail($raw, $type),
                             ],
                         ],
                     ],
@@ -405,7 +407,7 @@ class ManifestGenerator
         return [
             'type' => $canvasType,
             'id' => $canvasUrl,
-            'label' => ['en' =>[$raw['label'] ]]?? '-',
+            'label' => ['en' => [$raw['label'] ]] ?? '-',
             'rendering' => $this->getSequenceRenderingData($outline, $list, $raw),
             'thumbnail' => $this->getThumbnail($raw, $type),
         ] + $content;
@@ -642,7 +644,7 @@ class ManifestGenerator
             'type' => 'rendering',
             'id' => $url,
             'format' => $mime,
-            'label' => ['en' =>[empty($label) ? "Download as {$mime}" : $label]],
+            'label' => ['en' => [empty($label) ? "Download as {$mime}" : $label]],
         ];
     }
 
@@ -735,6 +737,7 @@ class ManifestGenerator
      *
      * @param array $outline    Outline data.
      * @param array $canvasList List chosen as primary canvas list for manifest
+     * @param array $raw        Raw data.
      *
      * @return array
      */
@@ -753,7 +756,7 @@ class ManifestGenerator
                     $hasMixedList = true;
                 }
             } elseif ($this->isPdfList($list) && $this->isPdfList($canvasList)) {
-                $filtered = $this->filterPdfList($list);              
+                $filtered = $this->filterPdfList($list);
                 if (count($filtered['other']) > 0) {
                     $renderings = array_merge(
                         $renderings,
@@ -793,7 +796,7 @@ class ManifestGenerator
         return [
             'type' => 'Canvas',
             'id' => $canvasUrl,
-            'label' => ['en' =>['Placeholder image']],
+            'label' => ['en' => ['Placeholder image']],
             'height' => 600,
             'width' => 600,
             'images' => [
@@ -827,7 +830,7 @@ class ManifestGenerator
             . 'incompatible with IIIF viewers.';
         return [
             'type' => 'item',
-            'label' => ['en' =>[$label]],
+            'label' => ['en' => [$label]],
             'compatibilityHint' => 'displayIfContentUnsupported',
             'canvases' => [ $this->getPlaceholderCanvas($id) ],
         ];
@@ -845,7 +848,7 @@ class ManifestGenerator
     {
         $list = $this->getListForCanvas($outline);
         $type = $this->getListType($list);
-        
+
         $items = [];
         foreach ($list as $i => $current) {
             $items[] = $this->getSingleCanvas(
@@ -894,7 +897,7 @@ class ManifestGenerator
             'id' => $this->getUri('vudl-record', compact('id')),
             'type' => 'Text',
             'format' => 'text/html',
-            'label' => ['en'=>['More Details']]
+            'label' => ['en' => ['More Details']],
         ];
     }
 
@@ -976,8 +979,8 @@ class ManifestGenerator
             . '" alt="' . htmlspecialchars($licenseData['alt']) . '">'
             : htmlspecialchars($licenseData['text']);
         return [
-            'label' => ['en'=>['ATTRIBUTION']],
-            'value' => ['en'=>['<span>Digital Library@Villanova University'
+            'label' => ['en' => ['ATTRIBUTION']],
+            'value' => ['en' => ['<span>Digital Library@Villanova University'
             . '<br /><br /><b>Disclaimers</b>: <br />'
             . $this->getDisclaimers() . '<br /><br />'
             . '<b>License</b>: <br />'
@@ -1006,19 +1009,19 @@ class ManifestGenerator
             'id' => $uri,
             'label' =>  [
                 'en' => [
-                    $details['title']['value'] ?? 'Untitled'
-                ]
+                    $details['title']['value'] ?? 'Untitled',
+                ],
                 ],
             'metadata' => $this->extractManifestMetadata($id, $details),
-            'summary' => ['en'=>[ 
+            'summary' => ['en' => [
                 isset($details['description']['value'])
                 ? '<p>' . str_replace(
                     ['<div', '</div'],
                     ['<p', '</p'],
                     $details['description']['value']
                 ) . '</p>'
-                : ''
-                ]
+                : '',
+                ],
             ],
             'requiredStatement' => $this->getRequiredStatement($license),
             'seeAlso' => [$this->getRelated($id)],

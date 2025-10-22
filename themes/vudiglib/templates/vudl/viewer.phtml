@@ -1,5 +1,4 @@
 <?php
-//MOD
   // Set page title.
   $this->headTitle($this->title . ' - ' . $this->itemTitle);
 
@@ -62,7 +61,7 @@
       </div>
       <div class="col-sm-9">
         <table class="table table-striped">
-          <?php foreach($this->metadata as $data):  ?>
+          <?php foreach($this->metadata as $data): ?>
             <tr>
               <th><?=$data['label']['en'][0] ?></th>
               <td><?=$data['value']['en'][0] ?></td>
