@@ -53,7 +53,7 @@
         "shareDialogue": {
             "options": {
                 "embedEnabled": true,
-                "embedTemplate": "<iframe src=\"{0}\" width=\"{1}\" height=\"{2}\" allowfullscreen frameborder=\"0\" title=\"{3}\"></iframe>"
+                "embedPath": "/themes/vudiglib/assets/uv-4.2.0/uv.html"
             }
         },
         "treeViewLeftPanel": {

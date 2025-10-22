@@ -421,7 +421,10 @@ document.addEventListener("click", (event) => {
 
 const $UV = $("#uv");
 function resizeUV() {
-	$UV.height(window.innerHeight - $UV.offset().top);
+	const height = window.innerWidth < 640
+		? window.innerHeight - 40 // full size on mobile
+		: window.innerHeight - $UV.offset().top;
+	$UV.height(height);
 	uv.resize();
 }
 window.addEventListener("resize", resizeUV);
