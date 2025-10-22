@@ -61,7 +61,7 @@
 </div>
 -->
 
-<?php // $this->inlineScript(\Laminas\View\Helper\HeadScript::FILE, 'https://libraryh3lp.com/js/libraryh3lp.js?multi,poll,popup', 'SET')?>
+<?php // $this->assetManager()->outputInlineScriptLink('https://libraryh3lp.com/js/libraryh3lp.js?multi,poll,popup')?>
 
 <!-- Scroll to Top -->
 <a class="to-top-btn" href="#">
@@ -95,7 +95,7 @@
           headerObserver.observe(document.getElementById("searchForm_lookfor"));
       })();
       SCROLLJS;
-  echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $scrollToTop, 'SET');
+  echo $this->assetManager()->outputInlineScriptString($scrollToTop);
   // End Scroll to Top
 
   $adjustNavLinks = <<<ADJUSTNAVLINKS
@@ -119,10 +119,10 @@
         }
       });
       ADJUSTNAVLINKS;
-  echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $adjustNavLinks, 'SET');
+  echo $this->assetManager()->outputInlineScriptString($adjustNavLinks);
 
   // User testing: currently DISABLED
-  //$this->headLink()->appendStylesheet('sitetesting/sitetesting.css');
-  //echo $this->inlineScript(\Laminas\View\Helper\HeadScript::FILE, '/application/themes/falvey_2018/js/sitetesting/mus.js', 'SET');
-  //echo $this->inlineScript(\Laminas\View\Helper\HeadScript::FILE, '/application/themes/falvey_2018/js/sitetesting/sitetesting.js', 'SET');
+  //$this->assetManager()->appendStyleLink('sitetesting/sitetesting.css');
+  //echo $this->assetManager()->outputInlineScriptLink('/application/themes/falvey_2018/js/sitetesting/mus.js');
+  //echo $this->assetManager()->outputInlineScriptLink('/application/themes/falvey_2018/js/sitetesting/sitetesting.js');
 ?>

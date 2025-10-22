@@ -32,17 +32,7 @@ function setupUV4(configUri, phpData, uvOptions) {
 
 		uvIsLoaded = true;
 		loadingModal.close();
-
-		// Resizing
-
-		resizeUV(window.innerWidth, window.innerHeight);
-		window.addEventListener(
-			"resize",
-			function () {
-				resizeUV(window.innerWidth, window.innerHeight);
-			},
-			{ passive: true },
-		);
+		resizeUV();
 
 		// Firefox audio bug
 
@@ -210,13 +200,13 @@ function setupUV4(configUri, phpData, uvOptions) {
 	uv.on(UV.Events.CONFIGURE, async function uvConfigEvent(event) {
 		const { cb } = event;
 
-		const configPromise = run(async (resolve) => {
+		const configPromise = new Promise(async (resolve) => {
 			const res = await fetch(configUri);
-			const config = await res.json();
+			const localConfig = await res.json();
 
 			// Theater Mode for videos
 			if ("mediaElementCenterPanel" in event.config.modules) {
-				Object.assign(config, {
+				merge(localConfig, {
 					modules: {
 						footerPanel: {
 							content: {
@@ -228,7 +218,7 @@ function setupUV4(configUri, phpData, uvOptions) {
 				});
 			}
 
-			return config;
+			resolve(localConfig); // this is merged with the base config
 		});
 
 		cb(configPromise);
@@ -430,32 +420,42 @@ document.addEventListener("click", (event) => {
 // Resize functions
 
 const $UV = $("#uv");
-// #todo
-// : without container, UV resizes on the next resize event
-// : is this a bug
-const $container = $("#uv > div");
-function setUVWidth(innerWidth) {
-	const padding = 0;
-
-	$UV.width(innerWidth - padding);
-	$container.width(innerWidth - padding);
+function resizeUV() {
+	const height = window.innerWidth < 640
+		? window.innerHeight - 40 // full size on mobile
+		: window.innerHeight - $UV.offset().top;
+	$UV.height(height);
 	uv.resize();
 }
-function resizeUV(innerWidth, innerHeight) {
-	let height = innerHeight - $UV.offset().top;
+window.addEventListener("resize", resizeUV);
 
-	// Adjust for custom padding
-	if (
-		$UV[0].className.indexOf("pdfjs-off") > -1 &&
-		$UV.find(".uv-pdf-extension").length > 0
-	) {
-		height -= 32;
-	}
-	if (height < 300) {
-		height = innerHeight - 50;
+// Utils
+
+function merge(target, ...sources) {
+	if (sources.length > 1) {
+		return sources.reduce((merged, source) => merge(merged, source), target);
 	}
 
-	$UV.height(height);
-	$container.height(height);
-	setUVWidth(innerWidth);
+	// https://github.com/lukeed/dset/blob/master/src/merge.js#L1C33-L16C2
+	function deepSet(target, source) {
+		if (typeof target !== 'object' || typeof source !== 'object')  {
+			return source;
+		}
+
+		if (Array.isArray(target) && Array.isArray(source)) {
+			for (let i = 0; i < source.length; i++) {
+				target[i] = deepSet(target[i], source[i]);
+			}
+			return target;
+		}
+
+		for (const key in source) {
+			if (!source.hasOwnProperty(key)) break;
+			target[key] = deepSet(target[key], source[key]);
+		}
+
+		return target;
+	}
+
+	return deepSet(structuredClone(target), sources[0]);
 }

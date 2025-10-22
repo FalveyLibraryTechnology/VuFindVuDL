@@ -14,7 +14,7 @@ Font files are not included in this repository due to licensing issues, so there
 
 2. Copy $VUFIND_HOME/config/vufind/VuDL.ini to $VUFIND_LOCAL_DIR/config/vufind/VuDL.ini, and edit the copy to include appropriate Fedora credentials, IIIF server URL, etc.
 
-3. Obtain a build of the [Universal Viewer](https://github.com/UniversalViewer/universalviewer) and copy it into the $VUFIND_HOME/themes/vudiglib/assets/uv-x.y.z directory, where x.y.z is the version of UV that you built. (As of this writing, 4.0.25 is the most recent tested version).
+3. Obtain a build of the [Universal Viewer](https://github.com/UniversalViewer/universalviewer) and copy it into the $VUFIND_HOME/themes/vudiglib/assets/uv-x.y.z directory, where x.y.z is the version of UV that you built. (As of this writing, 4.2.1 is the most recent tested version).
 
 4. Edit your $VUFIND_LOCAL_DIR/httpd-vufind.conf file, add "DigLib" to your VUFIND_LOCAL_MODULES setting, and add these lines inside your `<Location>` section, below `RewriteEngine On`:
 
@@ -30,6 +30,8 @@ Font files are not included in this repository due to licensing issues, so there
 ```
 
 (Be sure to replace x.y.z with the actual UV version in the code).
+
+5. Make sure that the appropriate version is included in the embedPath setting in themes/vudiglib/assets/viewer-config.json.
 
 ## Git Branches
 

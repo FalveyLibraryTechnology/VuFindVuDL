@@ -6,14 +6,13 @@
   $uvbase = $this->url('home') . 'themes/vudiglib/assets/' . basename(current(glob(__DIR__ . '/../../assets/uv-*')));
 
   // Load UV
-  $this->headScript()->appendFile("$uvbase/umd/UV.js");
-  $this->headLink()->appendStylesheet("$uvbase/uv.css");
+  $this->assetManager()->appendScriptLink("$uvbase/umd/UV.js");
+  $this->assetManager()->appendStyleLink("$uvbase/uv.css");
 
   // Customizations
-  $this->headLink()->appendStylesheet('vudl-viewer.css');
-  $this->headLink()->appendStylesheet('uv-custom-v4.css');
-  // $this->headScript()->appendFile("$uvbase/lib/offlinenojquery.js");
-  // $this->headScript()->appendFile("$uvbase/helpers.js");
+  $this->assetManager()->appendStyleLink('uv-custom-v4.css');
+  // $this->assetManager()->appendScriptLink("$uvbase/lib/offlinenojquery.js");
+  // $this->assetManager()->appendScriptLink("$uvbase/helpers.js");
 
   // Multiple breadcrumbs
   $this->layout()->breadcrumbs = $this->render(
@@ -36,18 +35,18 @@
 
 <?=$this->render('vudl/navigation.phtml'); ?>
 
-<div id="uv" style="width:100%; height:393px; width: 553px background-color: #000;" class="uv pdfjs-<?=$viewerConfig->options->usePdfJs ? 'on' : 'off' ?>">
+<div id="uv" class="uv pdfjs-<?=$viewerConfig->options->usePdfJs ? 'on' : 'off' ?>">
   <noscript>
     <p align="center">Activate Javascript or update your browser for the full Digital Library experience.</p>
-    <?php if(false !== $this->prevId || false !== $this->nextId): ?>
+    <?php if (false !== $this->prevId || false !== $this->nextId): ?>
       <p align="center">
-        <?php if(false !== $this->prevId): ?>
+        <?php if (false !== $this->prevId): ?>
           <a href="<?=$this->url('vudl-record-viewer', ['id' => $this->prevId]) ?>">Previous Page</a>
         <?php endif; ?>
-        <?php if(false !== $this->prevId && false !== $this->nextId): ?>
+        <?php if (false !== $this->prevId && false !== $this->nextId): ?>
           &ndash;
         <?php endif; ?>
-        <?php if(false !== $this->nextId): ?>
+        <?php if (false !== $this->nextId): ?>
           <a href="<?=$this->url('vudl-record-viewer', ['id' => $this->nextId]) ?>">Next Page</a>
         <?php endif; ?>
       </p>
@@ -62,7 +61,7 @@
       </div>
       <div class="col-sm-9">
         <table class="table table-striped">
-          <?php foreach($this->metadata as $data): ?>
+          <?php foreach ($this->metadata as $data): ?>
             <tr>
               <th><?=$data['label'] ?></th>
               <td><?=$data['value'] ?></td>
@@ -71,7 +70,7 @@
         </table>
       </div>
     </div>
-    <?php if(false !== $this->ocr): ?>
+    <?php if (false !== $this->ocr): ?>
       <h3>OCR</h3>
       <div class="ocr">
         <?=$this->escapeHtml($this->ocr) ?>
@@ -91,9 +90,9 @@
   </div>
 </div>
 
-<?=$this->inlineScript(\Laminas\View\Helper\HeadScript::FILE, '/themes/vudiglib/js/vudl/uv-legacy-popover.js', 'SET'); ?>
-<?=$this->inlineScript(\Laminas\View\Helper\HeadScript::FILE, '/themes/vudiglib/js/vudl/uv-setup-v4.js', 'SET'); ?>
-<?=$this->inlineScript(\Laminas\View\Helper\HeadScript::FILE, '/themes/vudiglib/js/vudl/uv-loading-modal.js', 'SET'); ?>
+<?=$this->assetManager()->outputInlineScriptLink('/themes/vudiglib/js/vudl/uv-legacy-popover.js'); ?>
+<?=$this->assetManager()->outputInlineScriptLink('/themes/vudiglib/js/vudl/uv-setup-v4.js'); ?>
+<?=$this->assetManager()->outputInlineScriptLink('/themes/vudiglib/js/vudl/uv-loading-modal.js'); ?>
 <?php
   $configUri = $this->url('home')
     . 'themes/vudiglib/assets/viewer-config.json?_='
@@ -111,5 +110,5 @@
 
       setupUV4(configUri, phpData, {$viewerOptions});
       JS;
-  echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $js, 'SET');
+  echo $this->assetManager()->outputInlineScriptString($js);
 ?>

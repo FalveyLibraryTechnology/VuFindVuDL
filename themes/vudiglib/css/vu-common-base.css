@@ -581,7 +581,6 @@ footer + footer {
     padding-top: 0;
 }
 .library-links-footer a {
-    margin-bottom: 0.5rem;
     color: #fff;
 }
 .library-links-footer h3 {
@@ -661,10 +660,11 @@ footer .support-btn {
     text-align: center;
 }
 .social-media-icon {
+    box-sizing: content-box;
     display: inline-block;
     width: 32px;
-    margin-left: .25rem;
-    margin-right: .25rem;
+    height: 32px;
+    padding: 0.5rem;
 }
 .social-media-icon img {
     display: block;

@@ -7,12 +7,9 @@ return [
         'vu-common-wide.css:(min-width: 768px)',
         'fonts.css',
         'diglib-2023.css',
-        'shared-nav-style.css',
+        'vendor/gh-shared-nav/shared-nav-falvey.css',
         // .prose class for optimal reading
         'vendor/tailwind-prose.spacing.base.min.css',
-    ],
-    'js' => [
-        'shared-nav-new.js'
     ],
     'helpers' => [
         'factories' => [

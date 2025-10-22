@@ -3,6 +3,36 @@
     'license', 'special_license', 'description', 'title',
   ];
   $no_link = ['title', 'description'];
+
+  $LICENSE_LABELS = [
+    'http://creativecommons.org/licenses/by-nc-nd/1.0/' => 'Creative Commons BY-NC-ND 1.0 Generic',
+    'http://creativecommons.org/licenses/by-nc-nd/2.0/' => 'Creative Commons BY-NC-ND 2.0 Generic',
+    'http://creativecommons.org/licenses/by-nc-nd/3.0/' => 'Creative Commons BY-NC-ND 3.0 Unported',
+    'http://creativecommons.org/licenses/by-nc-nd/4.0/' => 'Creative Commons BY-NC-ND 4.0 International',
+    'http://creativecommons.org/licenses/by-nc-sa/1.0/' => 'Creative Commons BY-NC-SA 1.0 Generic',
+    'http://creativecommons.org/licenses/by-nc-sa/2.0/' => 'Creative Commons BY-NC-SA 2.0 Generic',
+    'http://creativecommons.org/licenses/by-nc-sa/3.0/' => 'Creative Commons BY-NC-SA 3.0 Unported',
+    'http://creativecommons.org/licenses/by-nc-sa/4.0/' => 'Creative Commons BY-NC-SA 4.0 International',
+    'http://creativecommons.org/licenses/by-nc/1.0/' => 'Creative Commons BY-NC 1.0 Generic',
+    'http://creativecommons.org/licenses/by-nc/2.0/' => 'Creative Commons BY-NC 2.0 Generic',
+    'http://creativecommons.org/licenses/by-nc/3.0/' => 'Creative Commons BY-NC 3.0 Unported',
+    'http://creativecommons.org/licenses/by-nc/4.0/' => 'Creative Commons BY-NC 4.0 International',
+    'http://creativecommons.org/licenses/by-nd/1.0/' => 'Creative Commons BY-ND 1.0 Generic',
+    'http://creativecommons.org/licenses/by-nd/2.0/' => 'Creative Commons BY-ND 2.0 Generic',
+    'http://creativecommons.org/licenses/by-nd/3.0/' => 'Creative Commons BY-ND 3.0 Unported',
+    'http://creativecommons.org/licenses/by-nd/4.0/' => 'Creative Commons BY-ND 4.0 International',
+    'http://creativecommons.org/licenses/by-sa/1.0/' => 'Creative Commons BY-SA 1.0 Generic',
+    'http://creativecommons.org/licenses/by-sa/2.0/' => 'Creative Commons BY-SA 2.0 Generic',
+    'http://creativecommons.org/licenses/by-sa/3.0/' => 'Creative Commons BY-SA 3.0 Unported',
+    'http://creativecommons.org/licenses/by-sa/4.0/' => 'Creative Commons BY-SA 4.0 International',
+    'http://creativecommons.org/licenses/by/1.0/' => 'Creative Commons Attribution 1.0 Generic',
+    'http://creativecommons.org/licenses/by/2.0/' => 'Creative Commons Attribution 2.0 Generic',
+    'http://creativecommons.org/licenses/by/3.0/' => 'Creative Commons Attribution 3.0 Unported',
+    'http://creativecommons.org/licenses/by/4.0/' => 'Creative Commons Attribution 4.0 International',
+    'http://digital.library.villanova.edu/copyright.html' => 'Villanova University Copyright',
+    'https://creativecommons.org/publicdomain/zero/1.0/' => 'CC0 1.0 Universal',
+    'https://creativecommons.org/publicdomain/mark/1.0/' => 'Public Domain Mark',
+  ];
 ?>
 <?php if (isset($this->details['description'])): ?>
   <p class="description"><?=html_entity_decode($this->details['description']['value'], 2 /*ENT_COMPAT|ENT_HTML401*/, 'UTF-8') ?></p>
@@ -69,7 +99,14 @@
   <?php endforeach; ?>
   <?php if (isset($this->details['license'])): ?>
     <?php if (!$this->details['special_license']): ?>
-      <tr><td>License</td><td><a href="<?=$this->details['license'] ?>"><?=$this->details['license'] ?></a></td></tr>
+      <tr>
+        <td>License</td>
+        <td>
+          <a href="<?=$this->details['license'] ?>">
+            <?=$LICENSE_LABELS[$this->details['license']] ?? $this->details['license'] ?>
+          </a>
+        </td>
+      </tr>
     <?php endif; ?>
   <?php endif; ?>
 </table>

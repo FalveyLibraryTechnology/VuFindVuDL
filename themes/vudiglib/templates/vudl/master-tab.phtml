@@ -8,7 +8,7 @@
       <i class="fa fa-download"></i> <?=$this->transEsc('Download File') ?>
       <?php if ($this->techinfo): ?>
         <br>
-        <span class="details"><?=$this->techinfo['type'] ?? ''?><?php if(isset($this->techinfo['size'])):?> ~ <?=$this->techinfo['size'] ?><?php endif ?></span>
+        <span class="details"><?=$this->techinfo['type'] ?? ''?><?php if (isset($this->techinfo['size'])):?> ~ <?=$this->techinfo['size'] ?><?php endif ?></span>
       <?php endif; ?>
     </a>
   </form>
@@ -44,5 +44,5 @@
 
       document.getElementById("direct-link").addEventListener("click", (e) => copyPermanentLink());
       JS;
-  echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $js, 'SET');
+  echo $this->assetManager()->outputInlineScriptString($js);
 ?>
