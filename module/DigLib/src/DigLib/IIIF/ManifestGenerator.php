@@ -201,9 +201,10 @@ class ManifestGenerator
         foreach ($details as $key => $current) {
             if (!in_array($key, $skip)) {
                 $value = (array)$current['value'];
+                $formatValues = $this->formatManifestMetadataValues($key, $value);
                 $retVal[$key] = [
                     'label' => ['en' => [$current['title']]],
-                    'value' => ['en' => [$this->formatManifestMetadataValues($key, $value)]],
+                    'value' => ['en' => [$formatValues]],
                 ];
             }
         }
@@ -301,8 +302,7 @@ class ManifestGenerator
      * Build JSON data for a single canvas.
      *
      * @param string $id      Record ID
-     * @param int    $i       Position of canvas in overall array (used for canvas
-     *                        ID generation)
+     * @param int    $i       Position of canvas in overall array (used for canvas ID generation)
      * @param array  $raw     Raw data to format into canvas
      * @param string $type    Type of list ('image' or 'audio')
      * @param array  $list    List to check
@@ -312,18 +312,6 @@ class ManifestGenerator
      */
     protected function getSingleCanvas($id, $i, $raw, $type, $list, $outline)
     {
-
-        if ($type == 'audio') {
-            $preferredType = 'Sound';
-            $preferredRendering = 'audio/mp3';
-        } elseif ($type == 'video') {
-            $preferredType = 'MovingImage';
-            $preferredRendering = 'video/mp4';
-        } else {
-            $preferredType = 'foaf:Document';
-            $preferredRendering = 'application/pdf';
-        }
-
         $canvasUrl = $this->getUri(
             'vudl-record-canvas',
             ['id' => $id, 'canvas' => 'p' . $i]
@@ -340,35 +328,48 @@ class ManifestGenerator
             $content = [
                 'height' => $height,
                 'width' => $width,
-                'items' => [[
-
+                'items' => [
+                    [
                         'id' => $this->getUri('record', ['id' => $id]),
                         'type' => 'AnnotationPage',
-                        'items' => [[
-                            'id' => $imageUrl,
-                            'type' => 'Annotation',
-                            'motivation' => 'painting',
-                            'body' => [
-                                'id' => $imageServerBase . urlencode($raw['id']),
-                                'type' => 'Image',
-                                'format' => $mimeType,
-                                'service' => [[
+                        'items' => [
+                            [
+                                'id' => $imageUrl,
+                                'type' => 'Annotation',
+                                'motivation' => 'painting',
+                                'body' => [
                                     'id' => $imageServerBase . urlencode($raw['id']),
-                                    'type' => 'ImageService3',
-                                    'profile' => 'level1',
-                                ]],
+                                    'type' => 'Image',
+                                    'format' => $mimeType,
+                                    'service' => [
+                                        [
+                                        'id' => $imageServerBase . urlencode($raw['id']),
+                                        'type' => 'ImageService3',
+                                        'profile' => 'level1',
+                                        ]
+                                    ],
+                                ],
+                                'height' => $height,
+                                'width' => $width,
+                                'target' => $canvasUrl,
+                                'thumbnail' => $this->getThumbnail($raw, $type),
                             ],
-                            'height' => $height,
-                            'width' => $width,
-                            'target' => $canvasUrl,
-                            'thumbnail' => $this->getThumbnail($raw, $type),
                         ],
-                        ],
-                ],
+                    ],
                 ],
             ];
         } else {
             // Format as a generic download:
+            if ($type == 'audio') {
+                $preferredType = 'Sound';
+                $preferredRendering = 'audio/mp3';
+            } elseif ($type == 'video') {
+                $preferredType = 'MovingImage';
+                $preferredRendering = 'video/mp4';
+            } else {
+                $preferredType = 'foaf:Document';
+                $preferredRendering = 'application/pdf';
+            }
             $url = $this->getUri(
                 'files',
                 ['type' => 'MASTER', 'id' => $raw['id']]
@@ -381,11 +382,13 @@ class ManifestGenerator
                 'width' => 800,
                 'items' => [
                     [
-                        'id' => $canvasUrl . '/annotationpage',
+                        //'id' => $canvasUrl . '/annotationpage',
+                        'id' => $canvasUrl . '#content',
                         'type' => 'AnnotationPage',
                         'items' => [
                             [
-                                'id' => $canvasUrl . '/annotation/' . $i,
+                                //'id' => $canvasUrl . '/annotation/' . $i,
+                                'id' => $canvasUrl . '#item' . $i,
                                 'type' => 'Annotation',
                                 'motivation' => 'painting',
                                 'body' => [
@@ -403,7 +406,6 @@ class ManifestGenerator
                 ],
             ];
         }
-
         return [
             'type' => $canvasType,
             'id' => $canvasUrl,
@@ -445,9 +447,8 @@ class ManifestGenerator
         $id = $renderings[$bestRendering]['id'] . '#element';
         $format = $renderings[$bestRendering]['format'];
 
-        $extras = [];
         if (in_array('THUMBNAIL', $raw['datastreams'])) {
-            $extras['thumbnail'] = $this->getUri(
+            $getThumb = $this->getUri(
                 'files',
                 ['type' => 'THUMBNAIL', 'id' => $raw['id']]
             );
@@ -459,17 +460,19 @@ class ManifestGenerator
             } else {
                 $thumbFilename = 'default.png';
             }
-            $extras['thumbnail'] = $this->getUri('home')
+            $getThumb = $this->getUri('home')
                 . 'themes/vudiglib/images/vudl/' . $thumbFilename;
         }
 
-        $thumb[] = [
-            'id' => $extras['thumbnail'],
-            'type' => 'Image',
-            'format' => 'image/png',
+        $thumbnail = [
+            [
+                'id' => $getThumb,
+                'type' => 'Image',
+                'format' => 'image/png',
+            ]
         ];
 
-        return $thumb;
+        return $thumbnail;
     }
 
     /**
@@ -743,39 +746,25 @@ class ManifestGenerator
      */
     protected function getSequenceRenderingData($outline, $canvasList, $raw)
     {
-        $renderings = [];
-        $hasMixedList = $hasImageList = false;
         foreach ($outline['lists'] as $list) {
             if ($this->isAudioList($list) && $this->isAudioList($canvasList)) {
                 $filtered = $this->filterAudioList($list);
                 if (count($filtered['other']) > 0) {
-                    $renderings = array_merge(
-                        $renderings,
-                        $this->getMasterRenderings($filtered['other'])
-                    );
-                    $hasMixedList = true;
+                    $renderings = $this->getMasterRenderings($filtered['other']);
                 }
             } elseif ($this->isPdfList($list) && $this->isPdfList($canvasList)) {
                 $filtered = $this->filterPdfList($list);
                 if (count($filtered['other']) > 0) {
-                    $renderings = array_merge(
-                        $renderings,
-                        $this->getMasterRenderings($filtered['other'])
-                    );
-                    $hasMixedList = true;
+                    $renderings = $this->getMasterRenderings($filtered['other']);
                 }
             } elseif (!$this->isImageList($list)) {
-                $renderings = array_merge(
-                    $renderings,
-                    $this->getMasterRenderings($list)
-                );
+                $renderings = $this->getMasterRenderings($list);
             } else {
-                $hasImageList = true;
+                $renderings = [];
             }
         }
-        $CanvasRenderings = $this->getCanvasRenderingData($raw);
-        $retVal = array_merge($CanvasRenderings, $renderings);
-        // If we don't have an image list, we don't need alternate renderings:
+        $canvasRenderings = $this->getCanvasRenderingData($raw);
+        $retVal = array_merge($canvasRenderings, $renderings);
         return $retVal;
     }
 
@@ -978,14 +967,15 @@ class ManifestGenerator
             ? '<img src="' . htmlspecialchars($licenseData['icon'])
             . '" alt="' . htmlspecialchars($licenseData['alt']) . '">'
             : htmlspecialchars($licenseData['text']);
-        return [
-            'label' => ['en' => ['ATTRIBUTION']],
-            'value' => ['en' => ['<span>Digital Library@Villanova University'
+        $value = '<span>Digital Library@Villanova University'
             . '<br /><br /><b>Disclaimers</b>: <br />'
             . $this->getDisclaimers() . '<br /><br />'
             . '<b>License</b>: <br />'
             . '<a href="' . htmlspecialchars($license) . '">' . $linkContent . '</a>'
-            . '</span>']],
+            . '</span>';
+        return [
+            'label' => ['en' => ['ATTRIBUTION']],
+            'value' => ['en' => [$value]],
         ];
     }
 
@@ -1011,7 +1001,7 @@ class ManifestGenerator
                 'en' => [
                     $details['title']['value'] ?? 'Untitled',
                 ],
-                ],
+            ],
             'metadata' => $this->extractManifestMetadata($id, $details),
             'summary' => ['en' => [
                 isset($details['description']['value'])
