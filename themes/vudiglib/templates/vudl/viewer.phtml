@@ -61,14 +61,14 @@
       </div>
       <div class="col-sm-9">
         <table class="table table-striped">
-          <?php if (isset($data['label']['en'][0]) && isset($data['value']['en'][0])): ?>
-            <?php foreach ($this->metadata as $data): ?>
+          <?php foreach ($this->metadata as $data): ?>
+            <?php if (isset($data['label']['en'][0]) && isset($data['value']['en'][0])): ?>
               <tr>
                 <th><?=$data['label']['en'][0] ?></th>
                 <td><?=$data['value']['en'][0] ?></td>
               </tr>
-            <?php endforeach; ?>
-          <?php endif; ?>
+            <?php endif; ?>
+          <?php endforeach; ?>
         </table>
       </div>
     </div>

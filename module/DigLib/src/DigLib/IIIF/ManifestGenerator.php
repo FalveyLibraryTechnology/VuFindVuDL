@@ -220,17 +220,16 @@ class ManifestGenerator
         // Add some useful links to the bottom:
         $recordUrl = $this->getUri('record', ['id' => $id]);
         $persistUrl = $this->getUri('vudl-record', ['id' => $id]);
-        $sortedRetVal[] = [
-            'label' => ['en' => ['About']],
-            'value' => ['en' => ['<span>'
+        $value = '<span>'
                 . '<a href="' . htmlspecialchars($recordUrl)
                 . '">More Details</a><br />'
                 . '<a href="' . htmlspecialchars($persistUrl)
                 . '">Permanent Link</a>'
-                . '</span>']],
+                . '</span>';
+        return [
+            'label' => ['en' => ['About']],
+            'value' => ['en' => [$value]],
         ];
-
-        return $sortedRetVal;
     }
 
     /**
@@ -299,7 +298,7 @@ class ManifestGenerator
     }
 
     /**
-     * Build JSON data for a single canvas.
+     * Build JSON data for a non-image canvas.
      *
      * @param string $id      Record ID
      * @param int    $i       Position of canvas in overall array (used for canvas ID generation)
@@ -310,104 +309,128 @@ class ManifestGenerator
      *
      * @return array
      */
-    protected function getSingleCanvas($id, $i, $raw, $type, $list, $outline)
+    protected function getAVCanvas($id, $i, $raw, $type, $list, $outline)
+    {
+        $canvasUrl = $this->getUri(
+            'vudl-record-canvas',
+            ['id' => $id, 'canvas' => 'p' . $i]
+        );
+        
+        // Format as a generic download:
+        if ($type == 'audio') {
+            $preferredType = 'Sound';
+            $preferredRendering = 'audio/mp3';
+        } elseif ($type == 'video') {
+            $preferredType = 'MovingImage';
+            $preferredRendering = 'video/mp4';
+        } else {
+            $preferredType = 'foaf:Document';
+            $preferredRendering = 'application/pdf';
+        }
+        $url = $this->getUri(
+            'files',
+            ['type' => 'MASTER', 'id' => $raw['id']]
+        );
+        $description = isset($raw['sizebytes_str'])
+            ? ($raw['sizebytes_str'] / 1024) . 'k'
+            : '';
+        $content = [
+            'height' => 600,
+            'width' => 800,
+            'items' => [
+                [
+                    'id' => $canvasUrl . '#content',
+                    'type' => 'AnnotationPage',
+                    'items' => [
+                        [
+                            'id' => $canvasUrl . '#item' . $i,
+                            'type' => 'Annotation',
+                            'motivation' => 'painting',
+                            'body' => [
+                                'id' => $url,
+                                'type' => $preferredType,
+                                'format' => $preferredRendering ?? '',
+                                'label' => ['en' => [$raw['label']]],
+                                'description' => $description,
+                            ],
+                            'target' => $canvasUrl,
+                            'thumbnail' => $this->getThumbnail($raw, $type),
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        return [
+            'type' => 'Canvas',
+            'id' => $canvasUrl,
+            'label' => ['en' => [$raw['label'] ]] ?? '-',
+            'rendering' => $this->getSequenceRenderingData($outline, $list, $raw),
+            'thumbnail' => $this->getThumbnail($raw, $type),
+        ] + $content;
+    }
+
+    /**
+     * Build JSON data for an image canvas.
+     *
+     * @param string $id      Record ID
+     * @param int    $i       Position of canvas in overall array (used for canvas ID generation)
+     * @param array  $raw     Raw data to format into canvas
+     * @param string $type    Type of list ('image' or 'audio')
+     * @param array  $list    List to check
+     * @param array  $outline Outline data
+     *
+     * @return array
+     */
+    protected function getImageCanvas($id, $i, $raw, $type, $list, $outline)
     {
         $canvasUrl = $this->getUri(
             'vudl-record-canvas',
             ['id' => $id, 'canvas' => 'p' . $i]
         );
 
-        $canvasType = 'Canvas';
-        if ($type === 'image') {
-            $imageServerBase = $this->config->Images->serverUrl ?? false;
-            if (!$imageServerBase) {
-                throw new \Exception('Must set image server base URL.');
-            }
-            [$width, $height, $imageUrl, $mimeType]
-                = $this->getImageDetailsForCanvas($raw, $imageServerBase);
-            $content = [
-                'height' => $height,
-                'width' => $width,
-                'items' => [
-                    [
-                        'id' => $this->getUri('record', ['id' => $id]),
-                        'type' => 'AnnotationPage',
-                        'items' => [
-                            [
-                                'id' => $imageUrl,
-                                'type' => 'Annotation',
-                                'motivation' => 'painting',
-                                'body' => [
+        $imageServerBase = $this->config->Images->serverUrl ?? false;
+        if (!$imageServerBase) {
+            throw new \Exception('Must set image server base URL.');
+        }
+        [$width, $height, $imageUrl, $mimeType]
+            = $this->getImageDetailsForCanvas($raw, $imageServerBase);
+        $content = [
+            'height' => $height,
+            'width' => $width,
+            'items' => [
+                [
+                    'id' => $this->getUri('record', ['id' => $id]),
+                    'type' => 'AnnotationPage',
+                    'items' => [
+                        [
+                            'id' => $imageUrl,
+                            'type' => 'Annotation',
+                            'motivation' => 'painting',
+                            'body' => [
+                                'id' => $imageServerBase . urlencode($raw['id']),
+                                'type' => 'Image',
+                                'format' => $mimeType,
+                                'service' => [
+                                    [
                                     'id' => $imageServerBase . urlencode($raw['id']),
-                                    'type' => 'Image',
-                                    'format' => $mimeType,
-                                    'service' => [
-                                        [
-                                        'id' => $imageServerBase . urlencode($raw['id']),
-                                        'type' => 'ImageService3',
-                                        'profile' => 'level1',
-                                        ]
+                                    'type' => 'ImageService3',
+                                    'profile' => 'level1',
                                     ],
                                 ],
-                                'height' => $height,
-                                'width' => $width,
-                                'target' => $canvasUrl,
-                                'thumbnail' => $this->getThumbnail($raw, $type),
                             ],
+                            'height' => $height,
+                            'width' => $width,
+                            'target' => $canvasUrl,
+                            'thumbnail' => $this->getThumbnail($raw, $type),
                         ],
                     ],
                 ],
-            ];
-        } else {
-            // Format as a generic download:
-            if ($type == 'audio') {
-                $preferredType = 'Sound';
-                $preferredRendering = 'audio/mp3';
-            } elseif ($type == 'video') {
-                $preferredType = 'MovingImage';
-                $preferredRendering = 'video/mp4';
-            } else {
-                $preferredType = 'foaf:Document';
-                $preferredRendering = 'application/pdf';
-            }
-            $url = $this->getUri(
-                'files',
-                ['type' => 'MASTER', 'id' => $raw['id']]
-            );
-            $description = isset($raw['sizebytes_str'])
-                ? ($raw['sizebytes_str'] / 1024) . 'k'
-                : '';
-            $content = [
-                'height' => 600,
-                'width' => 800,
-                'items' => [
-                    [
-                        //'id' => $canvasUrl . '/annotationpage',
-                        'id' => $canvasUrl . '#content',
-                        'type' => 'AnnotationPage',
-                        'items' => [
-                            [
-                                //'id' => $canvasUrl . '/annotation/' . $i,
-                                'id' => $canvasUrl . '#item' . $i,
-                                'type' => 'Annotation',
-                                'motivation' => 'painting',
-                                'body' => [
-                                    'id' => $url,
-                                    'type' => $preferredType,
-                                    'format' => $preferredRendering ?? '',
-                                    'label' => ['en' => [$raw['label']]],
-                                    'description' => $description,
-                                ],
-                                'target' => $canvasUrl,
-                                'thumbnail' => $this->getThumbnail($raw, $type),
-                            ],
-                        ],
-                    ],
-                ],
-            ];
-        }
+            ],
+        ];
+        
         return [
-            'type' => $canvasType,
+            'type' => 'Canvas',
             'id' => $canvasUrl,
             'label' => ['en' => [$raw['label'] ]] ?? '-',
             'rendering' => $this->getSequenceRenderingData($outline, $list, $raw),
@@ -464,15 +487,13 @@ class ManifestGenerator
                 . 'themes/vudiglib/images/vudl/' . $thumbFilename;
         }
 
-        $thumbnail = [
+        return [
             [
                 'id' => $getThumb,
                 'type' => 'Image',
                 'format' => 'image/png',
-            ]
+            ],
         ];
-
-        return $thumbnail;
     }
 
     /**
@@ -746,19 +767,29 @@ class ManifestGenerator
      */
     protected function getSequenceRenderingData($outline, $canvasList, $raw)
     {
+        $renderings = [];
         foreach ($outline['lists'] as $list) {
             if ($this->isAudioList($list) && $this->isAudioList($canvasList)) {
                 $filtered = $this->filterAudioList($list);
                 if (count($filtered['other']) > 0) {
-                    $renderings = $this->getMasterRenderings($filtered['other']);
+                    $renderings = array_merge(
+                        $renderings,
+                        $this->getMasterRenderings($filtered['other'])
+                    );
                 }
             } elseif ($this->isPdfList($list) && $this->isPdfList($canvasList)) {
                 $filtered = $this->filterPdfList($list);
                 if (count($filtered['other']) > 0) {
-                    $renderings = $this->getMasterRenderings($filtered['other']);
+                    $renderings = array_merge(
+                        $renderings,
+                        $this->getMasterRenderings($filtered['other'])
+                    );
                 }
             } elseif (!$this->isImageList($list)) {
-                $renderings = $this->getMasterRenderings($list);
+                $renderings = array_merge(
+                    $renderings,
+                    $this->getMasterRenderings($list)
+                );
             } else {
                 $renderings = [];
             }
@@ -840,7 +871,8 @@ class ManifestGenerator
 
         $items = [];
         foreach ($list as $i => $current) {
-            $items[] = $this->getSingleCanvas(
+            if($type==='image'){
+                $items[] = $this->getImageCanvas(
                 $id,
                 $i,
                 $current,
@@ -848,6 +880,16 @@ class ManifestGenerator
                 $list,
                 $outline
             );
+            } else {
+                $items[] = $this->getAVCanvas(
+                    $id,
+                    $i,
+                    $current,
+                    $type,
+                    $list,
+                    $outline
+                );
+            }
         }
 
         return $items;
