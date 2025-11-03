@@ -217,6 +217,8 @@ class ManifestGenerator
         foreach ($retVal as $current) {
             $sortedRetVal[] = $current;
         }
+        // var_export($sortedRetVal);
+        // die;
         // Add some useful links to the bottom:
         $recordUrl = $this->getUri('record', ['id' => $id]);
         $persistUrl = $this->getUri('vudl-record', ['id' => $id]);
@@ -226,10 +228,11 @@ class ManifestGenerator
                 . '<a href="' . htmlspecialchars($persistUrl)
                 . '">Permanent Link</a>'
                 . '</span>';
-        return [
+        $sortedRetVal[] = [
             'label' => ['en' => ['About']],
             'value' => ['en' => [$value]],
         ];
+        return $sortedRetVal;
     }
 
     /**
