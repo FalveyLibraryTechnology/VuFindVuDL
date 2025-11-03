@@ -309,14 +309,13 @@ class ManifestGenerator
      *
      * @return array
      */
-    protected function getAVCanvas($id, $i, $raw, $type, $list, $outline)
+    protected function getNonImageCanvas($id, $i, $raw, $type, $list, $outline)
     {
         $canvasUrl = $this->getUri(
             'vudl-record-canvas',
             ['id' => $id, 'canvas' => 'p' . $i]
         );
-        
-        // Format as a generic download:
+
         if ($type == 'audio') {
             $preferredType = 'Sound';
             $preferredRendering = 'audio/mp3';
@@ -324,6 +323,7 @@ class ManifestGenerator
             $preferredType = 'MovingImage';
             $preferredRendering = 'video/mp4';
         } else {
+            // Format as a generic download:
             $preferredType = 'foaf:Document';
             $preferredRendering = 'application/pdf';
         }
@@ -428,7 +428,7 @@ class ManifestGenerator
                 ],
             ],
         ];
-        
+
         return [
             'type' => 'Canvas',
             'id' => $canvasUrl,
@@ -790,8 +790,6 @@ class ManifestGenerator
                     $renderings,
                     $this->getMasterRenderings($list)
                 );
-            } else {
-                $renderings = [];
             }
         }
         $canvasRenderings = $this->getCanvasRenderingData($raw);
@@ -871,17 +869,17 @@ class ManifestGenerator
 
         $items = [];
         foreach ($list as $i => $current) {
-            if($type==='image'){
+            if ($type === 'image') {
                 $items[] = $this->getImageCanvas(
-                $id,
-                $i,
-                $current,
-                $type,
-                $list,
-                $outline
-            );
+                    $id,
+                    $i,
+                    $current,
+                    $type,
+                    $list,
+                    $outline
+                );
             } else {
-                $items[] = $this->getAVCanvas(
+                $items[] = $this->getNonImageCanvas(
                     $id,
                     $i,
                     $current,
