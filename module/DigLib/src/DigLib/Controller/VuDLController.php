@@ -661,6 +661,32 @@ class VuDLController extends \VuFind\Controller\AbstractBase
         }
         return false;
     }
+    
+    /**
+     * Is the legacy viewer allowed for the record?
+     *
+     * @param array $outline Outline
+     *
+     * @return bool
+     */
+    protected function universalViewerAllowLegacy($outline)
+    {
+        if (isset($outline['lists']) && is_array($outline['lists'])) {
+            foreach ($outline['lists'] as $list) {
+                foreach ($list as $current) {
+                    if (
+                        in_array('video/mp4', $current['mimetypes'])
+                        || in_array('MP4', $current['datastreams'])
+                        || in_array('MP3', $current['datastreams'])
+                        || in_array('OGG', $current['datastreams'])
+                    ) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
     /**
      * Display record in VuDL from Fedora using legacy viewer
@@ -916,6 +942,8 @@ class VuDLController extends \VuFind\Controller\AbstractBase
         }
 
         $view = $this->createViewModel();
+        $showLegacyLink = $this->universalViewerAllowLegacy($outline);
+        $view->showLegacyLink = $showLegacyLink;
         $view->id = $driver->getUniqueId();
         $view->itemTitle = $driver->getShortTitle();
         $view->parents = $this->getConnector()->getParentList($view->id);
