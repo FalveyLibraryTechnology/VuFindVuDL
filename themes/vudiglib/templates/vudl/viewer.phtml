@@ -32,10 +32,7 @@
 <style>
 
 </style>
-<?php
-  // Enable legacy viewer button for audio records
-  if (!empty($this->showLegacyLink)):
-?>
+<?php if (!empty($this->showLegacyLink)): ?>
   <a id="legacy" href="<?=$this->url('vudl-record', compact('id')) ?>?viewer=legacy" class="pull-right hidden">Switch to old viewer</a>
 <?php endif; ?>
 
