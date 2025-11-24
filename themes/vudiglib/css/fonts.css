@@ -12,17 +12,25 @@
 }
 
 @font-face {
-  font-family: "Cal Roman Capitals";
-  src: url("../images/fonts/Cal Roman Capitals.eot");
-  src: url("../images/fonts/Cal Roman Capitals.eot?#iefix")
-      format("embedded-opentype"),
-    url("../images/fonts/Cal Roman Capitals.woff") format("woff"),
-    url("../images/fonts/Cal Roman Capitals.ttf") format("truetype"),
-    url("../images/fonts/Cal Roman Capitals.svg#Cal Roman Capitals")
-      format("svg");
-  font-weight: normal;
+  font-family: "Gotham";
+  src: url("../assets/fonts/Gotham-Book.otf");
+  font-weight: 400;
   font-style: normal;
 }
+@font-face {
+  font-family: "Gotham";
+  src: url("../assets/fonts/Gotham-BookItalic.otf");
+  font-weight: 400;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Gotham";
+  src: url("../assets/fonts/Gotham-Bold.otf");
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* HOMEPAGE */
 
 @font-face {
   font-family: "Iosevka Etoile";
@@ -39,41 +47,19 @@
   font-display: swap;
 }
 
+/* LEGACY */
+
 @font-face {
-  font-family: "Gotham";
-  src: url("../assets/fonts/Gotham-Book.otf");
-  font-weight: 400;
+  font-family: "Cal Roman Capitals";
+  src: url("../images/fonts/Cal Roman Capitals.eot");
+  src: url("../images/fonts/Cal Roman Capitals.eot?#iefix")
+      format("embedded-opentype"),
+    url("../images/fonts/Cal Roman Capitals.woff") format("woff"),
+    url("../images/fonts/Cal Roman Capitals.ttf") format("truetype"),
+    url("../images/fonts/Cal Roman Capitals.svg#Cal Roman Capitals")
+      format("svg");
+  font-weight: normal;
   font-style: normal;
-}
-@font-face {
-  font-family: "Gotham";
-  src: url("../assets/fonts/Gotham-BookItalic.otf");
-  font-weight: 400;
-  font-style: italic;
-}
-@font-face {
-  font-family: "Gotham";
-  src: url("../assets/fonts/Gotham-Medium.otf");
-  font-weight: 500;
-  font-style: normal;
-}
-@font-face {
-  font-family: "Gotham";
-  src: url("../assets/fonts/Gotham-MediumItalic.otf");
-  font-weight: 500;
-  font-style: italic;
-}
-@font-face {
-  font-family: "Gotham";
-  src: url("../assets/fonts/Gotham-Bold.otf");
-  font-weight: 700;
-  font-style: normal;
-}
-@font-face {
-  font-family: "Gotham";
-  src: url("../assets/fonts/Gotham-BoldItalic.otf");
-  font-weight: 700;
-  font-style: italic;
 }
 
 @font-face {

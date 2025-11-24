@@ -6,10 +6,10 @@
       <i class="fa fa-caret-right"></i>
     </a>
   </li>
-  <?php if(in_array('MEDIUM', $this->datastreams)): ?>
+  <?php if (in_array('MEDIUM', $this->datastreams)): ?>
     <li class="active"><a href="<?=$this->url('vudl-record', ['id' => $id, 'view' => 'medium']) ?>" data-toggle="tab" data-target="#medium">Medium</a></li>
   <?php endif; ?>
-  <?php if(in_array('LARGE', $this->datastreams)): ?>
+  <?php if (in_array('LARGE', $this->datastreams)): ?>
     <li><a href="<?=$this->url('vudl-record', ['id' => $id, 'view' => 'large']) ?>" data-toggle="tab" data-target="#large">Large</a></li>
     <li><a href="<?=$this->url('vudl-record', ['id' => $id, 'view' => 'zoom']) ?>" data-toggle="tab" data-target="#zoom" class="">Zoom</a></li>
   <?php endif; ?>
@@ -24,12 +24,12 @@
       </div>
     </div>
   </div>
-  <?php if(in_array('MEDIUM', $this->datastreams)): ?>
+  <?php if (in_array('MEDIUM', $this->datastreams)): ?>
     <div class="tab-pane active" id="medium" aria-hidden="false" tabindex="0">
       <img src="<?=$this->url('files', ['id' => $id, 'type' => 'MEDIUM']) ?>" onLoad="$('.pages .selected.loading').removeClass('loading');"/>
     </div>
   <?php endif; ?>
-  <?php if(in_array('LARGE', $this->datastreams)): ?>
+  <?php if (in_array('LARGE', $this->datastreams)): ?>
     <div class="tab-pane" id="large" aria-hidden="true" tabindex="0">
       <?php
         $template = '<img src="'
@@ -57,11 +57,11 @@
     <?=$this->context($this)->renderInContext('vudl/details.phtml', [])?>
   </div>
   <div class="tab-pane" id="master" aria-hidden="true" tabindex="0">
-    <?php if(in_array('MASTER', $this->datastreams)): ?>
+    <?php if (in_array('MASTER', $this->datastreams)): ?>
       <a id="download-button" href="<?=$this->url('files', ['id' => $this->id, 'type' => 'MASTER']) ?>?download=true" class="btn btn-primary btn-lg">
         <i class="fa fa-download"></i> <?=$this->transEsc('Download File') ?><br>
         <?php if (isset($this->techinfo)): ?>
-          <span class="details"><?=$this->techinfo['type'] ?? ''?><?php if(isset($this->techinfo['size'])):?> ~ <?=$this->techinfo['size'] ?><?php endif ?></span>
+          <span class="details"><?=$this->techinfo['type'] ?? ''?><?php if (isset($this->techinfo['size'])):?> ~ <?=$this->techinfo['size'] ?><?php endif ?></span>
         <?php endif; ?>
       </a>
     <?php else: ?>
@@ -124,5 +124,5 @@
         }
       });
       JS;
-  echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $js, 'SET');
+  echo $this->assetManager()->outputInlineScriptString($js);
 ?>

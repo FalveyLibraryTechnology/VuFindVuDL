@@ -64,7 +64,7 @@
               <?php endif; ?>
             <?php else: ?>
               <?php $field = explode(' -- ', $field); ?>
-              <a href="<?=$this->record($this->driver)->getLink('series', $field[0])?>"><?=$this->escapeHtml($field[0])?></a><?php if(count($field) > 1):?> -- <?=$field[1] ?><?php endif ?>
+              <a href="<?=$this->record($this->driver)->getLink('series', $field[0])?>"><?=$this->escapeHtml($field[0])?></a><?php if (count($field) > 1):?> -- <?=$field[1] ?><?php endif ?>
             <?php endif; ?>
             <?php if ($i < count($series) - 1): ?>, <?php endif; ?>
           <?php endforeach; ?>
@@ -214,11 +214,11 @@
         <?=$this->record($this->driver)->getPreviews()?>
       </div>
       <?php $subpages = $this->driver->getSubPages(); ?>
-      <?php if(!empty($subpages)): ?>
+      <?php if (!empty($subpages)): ?>
         <?=count($subpages) > 1
           ? 'Matched items'
           : 'Matched item' ?> within this Resource:<br/>
-        <?php foreach(array_reverse($subpages) as $page): ?>
+        <?php foreach (array_reverse($subpages) as $page): ?>
           <a href="<?=$this->url('vudl-record', ['id' => $page['id']]) ?>" title="<?=$this->escapeHtmlAttr($page['title']) ?>">
             <img style="height:50px;margin-top:3px" class="fc" src="<?=is_array($page['thumb']) ? $this->url($page['thumb']['route'], $page['thumb']['routeParams']) : $this->escapeHtmlAttr($page['thumb']) ?>"></a>
         <?php endforeach; ?>

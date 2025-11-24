@@ -15,11 +15,11 @@
     $this->layout()->showBreadcrumbs = false;
     $this->layout()->searchbox = false;
 
-    $this->headLink()->appendStylesheet('vudl-home.css');
+    $this->assetManager()->appendStyleLink('vudl-home.css');
 
-    $this->headScript()->appendFile('lib/date-gates.js');
-    $this->headScript()->appendFile('lib/random-hero-image.js');
-    $this->headScript()->appendFile('lib/text-typer.js');
+    $this->assetManager()->appendScriptLink('lib/date-gates.js');
+    $this->assetManager()->appendScriptLink('lib/random-hero-image.js');
+    $this->assetManager()->appendScriptLink('lib/text-typer.js');
 
     $displayConfig = json_decode(file_get_contents(__DIR__ . '/../../assets/home-config.json'), null, 512, JSON_THROW_ON_ERROR);
     $digitizedSets = $displayConfig->digitized;
@@ -109,59 +109,32 @@
         </p>
     </div>
 
-    <div class="flex-1" data-hide-after="2024-09-16">
-        <h2>Featured Exhibit <span class="sr-only">Divine Inspiration</span></h2>
-
-        <div class="feature">
-            <span class="feature__header">
-                <a href="https://exhibits.library.villanova.edu/divineinspiration">
-                    Divine Inspiration: Revealing the Sacred in Biblical Texts and Imagery
-                </a>
-            </span>
-            <div class="flex">
-                <a class="flex-1" href="https://exhibits.library.villanova.edu/divineinspiration">
-                    <img class="feature__img" src="<?=$this->imageLink('featured/divine_inspiration_thumb.jpg')?>" alt="">
-                </a>
-                <div class="flex-2 feature__text prose">
-                    <p>This exhibit features historic bibles and supplemental materials from Special Collections, with an emphasis on textual revolutions and biblical illustration. Curated by Meg Piorko and Mike Sgier, March 27, 2024.</p>
-                </div>
-            </div>
-        </div>
-
-        <p class="my-4">
-            <a class="more-link" href="<?=$this->url('vudl-partners') ?>">
-                <svg class="hero-link__icon icon--svg"><use xlink:href="/themes/vudiglib/images/remixicon.symbol.svg?_=1671554993#ri-arrow-right-line"></use></svg>
-                <span class="underline">More Digital Partnerships</span>
-            </a>
-        </p>
-    </div>
-
     <div class="flex-1" data-hide-before="2024-09-16">
         <h2>
-            <a href="https://exhibits.library.villanova.edu/millers-mechanical-shows">
+            <a href="https://sciencefromthestacks.library.villanova.edu/">
                 Featured Exhibit
-                <span class="sr-only">The Millers Mechanical Shows</span>
+                <span class="sr-only">Science from the Stacks</span>
             </a>
         </h2>
 
         <div class="hidden-min-lg">
             <div class="feature">
-                <a class="d-block" href="https://exhibits.library.villanova.edu/millers-mechanical-shows">
-                    <img class="feature__img" src=<?=$this->imageLink('featured/millers-feature-hero.jpg')?>" alt="The Millers Mechanical Shows: American Circuses and Traveling Shows in the Early Twentieth Century">
+                <a class="d-block" href="https://sciencefromthestacks.library.villanova.edu/" style="aspect-ratio:1.47;overflow:hidden">
+                    <img class="feature__img" src=<?=$this->imageLink('featured/ScienceFromTheStacks-710w.jpg')?>" alt="Science from the Stacks">
                 </a>
                 <div class="feature__text prose">
-                    <p>This exhibit showcases photographs and other materials from our Millers Mechanical Shows Papers collection, as well as other materials related to American circuses and traveling shows of the early twentieth century. Digital installation date: September 23, 2024. Curated by Christoforos Sassaris.</p>
+                    <p>This virtual project aims to connect the history of science at Villanova University with educational resources from Distinctive Collections. Based in the 'stacks' of Falvey Library, it features materials relating to science, technology, and medicine, with a special focus on Gregor Mendel, O.S.A. and his Augustinian legacy. Produced by Distinctive Collections Librarian, Meg Piorko.</p>
                 </div>
             </div>
         </div>
 
         <div class="hidden-max-lg">
-            <div class="feature sliding-desc">
-                <img class="sliding-desc__img" src=<?=$this->imageLink('featured/millers-feature-hero.jpg')?>" alt="The Millers Mechanical Shows: American Circuses and Traveling Shows in the Early Twentieth Century">
+            <div class="feature sliding-desc" style="aspect-ratio:1.47">
+                <img class="sliding-desc__img" src=<?=$this->imageLink('featured/ScienceFromTheStacks-710w.jpg')?>" alt="Science from the Stacks">
                 <div class="sliding-description">
-                    <a class="sliding-desc__title" href="https://exhibits.library.villanova.edu/millers-mechanical-shows">The Millers Mechanical Shows: American Circuses and Traveling Shows in the Early Twentieth Century</a>
+                    <a class="sliding-desc__title" href="https://sciencefromthestacks.library.villanova.edu/">Science from the Stacks</a>
                     <div class="sliding-desc__text prose">
-                        <p>This exhibit showcases photographs and other materials from our Millers Mechanical Shows Papers collection, as well as other materials related to American circuses and traveling shows of the early twentieth century. Digital installation date: September 23, 2024. Curated by Christoforos Sassaris.</p>
+                        <p>This virtual project aims to connect the history of science at Villanova University with educational resources from Distinctive Collections. Based in the 'stacks' of Falvey Library, it features materials relating to science, technology, and medicine, with a special focus on Gregor Mendel, O.S.A. and his Augustinian legacy. Produced by Distinctive Collections Librarian, Meg Piorko.</p>
                     </div>
                 </div>
             </div>
@@ -298,7 +271,7 @@
     <h2><a href="https://blog.library.villanova.edu/category/blue-electrode/">Distinctive Collections Blog: Blue Electrode</a></h2>
 
     <ul class="rss-feed__list">
-        <?php foreach($this->rss as $item): ?>
+        <?php foreach ($this->rss as $item): ?>
           <li class="rss-feed__item" style="--image: url('<?=$item['image'] ?>')">
             <a class="rss-feed__link" href="<?=$item['link'] ?>">
                 <div class="rss-feed__thumb">
@@ -393,5 +366,5 @@
       displayRandomImage(`{$randomImage}`);
       applyDateGates();
       JS;
-  echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $js, 'SET');
+  echo $this->assetManager()->outputInlineScriptString($js);
 ?>

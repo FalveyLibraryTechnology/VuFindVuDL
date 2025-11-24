@@ -21,7 +21,7 @@
         \$('#view .nav-tabs li.opener a').addClass('hidden');
       });
       JS;
-  echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $js, 'SET');
+  echo $this->assetManager()->outputInlineScriptString($js);
 ?>
 <ul class="nav nav-tabs">
   <li class="static opener">
@@ -35,9 +35,9 @@
 </ul>
 <div class="tab-container text-center tab-content">
   <audio controls preload="auto" onloadeddata="$('.pages .selected.loading').removeClass('loading');">
-    <?php if(in_array('OGG', $this->datastreams)): ?><source id="audio-ogg" src="<?=$this->url('files', ['id' => $id, 'type' => 'OGG']) ?>?download=true"/><?php endif?>
-    <?php if(in_array('MP3', $this->datastreams)): ?><source id="audio-mp3" src="<?=$this->url('files', ['id' => $id, 'type' => 'MP3']) ?>?download=true"/><?php endif?>
-    <?php if(!in_array('OGG', $this->datastreams) && !in_array('MP3', $this->datastreams)): ?>
+    <?php if (in_array('OGG', $this->datastreams)): ?><source id="audio-ogg" src="<?=$this->url('files', ['id' => $id, 'type' => 'OGG']) ?>?download=true"/><?php endif?>
+    <?php if (in_array('MP3', $this->datastreams)): ?><source id="audio-mp3" src="<?=$this->url('files', ['id' => $id, 'type' => 'MP3']) ?>?download=true"/><?php endif?>
+    <?php if (!in_array('OGG', $this->datastreams) && !in_array('MP3', $this->datastreams)): ?>
       <source id="audio-master" src="<?=$this->url('files', ['id' => $id, 'type' => 'MASTER']) ?>?download=true"/>
     <?php endif?>
   </audio>
