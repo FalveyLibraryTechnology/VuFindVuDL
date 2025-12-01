@@ -700,6 +700,9 @@ class VuDLController extends \VuFind\Controller\AbstractBase
             return $this->forwardTo('VuDL', 'Denied', ['id' => $id]);
         }
         $view = $this->getLegacyRecordView();
+        if (!$this->universalViewerAllowLegacy($view->outline)){
+            return $this->forwardTo('VuDL', 'Denied', ['id' => $id]);
+        }
         $view->beta_ready = $this->universalViewerSupportsOutline($view->outline)
             ? $id : false;
         return $view;
