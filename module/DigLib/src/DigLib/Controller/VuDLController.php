@@ -673,8 +673,6 @@ class VuDLController extends \VuFind\Controller\AbstractBase
     {
         if (isset($outline['lists']) && is_array($outline['lists'])) {
             foreach ($outline['lists'] as $list) {
-                //var_dump($list);
-                //die;
                 foreach ($list as $current) {
                     if (
                         in_array('video/mp4', $current['mimetypes'])
