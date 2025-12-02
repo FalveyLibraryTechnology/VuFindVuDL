@@ -31,7 +31,9 @@
 <style>
 
 </style>
-<a id="legacy" href="<?=$this->url('vudl-record', compact('id')) ?>?viewer=legacy" class="pull-right hidden">Switch to old viewer</a>
+<?php if (!empty($this->showLegacyLink)): ?>
+  <a id="legacy" href="<?=$this->url('vudl-record', compact('id')) ?>?viewer=legacy" class="pull-right hidden">Switch to old viewer</a>
+<?php endif; ?>
 
 <?=$this->render('vudl/navigation.phtml'); ?>
 
