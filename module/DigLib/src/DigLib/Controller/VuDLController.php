@@ -946,8 +946,7 @@ class VuDLController extends \VuFind\Controller\AbstractBase
         }
 
         $view = $this->createViewModel();
-        $showLegacyLink = $this->universalViewerAllowLegacy($outline);
-        $view->showLegacyLink = $showLegacyLink;
+        $view->showLegacyLink = $this->universalViewerAllowLegacy($outline);
         $view->id = $driver->getUniqueId();
         $view->itemTitle = $driver->getShortTitle();
         $view->parents = $this->getConnector()->getParentList($view->id);
