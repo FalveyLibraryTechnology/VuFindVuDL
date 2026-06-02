@@ -848,6 +848,10 @@ aside .libraryh3lp {
     width: 100% !important; /* override inline style */
 }
 
+/* Fix indentation in footer menu: */
+ul.c-list-nav__menu {
+    padding-left: 0;
+}
 
 /* 6. Searchbox ================================================================== */
 
