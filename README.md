@@ -26,7 +26,7 @@ Font files are not included in this repository due to licensing issues, so there
   # redirects old versions to the latest version. Note that both RewriteCond and
   # RewriteRule lines must be updated to point to new version whenever UV is updated.
   RewriteCond $1 !^x.y.z
-  RewriteRule /themes/vudiglib[3]?/assets/uv-([^/]*)/(.*)$ /themes/vudiglib/assets/uv-x.y.z/$2 [R=301,L]
+  RewriteRule /themes/vudiglib[35]?/assets/uv-([^/]*)/(.*)$ /themes/vudiglib/assets/uv-x.y.z/$2 [R=301,L]
 ```
 
 (Be sure to replace x.y.z with the actual UV version in the code).
