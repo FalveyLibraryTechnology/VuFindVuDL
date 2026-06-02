@@ -28,9 +28,6 @@
   $manifest = $this->serverurl($this->url('vudl-record-manifest', compact('id')));
   $viewerConfig = json_decode(file_get_contents(__DIR__ . '/../../assets/viewer-config.json'));
 ?>
-<style>
-
-</style>
 <?php if (!empty($this->showLegacyLink)): ?>
   <a id="legacy" href="<?=$this->url('vudl-record', compact('id')) ?>?viewer=legacy" class="pull-right hidden">Switch to old viewer</a>
 <?php endif; ?>

@@ -7,9 +7,13 @@ return [
         'vu-common-wide.css:(min-width: 768px)',
         'fonts.css',
         'diglib-2023.css',
+        'vendor/gh-bottom-nav/bottom-nav.css',
         'vendor/gh-shared-nav/shared-nav-falvey.css',
         // .prose class for optimal reading
         'vendor/tailwind-prose.spacing.base.min.css',
+    ],
+    'js' => [
+        'vendor/gh-bottom-nav/back-to-top.js',
     ],
     'helpers' => [
         'factories' => [

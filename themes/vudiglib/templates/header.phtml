@@ -34,9 +34,9 @@
     <div class="vu-middle">
         <a href="https://library.villanova.edu" class="vu-falvey-logo">Falvey Library</a>
         <span class="vu-middle-links">
-            <a href="https://www1.villanova.edu/university/visit.html">VISIT</a> /
-            <a href="https://www1.villanova.edu/university/apply.html">APPLY</a> /
-            <a href="https://www1.villanova.edu/university/give.html">GIVE</a>
+            <a href="https://www.villanova.edu/university/visit.html">VISIT</a> /
+            <a href="https://www.villanova.edu/university/apply.html">APPLY</a> /
+            <a href="https://www.villanova.edu/university/give.html">GIVE</a>
         </span>
     </div>
     <?php $cart = $this->cart(); ?>
@@ -59,43 +59,12 @@
     <header>
         <a href="https://library.villanova.edu">Falvey Library</a>
     </header>
+
     <?php
         $nav_json_path = __DIR__ . '/../js/vendor/gh-shared-nav/navigation.json';
-        $nav_mtime = filemtime($nav_json_path);
+        echo $this->render('shared-nav-markup.phtml');
     ?>
-    <ul class="header-shared-nav is-uninitialized" id="falvey-nav"<?=$nav_mtime ? ' data-modified="' . $nav_mtime . '"' : '' ?>>
-        <li class="header-nav__top-item">
-            <a href="/collections" class="header-nav__top-link">Collections</a>
-        </li>
-        <li class="header-nav__top-item">
-            <a href="/research" class="header-nav__top-link">Research Services</a>
-        </li>
-        <li class="header-nav__top-item">
-            <a href="/using-the-library" class="header-nav__top-link">Using the Library</a>
-        </li>
-        <li class="header-nav__top-item">
-            <a href="/about-falvey" class="header-nav__top-link">About</a>
-        </li>
-    </ul>
 </div>
-<style>
-    .header-nav__top-link {
-        display: grid;
-        align-items: center;
-        height: 100%;
-        min-height: 40px;
-        padding-inline: 0.75em;
-        padding-block: 0;
-        font-family: "Gotham", sans-serif;
-        font-size: 14px;
-        line-height: 1;
-        text-align: center;
-        text-decoration: none;
-        text-transform: uppercase;
-        text-wrap: balance;
-        color: white;
-    }
-</style>
 
 <!-- can't put in theme.config.php: needs to be a type="module" -->
 <?=$this->assetManager()->outputInlineScriptLink('vendor/gh-shared-nav/shared-nav-falvey.js', ['type' => 'module']) ?>

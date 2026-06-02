@@ -37,7 +37,7 @@
       "title": "Chester County Choral Society",
       "link": "https://www.chescochoral.org",
       "collection": "https://digital.library.villanova.edu/Item/vudl:940488",
-      "thumbnail": "/themes/vudiglib/images/cccs_logo.jpg"
+      "thumbnail": "https://digital.library.villanova.edu/files/vudl:940488/THUMBNAIL"
     },
     {
       "title": "German Society of Pennsylvania",
@@ -76,6 +76,12 @@
       "thumbnail": "https://digital.library.villanova.edu/files/vudl:203749/THUMBNAIL"
     },
     {
+      "title": "Morris Animal Refuge",
+      "link": "https://morrisanimalrefuge.org/",
+      "collection": "https://digital.library.villanova.edu/Item/vudl:1187662",
+      "thumbnail": "https://digital.library.villanova.edu/files/vudl:1187662/THUMBNAIL"
+    },
+    {
       "title": "Museum of Nursing History",
       "link": "https://nursinghistory.org",
       "collection": "https://digital.library.villanova.edu/Item/vudl:604193",
@@ -102,6 +108,11 @@
       "link": "http://radnorhistory.org",
       "collection": "https://digital.library.villanova.edu/Item/vudl:566670",
       "thumbnail": "https://digital.library.villanova.edu/files/vudl:566670/THUMBNAIL"
+    },
+    {
+      "title": "Robin O'Brien Hiteshew",
+      "collection": "https://digital.library.villanova.edu/Item/vudl:980113",
+      "thumbnail": "https://digital.library.villanova.edu/files/vudl:980113/THUMBNAIL"
     },
     {
       "title": "Roman Catholic High School Alumni Assoc.",
@@ -149,6 +160,11 @@
       "title": "St. Mary's Episcopal Church, Wayne",
       "collection": "https://digital.library.villanova.edu/Item/vudl:751061",
       "thumbnail": "https://digital.library.villanova.edu/files/vudl:751061/THUMBNAIL"
+    },
+    {
+      "title": "St. Jerome Library at Saint Charles Borromeo Seminary",
+      "collection": "https://digital.library.villanova.edu/Item/vudl:235446",
+      "thumbnail": "https://digital.library.villanova.edu/files/vudl:235446/THUMBNAIL"
     },
     {
       "title": "Weitzman National Museum of American Jewish History ",

@@ -1,0 +1,38 @@
+<?php
+    // set $nav_json_path before include or render
+    $nav_json_path ??= __DIR__ . '/../js/vendor/gh-shared-nav/navigation.json';
+    $nav_mtime = filemtime($nav_json_path);
+?>
+<ul class="header-shared-nav" id="falvey-nav"<?=$nav_mtime ? ' data-modified="' . $nav_mtime . '"' : '' ?>>
+    <li class="header-nav__top-item">
+        <a href="/collections" class="header-nav__top-link">Collections</a>
+    </li>
+    <li class="header-nav__top-item">
+        <a href="/research" class="header-nav__top-link">Research Services</a>
+    </li>
+    <li class="header-nav__top-item">
+        <a href="/using-the-library" class="header-nav__top-link">Using the Library</a>
+    </li>
+    <li class="header-nav__top-item">
+        <a href="/about-falvey" class="header-nav__top-link">About</a>
+    </li>
+</ul>
+<style>
+    /* Critical styles for faster loading */
+    .header-nav__top-link {
+        display: grid;
+        align-items: center;
+        height: 100%;
+        min-height: 40px;
+        padding-inline: 0.75em;
+        padding-block: 0;
+        font-family: "Gotham", sans-serif;
+        font-size: 14px;
+        line-height: 1;
+        text-align: center;
+        text-decoration: none;
+        text-transform: uppercase;
+        text-wrap: balance;
+        color: white;
+    }
+</style>
