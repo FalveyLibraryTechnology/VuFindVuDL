@@ -1,7 +1,0 @@
-{
-  "name": "vufind-vudiglib",
-  "description": "Dependencies for the vudiglib theme",
-  "dependencies": {
-    "universalviewer": "4.3.0"
-  }
-}

@@ -1,0 +1,68 @@
+<details class="faq hidden-print" group="faq">
+  <summary>
+    <h2>Rights Information</h2>
+  </summary>
+
+  <div class="details__content prose">
+    <p>
+      The use of this material may be subject to the copyright law of the United States
+      (Title 17, United States Code) or other third party terms and conditions. The
+      person using the material is responsible for any use or infringement of third party
+      rights.
+    </p>
+
+    <?php include(__DIR__ . '/vudl/disclaimers.phtml'); ?>
+  </div>
+</details>
+
+<details id="accessibility-statement" class="faq hidden-print" group="faq">
+  <summary>
+    <h2>Accessibility Statement</h2>
+  </summary>
+  <div class="details__content prose">
+    <p>The Digital Library strives to provide access to its collections and resources to the Villanova University community and the global community of scholars, subject to any intellectual property or other restrictions on use. Certain materials, such as historical documents, handwritten materials, and foreign language materials, present unique accessibility challenges and formatting limitations. If you are experiencing difficulties in accessing, viewing, or navigating the Digital Library, please contact us at <a href="mailto:digitallibrary@villanova.edu">digitallibrary@villanova.edu</a> or 610.519.5271.</p>
+  </div>
+</details>
+
+<footer class="library-links-footer hidden-print">
+    <div id="footer-links" class="container">
+    </div>
+</footer>
+
+<footer class="vu-contact-footer hidden-print">
+    <img src="<?=$this->imageLink('VU05WHITE_32h.png')?>" class="logo" alt="Villanova University">
+    <span class="info">
+        <i class="fa fa-map-marker-alt"></i> 800 Lancaster Ave., Villanova, PA 19085
+    </span>
+    <span class="info">
+        <i class="fa fa-phone"></i> 610.519.4500
+    </span>
+    <a href="https://www.villanova.edu/university/contact-us.html" class="info"><i class="fa fa-envelope"></i> Contact</a>
+</footer>
+
+<footer class="vu-links-footer hidden-print">
+    <div class="center">
+        <a href="https://library.villanova.edu/using-the-library/access/privacy-policy">Privacy &amp; Security</a>
+        <a href="https://www.villanova.edu/university/non-discrimination.html">Notice of Non-Discrimination</a>
+        <a href="https://www.villanova.edu/university/higher-education-act.html">Higher Education Act</a>
+        <a href="https://library.villanova.edu/using-the-library/access/accessibility">Accessibility</a>
+        <a href="https://mynova.villanova.edu/">MY NOVA</a>
+        <a href="https://www.villanova.edu/directoryservices/">Directory</a>
+        <a href="https://www.villanova.edu/university/human-resources/work-at-villanova.html">Work at Villanova</a>
+    </div>
+</footer>
+
+<!-- Scroll to Top -->
+<div id="bottom-nav-container">
+    <a id="back-to-top" class="bottom-nav-btn" href="#">
+        <svg class="icon icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.0001 7.82843V20H11.0001V7.82843L5.63614 13.1924L4.22192 11.7782L12.0001 4L19.7783 11.7782L18.3641 13.1924L13.0001 7.82843Z"></path></svg>
+        <span>Back to Top</span>
+    </a>
+</div>
+
+<?php
+    // User testing: currently DISABLED
+    //$this->assetManager()->appendStyleLink('sitetesting/sitetesting.css');
+    //echo $this->assetManager()->outputInlineScriptLink('/application/themes/falvey_2018/js/sitetesting/mus.js');
+    //echo $this->assetManager()->outputInlineScriptLink('/application/themes/falvey_2018/js/sitetesting/sitetesting.js');
+?>
