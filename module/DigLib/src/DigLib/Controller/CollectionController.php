@@ -130,18 +130,22 @@ class CollectionController extends \VuFind\Controller\CollectionController
         );
         $response = json_decode($solr->search($query));
         $result = [
-            '@context' => 'http://iiif.io/api/presentation/2/context.json',
-            '@id' => 'dummy',
-            '@type' => 'sc:Collection',
-            'label' => 'dummy',
+            '@context' => 'http://iiif.io/api/presentation/3/context.json',
+            'id' => 'dummy',
+            'type' => 'Collection',
+            'label' =>  [
+                'en' => [
+                    'dummy',
+                ],
+            ],
             'collections' => [],
-            'manifests' => [],
+            'items' => [],
         ];
         $serverHelper = $this->getViewRenderer()->plugin('serverurl');
         $myUri = $myLabel = false;
         foreach ($response->response->docs as $current) {
             $type = isset($current->is_hierarchy_title)
-                ? 'sc:Collection' : 'sc:Manifest';
+                ? 'Collection' : 'Manifest';
             if ($type === 'sc:Collection') {
                 $uri = $this->url()->fromRoute(
                     'collection',
@@ -153,29 +157,37 @@ class CollectionController extends \VuFind\Controller\CollectionController
                     'vudl-record-manifest',
                     ['id' => $current->id]
                 );
-                $target = 'manifests';
+                $target = 'items';
             }
             if ($id == $current->id) {
                 $myUri = $serverHelper($uri);
                 $myLabel = $current->title;
             } else {
                 $result[$target][] = [
-                    'label' => $current->title,
-                    '@id' =>  $serverHelper($uri),
-                    '@type' => $type,
+                    'id' =>  $serverHelper($uri),
+                    'type' => $type,
+                    'label' =>  [
+                        'en' => [
+                            $current->title,
+                        ],
+                    ],
                 ];
             }
         }
-        foreach (['collections', 'manifests'] as $type) {
+        foreach (['collections', 'items'] as $type) {
             if (empty($result[$type])) {
                 unset($result[$type]);
             }
         }
         if ($myUri) {
-            $result['@id'] = $myUri;
+            $result['id'] = $myUri;
         }
         if ($myLabel) {
-            $result['label'] = $myLabel;
+            $result['label'] =  [
+                'en' => [
+                    $myLabel,
+                ],
+            ];
         }
         $within = $this->getParentData($id);
         if (!empty($within)) {
