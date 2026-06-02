@@ -538,7 +538,11 @@ class VuDLController extends \VuFind\Controller\AbstractBase
     {
         $params = $this->params()->fromQuery();
         try {
-            $members = $this->getConnector()->getOrderedMembers($params['trail']);
+            $trail = $params['trail'];
+            if (!preg_match('/^\w+:\d+$/', $trail)) {
+                throw new \VuFind\Exception\BadRequest($trail . ' is not a valid PID.');
+            }
+            $members = $this->getConnector()->getOrderedMembers($trail);
         } catch (\VuFindSearch\Backend\Exception\RequestErrorException $e) {
             $response = $this->getResponse();
             $response->setStatusCode($e->getCode());
@@ -547,7 +551,7 @@ class VuDLController extends \VuFind\Controller\AbstractBase
         }
         if (count($members) < 2) {
             //return $this->redirect()
-            //->toRoute('Collection', 'Home', array('id'=>$params['trail']));
+            //->toRoute('Collection', 'Home', array('id'=>$trail));
         }
         $index = -1;
         foreach ($members as $i => $member) {
@@ -558,7 +562,7 @@ class VuDLController extends \VuFind\Controller\AbstractBase
         }
         if ($index == -1) {
             return $this->redirect()
-                ->toRoute('collection', ['id' => $params['trail']]);
+                ->toRoute('collection', ['id' => $trail]);
         } elseif (isset($params['prev'])) {
             return $this->redirect()->toRoute(
                 'vudl-record',
@@ -661,7 +665,7 @@ class VuDLController extends \VuFind\Controller\AbstractBase
         }
         return false;
     }
-    
+
     /**
      * Is the legacy viewer allowed for the record?
      *
@@ -680,6 +684,7 @@ class VuDLController extends \VuFind\Controller\AbstractBase
                         || in_array('MP3', $current['datastreams'])
                         || in_array('OGG', $current['datastreams'])
                         || in_array('application/vnd.ms-excel', $current['mimetypes'])
+                        || in_array('image/vnd.fpx', $current['mimetypes']) // weird Excel mime type
                     ) {
                         return true;
                     }
@@ -701,7 +706,7 @@ class VuDLController extends \VuFind\Controller\AbstractBase
             return $this->forwardTo('VuDL', 'Denied', ['id' => $id]);
         }
         $view = $this->getLegacyRecordView();
-        if (!$this->universalViewerAllowLegacy($view->outline)){
+        if (!$this->universalViewerAllowLegacy($view->outline)) {
             return $this->forwardTo('VuDL', 'Denied', ['id' => $id]);
         }
         $view->beta_ready = $this->universalViewerSupportsOutline($view->outline)
@@ -933,17 +938,21 @@ class VuDLController extends \VuFind\Controller\AbstractBase
             $this->getResponse()->setStatusCode(404);
             return;
         }
-        if (
-            !$this->universalViewerSupportsOutline($outline)
-            || $this->params()->fromQuery('viewer') === 'legacy'
-        ) {
-            return $this->legacyrecordAction();
-        }
-
         $config = $this->getVuDLConfig();
         $onlyShowActive = isset($config->Access->only_show_active)
             && $config->Access->only_show_active;
         $driver = $this->getRecordLoader()->load($id, 'VuFind', !$onlyShowActive);
+        if ($driver?->tryMethod('isCollection')) {
+            $this->redirect()->toRoute('collection', ['id' => $driver->getUniqueId()]);
+        }
+        if (
+            !$this->universalViewerSupportsOutline($outline)
+            || ($this->params()->fromQuery('viewer') === 'legacy'
+                && $this->universalViewerAllowLegacy($outline))
+        ) {
+            return $this->legacyrecordAction();
+        }
+
         if ($driver?->tryMethod('isProtected')) {
             return $this->forwardTo('VuDL', 'Denied', ['id' => $id]);
         }
