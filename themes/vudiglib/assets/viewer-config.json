@@ -53,7 +53,7 @@
         "shareDialogue": {
             "options": {
                 "embedEnabled": true,
-                "embedPath": "/themes/vudiglib/assets/uv-4.2.0/uv.html"
+                "embedPath": "/themes/vudiglib/assets/uv-4.3.0/uv.html"
             }
         },
         "treeViewLeftPanel": {
