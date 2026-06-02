@@ -690,7 +690,10 @@ class VuDLController extends \VuFind\Controller\AbstractBase
     {
         $response = $this->getResponse();
         $headers = $response->getHeaders();
-        $headers->addHeaderLine('Content-type', 'application/json');
+        $headers->addHeaderLine(
+            'Content-type',
+            'application/ld+json;profile="http://iiif.io/api/presentation/3/context.json"'
+        );
         $headers->addHeaderLine('Access-Control-Allow-Origin', '*');
         $response->setContent(
             json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)

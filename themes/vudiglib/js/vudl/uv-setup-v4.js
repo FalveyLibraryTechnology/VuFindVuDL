@@ -123,11 +123,15 @@ function setupUV4(configUri, phpData, uvOptions) {
 		}
 
 		let transcripts = [];
-		const renderings = getRenderings(helper.manifest.__jsonld);
-		// console.log("manifest", helper.manifest.__jsonld);
+		let renderings = getRenderings(helper.manifest.__jsonld.rendering);
+		if (renderings.length === 0) {
+			renderings = getRenderings(helper.manifest.__jsonld.items[0].rendering);
+		}
+		//console.log("manifest", helper.manifest.__jsonld.rendering);
 		for (const render of renderings) {
+			const lableValue = Object.values(render.label)[0][0];
 			transcripts.push({
-				label: render.label,
+				label: lableValue,
 				href: render["id"],
 				hint: transcriptTypes[render.format],
 			});
@@ -399,7 +403,7 @@ waitFor(".rightPanel").then((sidebar) => {
 
 document.addEventListener("click", (event) => {
 	// Log download usage
-	if (_paq && event.target.matches(".download .content button")) {
+	if (typeof _paq !== "undefined" && event.target.matches(".download .content button")) {
 		const urlParts = window.location.pathname.split("/");
 		const recordID = urlParts.at(-1);
 		_paq.push(["trackEvent", "UV Download", event.target.innerText, recordID]);
@@ -424,7 +428,12 @@ function resizeUV() {
 	const height = window.innerWidth < 640
 		? window.innerHeight - 40 // full size on mobile
 		: window.innerHeight - $UV.offset().top;
-	$UV.height(height);
+
+	// Set parent and child height bc of initial loading bug
+	// https://github.com/UniversalViewer/universalviewer/blob/614348f/src/Init.ts#L35
+	const uvEl = document.getElementById("uv");
+	uvEl.style.height = `${height}px`;
+	uvEl.firstChild.style.height = `${height}px`;
 	uv.resize();
 }
 window.addEventListener("resize", resizeUV);
