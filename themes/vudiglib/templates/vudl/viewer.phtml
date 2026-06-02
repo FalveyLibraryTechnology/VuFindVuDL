@@ -64,10 +64,12 @@
       <div class="col-sm-9">
         <table class="table table-striped">
           <?php foreach ($this->metadata as $data): ?>
-            <tr>
-              <th><?=$data['label'] ?></th>
-              <td><?=$data['value'] ?></td>
-            </tr>
+            <?php if (isset($data['label']['en'][0]) && isset($data['value']['en'][0])): ?>
+              <tr>
+                <th><?=$data['label']['en'][0] ?></th>
+                <td><?=$data['value']['en'][0] ?></td>
+              </tr>
+            <?php endif; ?>
           <?php endforeach; ?>
         </table>
       </div>

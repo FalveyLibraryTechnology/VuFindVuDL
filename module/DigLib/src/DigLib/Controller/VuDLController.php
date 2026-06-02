@@ -720,7 +720,10 @@ class VuDLController extends \VuFind\Controller\AbstractBase
     {
         $response = $this->getResponse();
         $headers = $response->getHeaders();
-        $headers->addHeaderLine('Content-type', 'application/json');
+        $headers->addHeaderLine(
+            'Content-type',
+            'application/ld+json;profile="http://iiif.io/api/presentation/3/context.json"'
+        );
         $headers->addHeaderLine('Access-Control-Allow-Origin', '*');
         $response->setContent(
             json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
@@ -876,16 +879,16 @@ class VuDLController extends \VuFind\Controller\AbstractBase
     protected function getIdsFromManifest($data)
     {
         $ids = [];
-        if (isset($data['sequences'][0]['canvases'])) {
-            foreach ($data['sequences'][0]['canvases'] as $canvas) {
-                preg_match(
-                    '/vudl:[0-9]+/',
-                    $canvas['rendering'][0]['@id'] ?? '',
-                    $matches
-                );
-                if (isset($matches[0])) {
-                    $ids[] = $matches[0];
-                }
+
+        foreach ($data['items'] as $canvas) {
+            preg_match(
+                '/vudl:[0-9]+/',
+                $canvas['rendering'][0]['id'] ?? '',
+                $matches
+            );
+
+            if (isset($matches[0])) {
+                $ids[] = $matches[0];
             }
         }
         return $ids;
